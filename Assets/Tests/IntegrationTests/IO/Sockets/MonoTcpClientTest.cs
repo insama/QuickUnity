@@ -77,7 +77,7 @@ namespace QuickUnity.Tests.IntegrationTests
             m_client.AddEventListener(SocketEvent.Closed, OnSocketClosed);
             m_client.AddEventListener(SocketEvent.SocketError, OnSocketError);
             m_client.AddEventListener(SocketEvent.Error, OnError);
-            m_client.BeginConnect("192.168.0.131", 10000, true);
+            m_client.BeginConnect("127.0.0.1", 10000, true);
         }
 
         private void Update()

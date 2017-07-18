@@ -28,6 +28,7 @@ using CSharpExtensions.Net.Sockets;
 using QuickUnity.Events;
 using System.Net;
 using CSharpExtensions.Events;
+using System.Collections.Generic;
 
 namespace QuickUnity.Net.Sockets
 {
@@ -63,7 +64,6 @@ namespace QuickUnity.Net.Sockets
         public MonoTcpServer(IPAddress localaddr, int port)
             : base(localaddr, port)
         {
-            m_eventDispatcher = new ThreadEventDispatcher();
         }
 
         /// <summary>
@@ -115,6 +115,15 @@ namespace QuickUnity.Net.Sockets
             if (m_eventDispatcher != null)
             {
                 m_eventDispatcher.Update();
+            }
+
+            foreach (KeyValuePair<IPEndPoint, TcpClientBase> kvp in clients)
+            {
+                if (kvp.Value != null)
+                {
+                    MonoTcpClient tcpClient = (MonoTcpClient)kvp.Value;
+                    tcpClient.Update();
+                }
             }
         }
 

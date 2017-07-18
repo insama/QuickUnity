@@ -70,8 +70,13 @@ namespace QuickUnity.Tests.IntegrationTests
 
         private void Start()
         {
-            m_server = new MonoTcpServer(IPAddress.Parse("192.168.0.3"), 10000);
+            m_server = new MonoTcpServer(IPAddress.Parse("127.0.0.1"), 10000);
             m_server.SocketPacketHandler = new TestPacketHandler();
+            m_server.AddEventListener(SocketEvent.ServerStart, OnServerStart);
+            m_server.AddEventListener(SocketEvent.ServerStop, OnServerStop);
+            m_server.AddEventListener(SocketEvent.SocketError, OnSocketError);
+            m_server.AddEventListener(SocketEvent.ClientConnected, OnClientConnected);
+            m_server.AddEventListener(SocketEvent.Error, OnError);
             m_server.Start();
         }
 
@@ -88,8 +93,29 @@ namespace QuickUnity.Tests.IntegrationTests
             if (m_server != null)
             {
                 m_server.Stop();
+                m_server.RemoveEventListener(SocketEvent.ServerStart, OnServerStart);
+                m_server.RemoveEventListener(SocketEvent.ServerStop, OnServerStop);
+                m_server.RemoveEventListener(SocketEvent.SocketError, OnSocketError);
+                m_server.RemoveEventListener(SocketEvent.ClientConnected, OnClientConnected);
+                m_server.RemoveEventListener(SocketEvent.Error, OnError);
                 m_server = null;
             }
+        }
+
+        private void OnServerStart(CSharpExtensions.Events.Event eventObj)
+        {
+            Debug.Log("server started!");
+        }
+
+        private void OnServerStop(CSharpExtensions.Events.Event eventObj)
+        {
+            Debug.Log("server stop");
+        }
+
+        private void OnClientConnected(CSharpExtensions.Events.Event eventObj)
+        {
+            Debug.Log("client connected!");
+            IntegrationTest.Pass();
         }
 
         private void OnSocketError(CSharpExtensions.Events.Event eventObj)

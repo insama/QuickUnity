@@ -1,0 +1,9 @@
+Welcome to the Unity Scripting Reference!
+
+This section of the documentation contains details of the scripting API that Unity provides. To use this information, you should be familiar with the basic theory and practice of scripting in Unity which is explained in the Scripting section of our manual.
+
+The scripting reference is organised according to the classes available to scripts which are described along with their methods, properties and any other information relevant to their use.
+
+The pages are extensively furnished with example code that you are free to use for any purpose without crediting Unity. The examples can be viewed in either C# or JavaScript using the menu at the top of each page. Note that the API is the same regardless of which language is used, so the choice of language is purely down to preference.
+
+API are grouped by namespaces they belong to, and can be selected from the sidebar to the left. For most users, the UnityEngine section will be the main port of call.

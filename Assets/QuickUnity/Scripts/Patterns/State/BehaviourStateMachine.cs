@@ -25,7 +25,7 @@
 using CSharpExtensions.Patterns.State;
 using QuickUnity.Events;
 
-namespace QuickUnity.Patterns
+namespace QuickUnity.Patterns.State
 {
     /// <summary>
     /// State machine to control state transitions, who is inherited from MonoBehaviour.

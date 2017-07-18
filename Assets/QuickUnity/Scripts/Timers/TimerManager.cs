@@ -22,11 +22,11 @@
  *	SOFTWARE.
  */
 
-using QuickUnity.Patterns;
+using QuickUnity.Patterns.Singleton;
 using System;
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace QuickUnity.Timers
 {

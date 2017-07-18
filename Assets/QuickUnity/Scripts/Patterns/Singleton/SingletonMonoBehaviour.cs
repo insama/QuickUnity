@@ -24,7 +24,7 @@
 
 using UnityEngine;
 
-namespace QuickUnity.Patterns
+namespace QuickUnity.Patterns.Singleton
 {
     /// <summary>
     /// Abstract class for implementing singleton pattern for which is inherited from <see cref="MonoBehaviour"/>.

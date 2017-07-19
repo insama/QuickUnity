@@ -103,7 +103,7 @@ namespace QuickUnityEditor.Utils
                     if (targetAsset != null)
                     {
                         targetAsset = scriptableObject;
-                        UnityEditor.EditorUtility.SetDirty(targetAsset);
+                        EditorUtility.SetDirty(targetAsset);
                     }
                     else
                     {
@@ -231,7 +231,7 @@ namespace QuickUnityEditor.Utils
                 string assetPath = AssetDatabase.GUIDToAssetPath(assetGuid);
 
                 // Show the progress bar.
-                UnityEditor.EditorUtility.DisplayProgressBar("Processing...", string.Format("Checking the asset {0}...", assetPath), (float)(i + 1) / length);
+                EditorUtility.DisplayProgressBar("Processing...", string.Format("Checking the asset {0}...", assetPath), (float)(i + 1) / length);
 
                 List<string> dependencies = new List<string>(AssetDatabase.GetDependencies(assetPath, true));
 
@@ -251,7 +251,7 @@ namespace QuickUnityEditor.Utils
                 }
             }
 
-            UnityEditor.EditorUtility.ClearProgressBar();
+            EditorUtility.ClearProgressBar();
 
             return references;
         }
@@ -282,7 +282,7 @@ namespace QuickUnityEditor.Utils
         /// </summary>
         /// <param name="assetPath">The asset path.</param>
         /// <returns>The runtime memory size of this asset object.</returns>
-        public static int GetAssetRuntimeMemorySize(string assetPath)
+        public static long GetAssetRuntimeMemorySize(string assetPath)
         {
             UnityEngine.Object asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath);
             return GetAssetRuntimeMemorySize(asset);
@@ -293,9 +293,13 @@ namespace QuickUnityEditor.Utils
         /// </summary>
         /// <param name="asset">The asset object.</param>
         /// <returns>The runtime memory size of this asset object.</returns>
-        public static int GetAssetRuntimeMemorySize(UnityEngine.Object asset)
+        public static long GetAssetRuntimeMemorySize(UnityEngine.Object asset)
         {
+#if UNITY_5_6_OR_NEWER
+            return UnityEngine.Profiling.Profiler.GetRuntimeMemorySizeLong(asset);
+#else
             return Profiler.GetRuntimeMemorySize(asset);
+#endif
         }
 
         /// <summary>

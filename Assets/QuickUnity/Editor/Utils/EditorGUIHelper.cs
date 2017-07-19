@@ -31,7 +31,7 @@ namespace QuickUnityEditor.Utils
     /// <summary>
     /// Miscellaneous helper stuff for EditorGUI.
     /// </summary>
-    /// <seealso cref="UnityEngine.GUIUtility"/>
+    /// <seealso cref="GUIUtility"/>
     public sealed class EditorGUIHelper : GUIUtility
     {
         /// <summary>

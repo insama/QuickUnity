@@ -706,7 +706,9 @@ namespace QuickUnityEditor.Data
         /// Performs the specified action on each excel file under the folder path.
         /// </summary>
         /// <param name="folderPath">The folder path.</param>
-        /// <param name="action">The Action&lt;DataTable, string, int, int&gt; delegate to perform on each excel file.</param>
+        /// <param name="action">
+        /// The Action&lt;DataTable, string, int, int&gt; delegate to perform on each excel file.
+        /// </param>
         private static void ForEachExcelFile(string folderPath, Action<DataTable, string, int, int> action = null)
         {
             if (string.IsNullOrEmpty(folderPath))

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 546ee7feafd0f75429d8300627d6c9f2
-timeCreated: 1459613781
+guid: b367fff726a6b1b43ad9bec19ba47d23
+timeCreated: 1500547525
 licenseType: Pro
 PluginImporter:
   serializedVersion: 1
@@ -8,10 +8,6 @@ PluginImporter:
   executionOrder: {}
   isPreloaded: 0
   platformData:
-    Android:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
     Any:
       enabled: 0
       settings: {}
@@ -37,12 +33,6 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: AnyCPU
-    WP8:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
-        DontProcess: False
-        PlaceholderPath: 
     Win:
       enabled: 0
       settings:
@@ -55,14 +45,6 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: AnyCPU
-        DontProcess: False
-        PlaceholderPath: 
-        SDK: AnySDK
-    iOS:
-      enabled: 0
-      settings:
-        CompileFlags: 
-        FrameworkDependencies: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 

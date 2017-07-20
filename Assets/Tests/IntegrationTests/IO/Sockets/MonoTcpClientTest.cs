@@ -71,12 +71,11 @@ namespace QuickUnity.Tests.IntegrationTests
         {
             m_client = new MonoTcpClient();
             m_client.SocketPacketHandler = new TestPacketHandler();
-            m_client.AddEventListener(SocketEvent.Connected, OnSocketConnected);
-            m_client.AddEventListener(SocketEvent.Disconnected, OnSocketDisconnected);
-            m_client.AddEventListener(SocketEvent.Data, OnSocketData);
-            m_client.AddEventListener(SocketEvent.Closed, OnSocketClosed);
-            m_client.AddEventListener(SocketEvent.SocketError, OnSocketError);
-            m_client.AddEventListener(SocketEvent.Error, OnError);
+            m_client.AddEventListener(SocketEvent.SocketConnected, OnSocketConnected);
+            m_client.AddEventListener(SocketEvent.SocketDisconnected, OnSocketDisconnected);
+            m_client.AddEventListener(SocketEvent.SocketDataReceived, OnSocketData);
+            m_client.AddEventListener(SocketEvent.SocketClosed, OnSocketClosed);
+            m_client.AddEventListener(SocketEvent.SocketException, OnSocketException);
             m_client.BeginConnect("127.0.0.1", 10000, true);
         }
 
@@ -92,12 +91,11 @@ namespace QuickUnity.Tests.IntegrationTests
         {
             if (m_client != null)
             {
-                m_client.RemoveEventListener(SocketEvent.Connected, OnSocketConnected);
-                m_client.RemoveEventListener(SocketEvent.Disconnected, OnSocketDisconnected);
-                m_client.RemoveEventListener(SocketEvent.Data, OnSocketData);
-                m_client.RemoveEventListener(SocketEvent.Closed, OnSocketClosed);
-                m_client.RemoveEventListener(SocketEvent.SocketError, OnSocketError);
-                m_client.RemoveEventListener(SocketEvent.Error, OnError);
+                m_client.RemoveEventListener(SocketEvent.SocketConnected, OnSocketConnected);
+                m_client.RemoveEventListener(SocketEvent.SocketDisconnected, OnSocketDisconnected);
+                m_client.RemoveEventListener(SocketEvent.SocketDataReceived, OnSocketData);
+                m_client.RemoveEventListener(SocketEvent.SocketClosed, OnSocketClosed);
+                m_client.RemoveEventListener(SocketEvent.SocketException, OnSocketException);
                 m_client.Close();
                 m_client = null;
             }
@@ -123,15 +121,7 @@ namespace QuickUnity.Tests.IntegrationTests
             Debug.Log("socket is closed");
         }
 
-        private void OnSocketError(CSharpExtensions.Events.Event eventObj)
-        {
-            SocketEvent socketEvent = (SocketEvent)eventObj;
-            SocketException e = socketEvent.socketException;
-            Debug.Log(e.Message);
-            Debug.Log(e.StackTrace);
-        }
-
-        private void OnError(CSharpExtensions.Events.Event eventObj)
+        private void OnSocketException(CSharpExtensions.Events.Event eventObj)
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
             Exception e = socketEvent.exception;

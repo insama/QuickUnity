@@ -74,9 +74,8 @@ namespace QuickUnity.Tests.IntegrationTests
             m_server.SocketPacketHandler = new TestPacketHandler();
             m_server.AddEventListener(SocketEvent.ServerStart, OnServerStart);
             m_server.AddEventListener(SocketEvent.ServerStop, OnServerStop);
-            m_server.AddEventListener(SocketEvent.SocketError, OnSocketError);
+            m_server.AddEventListener(SocketEvent.ServerSocketException, OnServerSocketException);
             m_server.AddEventListener(SocketEvent.ClientConnected, OnClientConnected);
-            m_server.AddEventListener(SocketEvent.Error, OnError);
             m_server.Start();
         }
 
@@ -95,9 +94,8 @@ namespace QuickUnity.Tests.IntegrationTests
                 m_server.Stop();
                 m_server.RemoveEventListener(SocketEvent.ServerStart, OnServerStart);
                 m_server.RemoveEventListener(SocketEvent.ServerStop, OnServerStop);
-                m_server.RemoveEventListener(SocketEvent.SocketError, OnSocketError);
+                m_server.RemoveEventListener(SocketEvent.ServerSocketException, OnServerSocketException);
                 m_server.RemoveEventListener(SocketEvent.ClientConnected, OnClientConnected);
-                m_server.RemoveEventListener(SocketEvent.Error, OnError);
                 m_server = null;
             }
         }
@@ -112,26 +110,18 @@ namespace QuickUnity.Tests.IntegrationTests
             Debug.Log("server stop");
         }
 
-        private void OnClientConnected(CSharpExtensions.Events.Event eventObj)
-        {
-            Debug.Log("client connected!");
-            IntegrationTest.Pass();
-        }
-
-        private void OnSocketError(CSharpExtensions.Events.Event eventObj)
-        {
-            SocketEvent socketEvent = (SocketEvent)eventObj;
-            SocketException e = socketEvent.socketException;
-            Debug.Log(e.Message);
-            Debug.Log(e.StackTrace);
-        }
-
-        private void OnError(CSharpExtensions.Events.Event eventObj)
+        private void OnServerSocketException(CSharpExtensions.Events.Event eventObj)
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
             Exception e = socketEvent.exception;
             Debug.Log(e.Message);
             Debug.Log(e.StackTrace);
+        }
+
+        private void OnClientConnected(CSharpExtensions.Events.Event eventObj)
+        {
+            Debug.Log("client connected!");
+            IntegrationTest.Pass();
         }
     }
 }

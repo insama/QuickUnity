@@ -29,8 +29,8 @@ using System;
 namespace QuickUnity.Net.Sockets
 {
     /// <summary>
-    /// The <see cref="SocketEvent"/> class represents event objects that are specific to the <see
-    /// cref="System.Net.Sockets.Socket"/> object.
+    /// The <see cref="SocketEvent"/> class represents event objects that are specific to the <see cref="MonoTcpClient"/> object or the <see
+    /// cref="MonoTcpServer"/> object.
     /// </summary>
     /// <seealso cref="Event"/>
     public class SocketEvent : Event
@@ -111,8 +111,7 @@ namespace QuickUnity.Net.Sockets
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and
-        /// <see cref="MonoTcpClient"/> instance.
+        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and <see cref="MonoTcpClient"/> instance.
         /// </summary>
         /// <param name="eventType">The type of the event.</param>
         /// <param name="client">The instance of <see cref="MonoTcpClient"/>.</param>
@@ -124,8 +123,7 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and
-        /// <see cref="MonoTcpClient"/> instance.
+        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and <see cref="MonoTcpClient"/> instance.
         /// </summary>
         /// <param name="eventType">The type of the event.</param>
         /// <param name="client">The instance of <see cref="MonoTcpClient"/>.</param>
@@ -137,8 +135,7 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and
-        /// <see cref="MonoTcpServer"/> instance.
+        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and <see cref="MonoTcpServer"/> instance.
         /// </summary>
         /// <param name="eventType">The type of the event.</param>
         /// <param name="server">The instance of <see cref="MonoTcpServer"/>.</param>
@@ -148,8 +145,7 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and
-        /// <see cref="MonoTcpClient"/> instance.
+        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and <see cref="MonoTcpClient"/> instance.
         /// </summary>
         /// <param name="eventType">The type of the event.</param>
         /// <param name="server">The instance of <see cref="MonoTcpServer"/>.</param>

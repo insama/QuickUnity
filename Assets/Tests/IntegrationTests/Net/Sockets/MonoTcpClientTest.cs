@@ -2,7 +2,6 @@
 using QuickUnity.Net.Sockets;
 using System;
 using System.IO;
-using System.Net.Sockets;
 using UnityEngine;
 
 namespace QuickUnity.Tests.IntegrationTests

@@ -79,12 +79,16 @@ namespace UnityTest
 
         [Datapoint]
         public double zero = 0;
+
         [Datapoint]
         public double positive = 1;
+
         [Datapoint]
         public double negative = -1;
+
         [Datapoint]
         public double max = double.MaxValue;
+
         [Datapoint]
         public double infinity = double.PositiveInfinity;
 

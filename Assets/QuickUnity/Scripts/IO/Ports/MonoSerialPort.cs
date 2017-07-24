@@ -27,6 +27,7 @@ using System.IO.Ports;
 using System;
 using QuickUnity.Events;
 using CSharpExtensions.Events;
+using System.Threading;
 
 namespace QuickUnity.IO.Ports
 {
@@ -39,9 +40,11 @@ namespace QuickUnity.IO.Ports
     {
         private IThreadEventDispatcher m_eventDispatcher;
 
+        private Thread m_receiveDataThread;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="MonoSerialPort"/> class using the specified port name, baud rate, parity bit, data bits, and
-        /// stop bit.
+        /// Initializes a new instance of the <see cref="MonoSerialPort"/> class using the specified
+        /// port name, baud rate, parity bit, data bits, and stop bit.
         /// </summary>
         /// <param name="portName">The port to use (for example, COM1).</param>
         /// <param name="baudRate">The baud rate.</param>
@@ -69,6 +72,11 @@ namespace QuickUnity.IO.Ports
         /// </summary>
         public void Update()
         {
+            if (IsOpen && !m_IsListening && !m_IsClosing && !m_receiveDataThread.IsAlive)
+            {
+                BeginReceive();
+            }
+
             if (m_eventDispatcher != null)
             {
                 m_eventDispatcher.Update();
@@ -76,7 +84,8 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Registers an event listener object with an EventDispatcher object so that the listener receives notification of an event.
+        /// Registers an event listener object with an EventDispatcher object so that the listener
+        /// receives notification of an event.
         /// </summary>
         /// <param name="eventType">The type of event.</param>
         /// <param name="listener">The listener function that processes the event.</param>
@@ -101,11 +110,14 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Checks whether the EventDispatcher object has any listeners registered for a specific type of event.
+        /// Checks whether the EventDispatcher object has any listeners registered for a specific
+        /// type of event.
         /// </summary>
         /// <param name="eventType">The type of event.</param>
         /// <param name="listener">The listener function that processes the event.</param>
-        /// <returns>A value of <c>true</c> if a listener of the specified type is registered; <c>false</c> otherwise.</returns>
+        /// <returns>
+        /// A value of <c>true</c> if a listener of the specified type is registered; <c>false</c> otherwise.
+        /// </returns>
         public bool HasEventListener(string eventType, Action<Event> listener)
         {
             if (m_eventDispatcher != null)
@@ -175,33 +187,37 @@ namespace QuickUnity.IO.Ports
             DispatchEvent(new SerialPortEvent(SerialPortEvent.SerialPortClosed, this));
         }
 
+        /// <summary>
+        /// Releases the unmanaged resources used by the <see cref="MonoSerialPort"/> and optionally
+        /// releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        /// unmanaged resources.
+        /// </param>
+        protected override void Dispose(bool disposing)
+        {
+            if (m_receiveDataThread != null && m_receiveDataThread.IsAlive)
+            {
+                m_receiveDataThread.Abort();
+            }
+        }
+
         #endregion Protected Methods
 
         #region Private Methods
 
-        public void BeginReceiveData()
+        /// <summary>
+        /// Begins to receive data.
+        /// </summary>
+        private void BeginReceive()
         {
             try
             {
-                byte[] buffer = new byte[ReadBufferSize];
-                m_SerialPort.BaseStream.BeginRead(buffer, 0, buffer.Length, new AsyncCallback(ReceivedData), buffer);
-            }
-            catch (Exception ex)
-            {
-                DispatchSerialPortExceptionEvent(ex);
-            }
-        }
-
-        private void ReceivedData(IAsyncResult ar)
-        {
-            try
-            {
-                int bytesToRead = m_SerialPort.BaseStream.EndRead(ar);
-                byte[] buffer = (byte[])ar.AsyncState;
-                byte[] data = new byte[bytesToRead];
-                Buffer.BlockCopy(buffer, 0, data, 0, bytesToRead);
-                Unpack(data);
-                BeginReceiveData();
+                m_receiveDataThread = new Thread(new ThreadStart(ReceiveData));
+                m_receiveDataThread.Name = "MonoSerialPort.ReceiveData";
+                m_receiveDataThread.IsBackground = true;
+                m_receiveDataThread.Start();
             }
             catch (Exception ex)
             {

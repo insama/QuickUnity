@@ -1,7 +1,5 @@
 ﻿using CSharpExtensions.Events;
 using CSharpExtensions.IO.Ports;
-using CSharpExtensions.Reflection;
-using QuickUnity.Core.Miscs;
 using QuickUnity.IO.Ports;
 using System.Text;
 
@@ -90,10 +88,6 @@ namespace QuickUnity.Tests.IntegrationTests
         private void OnSerialPortOpen(Event e)
         {
             UnityEngine.Debug.Log("Serial port open.");
-
-            bool isAsync = (bool)ReflectionUtil.GetObjectFieldValue(m_serialPort.Com.BaseStream, "isAsync");
-            UnityEngine.Debug.Log(isAsync);
-            //m_serialPort.BeginReceiveData();
         }
 
         private void OnSerialDataReceived(Event e)
@@ -106,7 +100,7 @@ namespace QuickUnity.Tests.IntegrationTests
         private void OnSerialPortException(Event e)
         {
             SerialPortEvent serialEvent = (SerialPortEvent)e;
-            DebugLogger.LogException(serialEvent.exception);
+            UnityEngine.Debug.LogException(serialEvent.exception);
         }
 
         private void OnSerialPortClosed(Event e)

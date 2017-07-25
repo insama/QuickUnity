@@ -1,6 +1,9 @@
 ﻿using CSharpExtensions.Events;
 using CSharpExtensions.IO.Ports;
 using QuickUnity.IO.Ports;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace QuickUnity.Tests.IntegrationTests
@@ -36,8 +39,18 @@ namespace QuickUnity.Tests.IntegrationTests
             }
         }
 
-        private class TestSerialPortPacketHandler : ISerialPortPacketHandler
+        private class TestSerialPortPacketHandler : ISerialPortPacketHandler, IDisposable
         {
+            private const int MaxLength = 14;
+
+            private MemoryStream m_buffer = new MemoryStream();
+            private BinaryReader m_reader;
+
+            public TestSerialPortPacketHandler()
+            {
+                m_reader = new BinaryReader(m_buffer);
+            }
+
             public ISerialPortPacket Pack(object data)
             {
                 byte[] bytes = Encoding.Default.GetBytes((string)data);
@@ -46,8 +59,52 @@ namespace QuickUnity.Tests.IntegrationTests
 
             public ISerialPortPacket[] Unpack(byte[] bytes)
             {
-                string text = Encoding.Default.GetString(bytes);
-                return new ISerialPortPacket[] { new TestSerialPortPacket(text) };
+                List<ISerialPortPacket> packets = new List<ISerialPortPacket>();
+                m_buffer.Write(bytes, 0, bytes.Length);
+
+                while (m_buffer != null && m_buffer.Position >= MaxLength)
+                {
+                    ISerialPortPacket packet = Decode();
+
+                    if (packet != null)
+                    {
+                        packets.Add(packet);
+                    }
+                }
+
+                return packets.ToArray();
+            }
+
+            private ISerialPortPacket Decode()
+            {
+                long bytesPosition = m_buffer.Position;
+
+                m_buffer.Position = 0;
+                char[] chars = m_reader.ReadChars(MaxLength);
+                long currentPosition = m_buffer.Position;
+
+                if (bytesPosition >= currentPosition)
+                {
+                    m_buffer.Position = 0;
+                    m_buffer.Write(m_buffer.GetBuffer(), (int)currentPosition, (int)(bytesPosition - currentPosition));
+                }
+
+                return new TestSerialPortPacket(new string(chars));
+            }
+
+            public void Dispose()
+            {
+                if (m_reader != null)
+                {
+                    m_reader.Close();
+                    m_reader = null;
+                }
+
+                if (m_buffer != null)
+                {
+                    m_buffer.Dispose();
+                    m_buffer = null;
+                }
             }
         }
 
@@ -72,11 +129,12 @@ namespace QuickUnity.Tests.IntegrationTests
             }
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             if (m_serialPort != null)
             {
                 m_serialPort.Close();
+                UnityEngine.Debug.Log("close serial port");
                 m_serialPort.RemoveEventListener(SerialPortEvent.SerialPortOpen, OnSerialPortOpen);
                 m_serialPort.RemoveEventListener(SerialPortEvent.SerialPortDataReceived, OnSerialDataReceived);
                 m_serialPort.RemoveEventListener(SerialPortEvent.SerialPortException, OnSerialPortException);
@@ -95,6 +153,7 @@ namespace QuickUnity.Tests.IntegrationTests
             SerialPortEvent serialEvent = (SerialPortEvent)e;
             TestSerialPortPacket packet = (TestSerialPortPacket)serialEvent.serialPortPacket;
             UnityEngine.Debug.Log("Serial port received data: " + packet.Text);
+            m_serialPort.Send("MonoSerialPort.Send");
         }
 
         private void OnSerialPortException(Event e)

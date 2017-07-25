@@ -87,7 +87,7 @@ namespace QuickUnity.Tests.IntegrationTests
             }
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             if (m_server != null)
             {

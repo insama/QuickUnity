@@ -28,6 +28,7 @@ using System;
 using QuickUnity.Events;
 using CSharpExtensions.Events;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace QuickUnity.IO.Ports
 {
@@ -38,13 +39,24 @@ namespace QuickUnity.IO.Ports
     /// <seealso cref="IThreadEventDispatcher"/>
     public class MonoSerialPort : SerialPortBase, IThreadEventDispatcher
     {
+        private const int DefaultReceivedDataInterval = 25;
+
         private IThreadEventDispatcher m_eventDispatcher;
 
         private Thread m_receiveDataThread;
+        private Thread m_unpackDataThread;
+
+        private bool m_endEventLoop;
+
+        private byte[] m_readBuffer;
+
+        private Queue<byte[]> m_receivedDataQueue;
+
+        private int m_receviedDataInterval;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MonoSerialPort"/> class using the specified
-        /// port name, baud rate, parity bit, data bits, and stop bit.
+        /// Initializes a new instance of the <see cref="MonoSerialPort"/> class using the specified port name, baud rate, parity bit, data bits, and
+        /// stop bit.
         /// </summary>
         /// <param name="portName">The port to use (for example, COM1).</param>
         /// <param name="baudRate">The baud rate.</param>
@@ -55,6 +67,7 @@ namespace QuickUnity.IO.Ports
         public MonoSerialPort(string portName, int baudRate = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One)
             : base(portName, baudRate, parity, dataBits, stopBits)
         {
+            m_receviedDataInterval = DefaultReceivedDataInterval;
         }
 
         /// <summary>
@@ -65,6 +78,22 @@ namespace QuickUnity.IO.Ports
             m_eventDispatcher = null;
         }
 
+        /// <summary>
+        /// Gets or sets the time interval of received data.
+        /// </summary>
+        /// <value>The time interval of received data.</value>
+        public int receviedDataInterval
+        {
+            get { return m_receviedDataInterval; }
+            set
+            {
+                if (value >= 0 || value == Timeout.Infinite)
+                {
+                    m_receviedDataInterval = value;
+                }
+            }
+        }
+
         #region IThreadEventDispatcher Interface
 
         /// <summary>
@@ -72,11 +101,6 @@ namespace QuickUnity.IO.Ports
         /// </summary>
         public void Update()
         {
-            if (IsOpen && !m_IsListening && !m_IsClosing && !m_receiveDataThread.IsAlive)
-            {
-                BeginReceive();
-            }
-
             if (m_eventDispatcher != null)
             {
                 m_eventDispatcher.Update();
@@ -84,8 +108,7 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Registers an event listener object with an EventDispatcher object so that the listener
-        /// receives notification of an event.
+        /// Registers an event listener object with an EventDispatcher object so that the listener receives notification of an event.
         /// </summary>
         /// <param name="eventType">The type of event.</param>
         /// <param name="listener">The listener function that processes the event.</param>
@@ -110,14 +133,11 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Checks whether the EventDispatcher object has any listeners registered for a specific
-        /// type of event.
+        /// Checks whether the EventDispatcher object has any listeners registered for a specific type of event.
         /// </summary>
         /// <param name="eventType">The type of event.</param>
         /// <param name="listener">The listener function that processes the event.</param>
-        /// <returns>
-        /// A value of <c>true</c> if a listener of the specified type is registered; <c>false</c> otherwise.
-        /// </returns>
+        /// <returns>A value of <c>true</c> if a listener of the specified type is registered; <c>false</c> otherwise.</returns>
         public bool HasEventListener(string eventType, Action<Event> listener)
         {
             if (m_eventDispatcher != null)
@@ -143,6 +163,36 @@ namespace QuickUnity.IO.Ports
 
         #endregion IThreadEventDispatcher Interface
 
+        #region Public Methods
+
+        public override void Open()
+        {
+            if (!IsOpen)
+            {
+                m_readBuffer = new byte[ReadBufferSize];
+                base.Open();
+                BeginReceive();
+            }
+        }
+
+        /// <summary>
+        /// Closes the port connection, sets the <see cref="IsOpen"/> property to false, and disposes of the internal <see cref="System.IO.Stream"/> object.
+        /// </summary>
+        public override void Close()
+        {
+            if (m_IsListening)
+            {
+                m_IsClosing = true;
+                m_endEventLoop = true;
+            }
+            else
+            {
+                base.Close();
+            }
+        }
+
+        #endregion Public Methods
+
         #region Protected Methods
 
         /// <summary>
@@ -150,6 +200,7 @@ namespace QuickUnity.IO.Ports
         /// </summary>
         protected override void Initialize()
         {
+            m_receivedDataQueue = new Queue<byte[]>();
             m_eventDispatcher = new ThreadEventDispatcher();
         }
 
@@ -188,18 +239,30 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Releases the unmanaged resources used by the <see cref="MonoSerialPort"/> and optionally
-        /// releases the managed resources.
+        /// Releases the unmanaged resources used by the <see cref="MonoSerialPort"/> and optionally releases the managed resources.
         /// </summary>
-        /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
-        /// unmanaged resources.
-        /// </param>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            if (m_receiveDataThread != null && m_receiveDataThread.IsAlive)
+            if (disposing)
             {
-                m_receiveDataThread.Abort();
+                try
+                {
+                    DisposePacketHandler();
+
+                    if (m_receiveDataThread != null && m_receiveDataThread.IsAlive)
+                    {
+                        m_receiveDataThread.Abort();
+                    }
+
+                    if (m_unpackDataThread != null && m_unpackDataThread.IsAlive)
+                    {
+                        m_unpackDataThread.Abort();
+                    }
+                }
+                catch (Exception)
+                {
+                }
             }
         }
 
@@ -208,20 +271,88 @@ namespace QuickUnity.IO.Ports
         #region Private Methods
 
         /// <summary>
-        /// Begins to receive data.
+        /// Begins to receive data from serial port.
         /// </summary>
         private void BeginReceive()
         {
-            try
+            m_receiveDataThread = new Thread(new ThreadStart(ReceiveData));
+            m_receiveDataThread.Name = "MonoSerialPort.ReceiveData";
+            m_receiveDataThread.IsBackground = true;
+            m_receiveDataThread.Start();
+
+            m_unpackDataThread = new Thread(new ThreadStart(UnpackData));
+            m_unpackDataThread.Name = "MonoSerialPort.UnpackData";
+            m_unpackDataThread.IsBackground = true;
+            m_unpackDataThread.Start();
+        }
+
+        /// <summary>
+        /// Receives the data from serial port.
+        /// </summary>
+        private void ReceiveData()
+        {
+            m_IsListening = true;
+
+            while (!m_endEventLoop)
             {
-                m_receiveDataThread = new Thread(new ThreadStart(ReceiveData));
-                m_receiveDataThread.Name = "MonoSerialPort.ReceiveData";
-                m_receiveDataThread.IsBackground = true;
-                m_receiveDataThread.Start();
+                try
+                {
+                    if (m_IsClosing)
+                    {
+                        break;
+                    }
+
+                    if (IsOpen)
+                    {
+                        int bytesToRead = m_SerialPort.Read(m_readBuffer, 0, m_readBuffer.Length);
+
+                        if (bytesToRead > 0)
+                        {
+                            byte[] bytes = new byte[bytesToRead];
+                            Buffer.BlockCopy(m_readBuffer, 0, bytes, 0, bytesToRead);
+                            m_receivedDataQueue.Enqueue(bytes);
+                        }
+                    }
+
+                    Thread.Sleep(m_receviedDataInterval);
+                }
+                catch (TimeoutException)
+                {
+                }
+                catch (Exception ex)
+                {
+                    DispatchSerialPortExceptionEvent(ex);
+                }
             }
-            catch (Exception ex)
+
+            m_IsListening = false;
+            base.Close();
+        }
+
+        /// <summary>
+        /// Unpacks the data received from serial port.
+        /// </summary>
+        private void UnpackData()
+        {
+            while (!m_endEventLoop)
             {
-                DispatchSerialPortExceptionEvent(ex);
+                try
+                {
+                    if (m_IsClosing)
+                    {
+                        break;
+                    }
+
+                    if (IsOpen && m_receivedDataQueue.Count > 0)
+                    {
+                        byte[] bytesReceived = m_receivedDataQueue.Dequeue();
+                        Unpack(bytesReceived);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    DispatchSerialPortExceptionEvent(ex);
+                }
             }
         }
 

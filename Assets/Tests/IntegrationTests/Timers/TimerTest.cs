@@ -14,34 +14,34 @@ namespace QuickUnity.Tests.IntegrationTests
         /// <summary>
         /// The test timer.
         /// </summary>
-        private ITimer m_testTimer;
+        private ITimer testTimer;
 
         /// <summary>
         /// Start is called just before any of the Update methods is called the first time.
         /// </summary>
         private void Start()
         {
-            m_testTimer = new Timer(1.0f, 3, true, true, false);
-            m_testTimer.AddEventListener<TimerEvent>(TimerEvent.Timer, OnTimer);
-            m_testTimer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, OnTimerComplete);
-            m_testTimer.Start();
+            testTimer = new Timer(1.0f, 3, true, true, false);
+            testTimer.AddEventListener<TimerEvent>(TimerEvent.Timer, OnTimer);
+            testTimer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, OnTimerComplete);
+            testTimer.Start();
         }
 
         private void OnDestroy()
         {
-            if (m_testTimer != null)
+            if (testTimer != null)
             {
-                m_testTimer.RemoveEventListener<TimerEvent>(TimerEvent.Timer, OnTimer);
-                m_testTimer.RemoveEventListener<TimerEvent>(TimerEvent.TimerComplete, OnTimerComplete);
-                m_testTimer.Dispose();
-                m_testTimer = null;
+                testTimer.RemoveEventListener<TimerEvent>(TimerEvent.Timer, OnTimer);
+                testTimer.RemoveEventListener<TimerEvent>(TimerEvent.TimerComplete, OnTimerComplete);
+                testTimer.Dispose();
+                testTimer = null;
             }
         }
 
         private void OnTimer(TimerEvent timerEvent)
         {
-            ITimer timer = timerEvent.timer;
-            Debug.Log(timer.currentCount);
+            ITimer timer = timerEvent.TimerObject;
+            Debug.Log(timer.CurrentCount);
         }
 
         private void OnTimerComplete(TimerEvent timerEvent)

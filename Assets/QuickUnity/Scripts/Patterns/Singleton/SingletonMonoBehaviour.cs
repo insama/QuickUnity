@@ -36,29 +36,29 @@ namespace QuickUnity.Patterns.Singleton
         /// <summary>
         /// The singleton instance.
         /// </summary>
-        private static T s_instance = null;
+        private static T instance = null;
 
         /// <summary>
         /// A value indicating whether this <see cref="MonoBehaviourSingleton{T}"/> instance is instantiated.
         /// </summary>
-        private static bool s_instantiated = false;
+        private static bool instantiated = false;
 
         /// <summary>
         /// Gets or sets the singleton instance.
         /// </summary>
         /// <value>The singleton instance.</value>
-        public static T instance
+        public static T Instance
         {
             get
             {
-                if (!s_instantiated)
+                if (!instantiated || instance == null)
                 {
                     T[] foundObjects = FindObjectsOfType<T>();
 
                     if (foundObjects.Length > 0)
                     {
                         // Found instances already have.
-                        instance = foundObjects[0];
+                        Instance = foundObjects[0];
 
                         if (foundObjects.Length > 1)
                         {
@@ -76,21 +76,21 @@ namespace QuickUnity.Patterns.Singleton
                         // Make new one.
                         GameObject go = new GameObject();
                         go.name = typeof(T).Name;
-                        instance = go.AddComponent<T>();
+                        Instance = go.AddComponent<T>();
                     }
                 }
 
-                return s_instance;
+                return instance;
             }
 
             set
             {
-                s_instance = value;
-                s_instantiated = value != null;
+                instance = value;
+                instantiated = value != null;
 
                 if (Application.isPlaying && value != null)
                 {
-                    DontDestroyOnLoad(s_instance.gameObject);
+                    DontDestroyOnLoad(instance.gameObject);
                 }
             }
         }
@@ -103,9 +103,9 @@ namespace QuickUnity.Patterns.Singleton
         protected virtual void Awake()
         {
             // If singleton instance got null, find the instance already have.
-            if (s_instance == null)
+            if (instance == null)
             {
-                instance = FindObjectOfType<T>();
+                Instance = FindObjectOfType<T>();
             }
         }
 

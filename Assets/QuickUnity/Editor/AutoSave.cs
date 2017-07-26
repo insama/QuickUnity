@@ -46,77 +46,77 @@ namespace QuickUnityEditor
             /// <summary>
             /// The key of config parameter "isAutoSaveEnabled".
             /// </summary>
-            public const string isAutoSaveEnabledKey = "isAutoSaveEnabled";
+            public const string IsAutoSaveEnabledKey = "isAutoSaveEnabled";
 
             /// <summary>
             /// The key of config parameter "isAutoSaveScenesEnabled".
             /// </summary>
-            public const string isAutoSaveScenesEnabledKey = "isAutoSaveScenesEnabled";
+            public const string IsAutoSaveScenesEnabledKey = "isAutoSaveScenesEnabled";
 
             /// <summary>
             /// The key of config parameter "isAutoSaveAssetsEnabled".
             /// </summary>
-            public const string isAutoSaveAssetsEnabledKey = "isAutoSaveAssetsEnabled";
+            public const string IsAutoSaveAssetsEnabledKey = "isAutoSaveAssetsEnabled";
 
             /// <summary>
             /// The key of config parameter "autoSaveTimeMinutes".
             /// </summary>
-            public const string autoSaveTimeMinutesKey = "autoSaveTimeMinutes";
+            public const string AutoSaveTimeMinutesKey = "autoSaveTimeMinutes";
 
             /// <summary>
             /// The key of config parameter "askWhenSaving".
             /// </summary>
-            public const string askWhenSavingKey = "askWhenSaving";
+            public const string AskWhenSavingKey = "askWhenSaving";
         }
 
         /// <summary>
         /// The configuration section.
         /// </summary>
-        private const string ConfigSection = "AutoSave";
+        private const string configSection = "AutoSave";
 
         /// <summary>
         /// Whether initialize is complete.
         /// </summary>
-        public bool m_initialized = false;
+        private bool initialized = false;
 
         /// <summary>
         /// The timer of autosave.
         /// </summary>
-        private ITimer m_autosaveTimer;
+        private ITimer autosaveTimer;
 
         /// <summary>
         /// Whether the data is dirty.
         /// </summary>
-        private bool m_isDirty = false;
+        private bool isDirty = false;
 
         /// <summary>
         /// Whether to enable AutoSave feature.
         /// </summary>
-        private bool m_isAutoSaveEnabled = false;
+        private bool isAutoSaveEnabled = false;
 
         /// <summary>
         /// Sets a value indicating whether to enable AutoSave feature.
         /// </summary>
         /// <value><c>true</c> if the feature of AutoSave is enabled; otherwise, <c>false</c>.</value>
-        public bool isAutoSaveEnabled
+        public bool IsAutoSaveEnabled
         {
             get
             {
-                if (!m_initialized)
+                if (!initialized)
                 {
-                    m_isAutoSaveEnabled = QuickUnityEditorApplication.GetEditorConfigValue<bool>(ConfigSection, ConfigKeys.isAutoSaveEnabledKey, false);
+                    isAutoSaveEnabled = QuickUnityEditorApplication.GetEditorConfigValue<bool>(configSection, ConfigKeys.IsAutoSaveEnabledKey, false);
                 }
 
-                return m_isAutoSaveEnabled;
+                return isAutoSaveEnabled;
             }
 
             set
             {
-                if (m_isAutoSaveEnabled != value)
+                if (isAutoSaveEnabled != value)
                 {
-                    m_isAutoSaveEnabled = value;
-                    QuickUnityEditorApplication.SetEditorConfigValue(ConfigSection, ConfigKeys.isAutoSaveEnabledKey, value);
-                    m_isDirty = true;
+                    isAutoSaveEnabled = value;
+                    QuickUnityEditorApplication.SetEditorConfigValue(configSection, ConfigKeys.IsAutoSaveEnabledKey, value);
+                    isDirty = true;
                 }
             }
         }
@@ -124,63 +124,63 @@ namespace QuickUnityEditor
         /// <summary>
         /// Whether to auto save scenes.
         /// </summary>
-        private bool m_isAutoSaveScenesEnabled = true;
+        private bool isAutoSaveScenesEnabled = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether it is automatic save scenes enabled.
         /// </summary>
         /// <value><c>true</c> if it is automatic save scenes enabled; otherwise, <c>false</c>.</value>
-        public bool isAutoSaveScenesEnabled
+        public bool IsAutoSaveScenesEnabled
         {
             get
             {
-                if (!m_initialized)
+                if (!initialized)
                 {
-                    m_isAutoSaveScenesEnabled = QuickUnityEditorApplication.GetEditorConfigValue<bool>(ConfigSection, ConfigKeys.isAutoSaveScenesEnabledKey, true);
+                    isAutoSaveScenesEnabled = QuickUnityEditorApplication.GetEditorConfigValue<bool>(configSection, ConfigKeys.IsAutoSaveScenesEnabledKey, true);
                 }
 
-                return m_isAutoSaveScenesEnabled;
+                return isAutoSaveScenesEnabled;
             }
 
             set
             {
-                if (m_isAutoSaveScenesEnabled != value)
+                if (isAutoSaveScenesEnabled != value)
                 {
-                    m_isAutoSaveScenesEnabled = value;
-                    QuickUnityEditorApplication.SetEditorConfigValue(ConfigSection, ConfigKeys.isAutoSaveScenesEnabledKey, value);
-                    m_isDirty = true;
+                    isAutoSaveScenesEnabled = value;
+                    QuickUnityEditorApplication.SetEditorConfigValue(configSection, ConfigKeys.IsAutoSaveScenesEnabledKey, value);
+                    isDirty = true;
                 }
             }
         }
 
         /// <summary>
-        /// Whether to auto save assets.
+        /// Whether to save assets automatically.
         /// </summary>
-        private bool m_isAutoSaveAssetsEnabled = true;
+        private bool isAutoSaveAssetsEnabled = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether it is automatic save assets enabled.
         /// </summary>
         /// <value><c>true</c> if it is automatic save assets enabled; otherwise, <c>false</c>.</value>
-        public bool isAutoSaveAssetsEnabled
+        public bool IsAutoSaveAssetsEnabled
         {
             get
             {
-                if (!m_initialized)
+                if (!initialized)
                 {
-                    m_isAutoSaveAssetsEnabled = QuickUnityEditorApplication.GetEditorConfigValue<bool>(ConfigSection, ConfigKeys.isAutoSaveAssetsEnabledKey, true);
+                    isAutoSaveAssetsEnabled = QuickUnityEditorApplication.GetEditorConfigValue<bool>(configSection, ConfigKeys.IsAutoSaveAssetsEnabledKey, true);
                 }
 
-                return m_isAutoSaveAssetsEnabled;
+                return isAutoSaveAssetsEnabled;
             }
 
             set
             {
-                if (m_isAutoSaveAssetsEnabled != value)
+                if (isAutoSaveAssetsEnabled != value)
                 {
-                    m_isAutoSaveAssetsEnabled = value;
-                    QuickUnityEditorApplication.SetEditorConfigValue(ConfigSection, ConfigKeys.isAutoSaveAssetsEnabledKey, value);
-                    m_isDirty = true;
+                    isAutoSaveAssetsEnabled = value;
+                    QuickUnityEditorApplication.SetEditorConfigValue(configSection, ConfigKeys.IsAutoSaveAssetsEnabledKey, value);
+                    isDirty = true;
                 }
             }
         }
@@ -188,31 +188,31 @@ namespace QuickUnityEditor
         /// <summary>
         /// The time interval after which to autosave.
         /// </summary>
-        private uint m_autoSaveTimeMinutes = 10;
+        private uint autoSaveTimeMinutes = 10;
 
         /// <summary>
         /// Gets or sets the automatic save time minutes.
         /// </summary>
         /// <value>The automatic save time minutes.</value>
-        public uint autoSaveTimeMinutes
+        public uint AutoSaveTimeMinutes
         {
             get
             {
-                if (!m_initialized)
+                if (!initialized)
                 {
-                    m_autoSaveTimeMinutes = QuickUnityEditorApplication.GetEditorConfigValue<uint>(ConfigSection, ConfigKeys.autoSaveTimeMinutesKey, 10);
+                    autoSaveTimeMinutes = QuickUnityEditorApplication.GetEditorConfigValue<uint>(configSection, ConfigKeys.AutoSaveTimeMinutesKey, 10);
                 }
 
-                return m_autoSaveTimeMinutes;
+                return autoSaveTimeMinutes;
             }
 
             set
             {
-                if (m_autoSaveTimeMinutes != value)
+                if (autoSaveTimeMinutes != value)
                 {
-                    m_autoSaveTimeMinutes = value;
-                    QuickUnityEditorApplication.SetEditorConfigValue(ConfigSection, ConfigKeys.autoSaveTimeMinutesKey, value);
-                    m_isDirty = true;
+                    autoSaveTimeMinutes = value;
+                    QuickUnityEditorApplication.SetEditorConfigValue(configSection, ConfigKeys.AutoSaveTimeMinutesKey, value);
+                    isDirty = true;
                 }
             }
         }
@@ -220,31 +220,31 @@ namespace QuickUnityEditor
         /// <summary>
         /// Whether to show confirm dialog when autosave.
         /// </summary>
-        private bool m_askWhenSaving = true;
+        private bool askWhenSaving = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether [show confirm dialog].
         /// </summary>
         /// <value><c>true</c> if [show confirm dialog]; otherwise, <c>false</c>.</value>
-        public bool askWhenSaving
+        public bool AskWhenSaving
         {
             get
             {
-                if (!m_initialized)
+                if (!initialized)
                 {
-                    m_askWhenSaving = QuickUnityEditorApplication.GetEditorConfigValue<bool>(ConfigSection, ConfigKeys.askWhenSavingKey, true);
+                    askWhenSaving = QuickUnityEditorApplication.GetEditorConfigValue<bool>(configSection, ConfigKeys.AskWhenSavingKey, true);
                 }
 
-                return m_askWhenSaving;
+                return askWhenSaving;
             }
 
             set
             {
-                if (m_askWhenSaving != value)
+                if (askWhenSaving != value)
                 {
-                    m_askWhenSaving = value;
-                    QuickUnityEditorApplication.SetEditorConfigValue(ConfigSection, ConfigKeys.askWhenSavingKey, value);
-                    m_isDirty = true;
+                    askWhenSaving = value;
+                    QuickUnityEditorApplication.SetEditorConfigValue(configSection, ConfigKeys.AskWhenSavingKey, value);
+                    isDirty = true;
                 }
             }
         }
@@ -262,24 +262,24 @@ namespace QuickUnityEditor
         /// </summary>
         public void Initialize()
         {
-            if (!EditorApplication.isPlaying && !m_initialized)
+            if (!EditorApplication.isPlaying && !initialized)
             {
-                m_initialized = false;
+                initialized = false;
 
-                m_isAutoSaveEnabled = isAutoSaveEnabled;
-                m_isAutoSaveScenesEnabled = isAutoSaveScenesEnabled;
-                m_isAutoSaveAssetsEnabled = isAutoSaveAssetsEnabled;
-                m_autoSaveTimeMinutes = autoSaveTimeMinutes;
-                m_askWhenSaving = askWhenSaving;
+                isAutoSaveEnabled = IsAutoSaveEnabled;
+                isAutoSaveScenesEnabled = IsAutoSaveScenesEnabled;
+                isAutoSaveAssetsEnabled = IsAutoSaveAssetsEnabled;
+                autoSaveTimeMinutes = AutoSaveTimeMinutes;
+                askWhenSaving = AskWhenSaving;
 
-                m_initialized = true;
+                initialized = true;
 
                 // Initialize autosave timer.
-                if (m_autosaveTimer == null)
+                if (autosaveTimer == null)
                 {
-                    m_autosaveTimer = new EditorTimer(1, autoSaveTimeMinutes * 60);
-                    m_autosaveTimer.AddEventListener<TimerEvent>(TimerEvent.Timer, OnAutosaveTimer);
-                    m_autosaveTimer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, OnAutosaveTimerComplete);
+                    autosaveTimer = new EditorTimer(1, AutoSaveTimeMinutes * 60);
+                    autosaveTimer.AddEventListener<TimerEvent>(TimerEvent.Timer, OnAutosaveTimer);
+                    autosaveTimer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, OnAutosaveTimerComplete);
                 }
             }
         }
@@ -290,12 +290,12 @@ namespace QuickUnityEditor
         /// <param name="timerEvent">The timer event.</param>
         private void OnAutosaveTimer(TimerEvent timerEvent)
         {
-            if (m_isDirty)
+            if (isDirty)
             {
-                m_autosaveTimer.Reset();
-                m_autosaveTimer.repeatCount = autoSaveTimeMinutes * 60;
-                m_isDirty = false;
-                m_autosaveTimer.Start();
+                autosaveTimer.Reset();
+                autosaveTimer.RepeatCount = AutoSaveTimeMinutes * 60;
+                isDirty = false;
+                autosaveTimer.Start();
             }
         }
 
@@ -307,7 +307,7 @@ namespace QuickUnityEditor
         {
             if (isAutoSaveEnabled && !EditorApplication.isPlaying)
             {
-                if (askWhenSaving)
+                if (AskWhenSaving)
                 {
                     if (EditorUtility.DisplayDialog("Auto Save", "Do you want to save project?", "Yes", "No"))
                     {
@@ -315,7 +315,7 @@ namespace QuickUnityEditor
                     }
                     else
                     {
-                        m_autosaveTimer.Start();
+                        autosaveTimer.Start();
                     }
                 }
                 else
@@ -330,19 +330,19 @@ namespace QuickUnityEditor
         /// </summary>
         private void AutoSaveProject()
         {
-            if (isAutoSaveScenesEnabled)
+            if (IsAutoSaveScenesEnabled)
             {
                 // Save scenes.
                 EditorSceneManager.SaveOpenScenes();
             }
 
-            if (m_isAutoSaveAssetsEnabled)
+            if (isAutoSaveAssetsEnabled)
             {
                 // Save assets.
                 EditorApplication.SaveAssets();
             }
 
-            m_autosaveTimer.Start();
+            autosaveTimer.Start();
         }
     }
 }

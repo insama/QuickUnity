@@ -25,13 +25,13 @@
 namespace QuickUnityEditor.Data.Parsers
 {
     /// <summary>
-    /// The parser of type System.String[].
+    /// The parser of Type System.String[].
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.String[]}"/>
     internal class StringArrayTypeParser : TypeParser<string[]>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "string[]";
 

@@ -15,22 +15,22 @@ namespace QuickUnity.Audio
         /// <summary>
         /// The AudioSource component.
         /// </summary>
-        protected AudioSource m_audioSource;
+        private AudioSource audioSource;
 
         /// <summary>
         /// Gets the AudioSource component.
         /// </summary>
         /// <value>The AudioSource component.</value>
-        public AudioSource audioSource
+        public AudioSource AudioSource
         {
             get
             {
-                if (!m_audioSource)
+                if (!audioSource)
                 {
-                    m_audioSource = GetComponent<AudioSource>();
+                    audioSource = GetComponent<AudioSource>();
                 }
 
-                return m_audioSource;
+                return audioSource;
             }
         }
 
@@ -41,7 +41,7 @@ namespace QuickUnity.Audio
         /// </summary>
         public void PlayAudio()
         {
-            if (audioSource && audioSource.clip)
+            if (AudioSource && AudioSource.clip)
             {
                 StartCoroutine(DoPlayAudio());
             }
@@ -53,9 +53,9 @@ namespace QuickUnity.Audio
         /// <param name="clip">The audio clip.</param>
         public void PlayAudio(AudioClip clip)
         {
-            if (audioSource && clip)
+            if (AudioSource && clip)
             {
-                audioSource.clip = clip;
+                AudioSource.clip = clip;
                 StartCoroutine(DoPlayAudio());
             }
         }
@@ -69,15 +69,15 @@ namespace QuickUnity.Audio
         /// <param name="completeCallback">The complete callback function.</param>
         public void FadeIn(float fadeInDuration = 0.0f, float fadeToVolume = 1.0f, float startPosition = 0.0f, Action completeCallback = null)
         {
-            if (audioSource && audioSource.clip)
+            if (AudioSource && AudioSource.clip)
             {
-                audioSource.volume = 0.0f;
-                audioSource.time = startPosition;
-                audioSource.Play();
+                AudioSource.volume = 0.0f;
+                AudioSource.time = startPosition;
+                AudioSource.Play();
 
                 if (fadeInDuration <= 0.0f)
                 {
-                    audioSource.volume = fadeToVolume;
+                    AudioSource.volume = fadeToVolume;
                 }
                 else
                 {
@@ -94,11 +94,11 @@ namespace QuickUnity.Audio
         /// <param name="completeCallback">The complete callback function.</param>
         public void FadeOut(float fadeOutDuration = 0.0f, float fadeToVolume = 0.0f, Action completeCallback = null)
         {
-            if (audioSource && audioSource.clip)
+            if (AudioSource && AudioSource.clip)
             {
                 if (fadeOutDuration <= 0.0f)
                 {
-                    audioSource.volume = fadeToVolume;
+                    AudioSource.volume = fadeToVolume;
                 }
                 else
                 {
@@ -120,17 +120,17 @@ namespace QuickUnity.Audio
         /// <returns>The enumerator of this coroutine.</returns>
         private IEnumerator ApplyFadeIn(float fadeInDuration = 0.0f, float fadeToVolume = 1.0f, Action completeCallback = null)
         {
-            if (audioSource)
+            if (AudioSource)
             {
-                float startVolume = audioSource.volume;
+                float startVolume = AudioSource.volume;
 
-                while (audioSource.volume < fadeToVolume)
+                while (AudioSource.volume < fadeToVolume)
                 {
-                    audioSource.volume += (startVolume + Time.deltaTime) / fadeInDuration;
+                    AudioSource.volume += (startVolume + Time.deltaTime) / fadeInDuration;
                     yield return null;
                 }
 
-                audioSource.volume = fadeToVolume;
+                AudioSource.volume = fadeToVolume;
 
                 if (completeCallback != null)
                 {
@@ -148,18 +148,18 @@ namespace QuickUnity.Audio
         /// <returns>The enumerator of this coroutine.</returns>
         private IEnumerator ApplyFadeOut(float fadeOutDuration = 0.0f, float fadeToVolume = 0.0f, Action completeCallback = null)
         {
-            if (audioSource)
+            if (AudioSource)
             {
-                float startVolume = audioSource.volume;
+                float startVolume = AudioSource.volume;
 
-                while (audioSource.volume > fadeToVolume)
+                while (AudioSource.volume > fadeToVolume)
                 {
-                    audioSource.volume -= (startVolume + Time.deltaTime) / fadeOutDuration;
+                    AudioSource.volume -= (startVolume + Time.deltaTime) / fadeOutDuration;
                     yield return null;
                 }
 
-                audioSource.volume = fadeToVolume;
-                audioSource.Stop();
+                AudioSource.volume = fadeToVolume;
+                AudioSource.Stop();
 
                 if (completeCallback != null)
                 {
@@ -174,9 +174,9 @@ namespace QuickUnity.Audio
         /// <returns>The enumerator of this coroutine.</returns>
         private IEnumerator DoPlayAudio()
         {
-            audioSource.Play();
-            yield return new WaitForSeconds(audioSource.clip.length / audioSource.pitch);
-            DispatchEvent(new AudioSourceEvent(AudioSourceEvent.PlayComplete, audioSource));
+            AudioSource.Play();
+            yield return new WaitForSeconds(AudioSource.clip.length / AudioSource.pitch);
+            DispatchEvent(new AudioSourceEvent(AudioSourceEvent.PlayComplete, AudioSource));
         }
 
         #endregion Private Functions

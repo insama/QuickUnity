@@ -15,40 +15,40 @@ namespace QuickUnity.Tests.IntegrationTests
     {
         private class TestSerialPortPacket : ISerialPortPacket
         {
-            private byte[] m_Bytes;
-            private string m_Text;
+            private byte[] bytes;
+            private string text;
 
             public TestSerialPortPacket(byte[] bytes)
             {
-                m_Bytes = bytes;
+                this.bytes = bytes;
             }
 
             public TestSerialPortPacket(string text)
             {
-                m_Text = text;
+                this.text = text;
             }
 
             public byte[] Bytes
             {
-                get { return m_Bytes; }
+                get { return bytes; }
             }
 
             public string Text
             {
-                get { return m_Text; }
+                get { return text; }
             }
         }
 
         private class TestSerialPortPacketHandler : ISerialPortPacketHandler, IDisposable
         {
-            private const int MaxLength = 14;
+            private const int maxLength = 14;
 
-            private MemoryStream m_buffer = new MemoryStream();
-            private BinaryReader m_reader;
+            private MemoryStream buffer = new MemoryStream();
+            private BinaryReader reader;
 
             public TestSerialPortPacketHandler()
             {
-                m_reader = new BinaryReader(m_buffer);
+                reader = new BinaryReader(buffer);
             }
 
             public ISerialPortPacket Pack(object data)
@@ -60,9 +60,9 @@ namespace QuickUnity.Tests.IntegrationTests
             public ISerialPortPacket[] Unpack(byte[] bytes)
             {
                 List<ISerialPortPacket> packets = new List<ISerialPortPacket>();
-                m_buffer.Write(bytes, 0, bytes.Length);
+                buffer.Write(bytes, 0, bytes.Length);
 
-                while (m_buffer != null && m_buffer.Position >= MaxLength)
+                while (buffer != null && buffer.Position >= maxLength)
                 {
                     ISerialPortPacket packet = Decode();
 
@@ -77,16 +77,16 @@ namespace QuickUnity.Tests.IntegrationTests
 
             private ISerialPortPacket Decode()
             {
-                long bytesPosition = m_buffer.Position;
+                long bytesPosition = buffer.Position;
 
-                m_buffer.Position = 0;
-                char[] chars = m_reader.ReadChars(MaxLength);
-                long currentPosition = m_buffer.Position;
+                buffer.Position = 0;
+                char[] chars = reader.ReadChars(maxLength);
+                long currentPosition = buffer.Position;
 
                 if (bytesPosition >= currentPosition)
                 {
-                    m_buffer.Position = 0;
-                    m_buffer.Write(m_buffer.GetBuffer(), (int)currentPosition, (int)(bytesPosition - currentPosition));
+                    buffer.Position = 0;
+                    buffer.Write(buffer.GetBuffer(), (int)currentPosition, (int)(bytesPosition - currentPosition));
                 }
 
                 return new TestSerialPortPacket(new string(chars));
@@ -94,52 +94,52 @@ namespace QuickUnity.Tests.IntegrationTests
 
             public void Dispose()
             {
-                if (m_reader != null)
+                if (reader != null)
                 {
-                    m_reader.Close();
-                    m_reader = null;
+                    reader.Close();
+                    reader = null;
                 }
 
-                if (m_buffer != null)
+                if (buffer != null)
                 {
-                    m_buffer.Dispose();
-                    m_buffer = null;
+                    buffer.Dispose();
+                    buffer = null;
                 }
             }
         }
 
-        private MonoSerialPort m_serialPort;
+        private MonoSerialPort serialPort;
 
         private void Start()
         {
-            m_serialPort = new MonoSerialPort("COM2");
-            m_serialPort.PacketHandler = new TestSerialPortPacketHandler();
-            m_serialPort.AddEventListener(SerialPortEvent.SerialPortOpen, OnSerialPortOpen);
-            m_serialPort.AddEventListener(SerialPortEvent.SerialPortDataReceived, OnSerialDataReceived);
-            m_serialPort.AddEventListener(SerialPortEvent.SerialPortException, OnSerialPortException);
-            m_serialPort.AddEventListener(SerialPortEvent.SerialPortClosed, OnSerialPortClosed);
-            m_serialPort.Open();
+            serialPort = new MonoSerialPort("COM2");
+            serialPort.PacketHandler = new TestSerialPortPacketHandler();
+            serialPort.AddEventListener(SerialPortEvent.SerialPortOpen, OnSerialPortOpen);
+            serialPort.AddEventListener(SerialPortEvent.SerialPortDataReceived, OnSerialDataReceived);
+            serialPort.AddEventListener(SerialPortEvent.SerialPortException, OnSerialPortException);
+            serialPort.AddEventListener(SerialPortEvent.SerialPortClosed, OnSerialPortClosed);
+            serialPort.Open();
         }
 
         private void Update()
         {
-            if (m_serialPort != null)
+            if (serialPort != null)
             {
-                m_serialPort.Update();
+                serialPort.Update();
             }
         }
 
         private void OnDisable()
         {
-            if (m_serialPort != null)
+            if (serialPort != null)
             {
-                m_serialPort.Close();
+                serialPort.Close();
                 UnityEngine.Debug.Log("close serial port");
-                m_serialPort.RemoveEventListener(SerialPortEvent.SerialPortOpen, OnSerialPortOpen);
-                m_serialPort.RemoveEventListener(SerialPortEvent.SerialPortDataReceived, OnSerialDataReceived);
-                m_serialPort.RemoveEventListener(SerialPortEvent.SerialPortException, OnSerialPortException);
-                m_serialPort.RemoveEventListener(SerialPortEvent.SerialPortClosed, OnSerialPortClosed);
-                m_serialPort = null;
+                serialPort.RemoveEventListener(SerialPortEvent.SerialPortOpen, OnSerialPortOpen);
+                serialPort.RemoveEventListener(SerialPortEvent.SerialPortDataReceived, OnSerialDataReceived);
+                serialPort.RemoveEventListener(SerialPortEvent.SerialPortException, OnSerialPortException);
+                serialPort.RemoveEventListener(SerialPortEvent.SerialPortClosed, OnSerialPortClosed);
+                serialPort = null;
             }
         }
 
@@ -151,15 +151,15 @@ namespace QuickUnity.Tests.IntegrationTests
         private void OnSerialDataReceived(Event e)
         {
             SerialPortEvent serialEvent = (SerialPortEvent)e;
-            TestSerialPortPacket packet = (TestSerialPortPacket)serialEvent.serialPortPacket;
+            TestSerialPortPacket packet = (TestSerialPortPacket)serialEvent.SerialPortPacket;
             UnityEngine.Debug.Log("Serial port received data: " + packet.Text);
-            m_serialPort.Send("MonoSerialPort.Send");
+            serialPort.Send("MonoSerialPort.Send");
         }
 
         private void OnSerialPortException(Event e)
         {
             SerialPortEvent serialEvent = (SerialPortEvent)e;
-            UnityEngine.Debug.LogException(serialEvent.exception);
+            UnityEngine.Debug.LogException(serialEvent.Exception);
         }
 
         private void OnSerialPortClosed(Event e)

@@ -5,7 +5,8 @@ using System;
 namespace QuickUnity.IO.Ports
 {
     /// <summary>
-    /// The <see cref="SerialPortEvent"/> class represents event objects that are specific to the <see cref="MonoSerialPort"/> object.
+    /// The <see cref="SerialPortEvent"/> class represents event objects that are specific to the
+    /// <see cref="MonoSerialPort"/> object.
     /// </summary>
     /// <seealso cref="Event"/>
     public class SerialPortEvent : Event
@@ -23,7 +24,7 @@ namespace QuickUnity.IO.Ports
         public const string SerialPortDataReceived = "SerialPortDataReceived";
 
         /// <summary>
-        /// Occurs when serial port caught <see cref="Exception"/>.
+        /// Occurs when serial port caught <see cref="System.Exception"/>.
         /// </summary>
         public const string SerialPortException = "SerialPortException";
 
@@ -34,15 +35,15 @@ namespace QuickUnity.IO.Ports
 
         #endregion Event Constants
 
-        private ISerialPortPacket m_serialPortPacket;
+        private ISerialPortPacket serialPortPacket;
 
-        private Exception m_exception;
+        private Exception exception;
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SerialPortEvent"/> class with event type, <see cref="SerialPort"/> instance and <see
-        /// cref="ISerialPortPacket"/> unpacked.
+        /// Initializes a new instance of the <see cref="SerialPortEvent"/> class with event type,
+        /// <see cref="SerialPort"/> instance and <see cref="ISerialPortPacket"/> unpacked.
         /// </summary>
         /// <param name="eventType">The type of event.</param>
         /// <param name="serialPort">The <see cref="MonoSerialPort"/> instance.</param>
@@ -50,20 +51,20 @@ namespace QuickUnity.IO.Ports
         public SerialPortEvent(string eventType, MonoSerialPort serialPort, ISerialPortPacket packet = null)
             : base(eventType, serialPort)
         {
-            m_serialPortPacket = packet;
+            serialPortPacket = packet;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SerialPortEvent"/> class with event type, <see cref="SerialPort"/> instance and <see
-        /// cref="Exception"/> caught.
+        /// Initializes a new instance of the <see cref="SerialPortEvent"/> class with event type,
+        /// <see cref="SerialPort"/> instance and <see cref="System.Exception"/> caught.
         /// </summary>
         /// <param name="eventType">The type of event.</param>
         /// <param name="serialPort">The <see cref="MonoSerialPort"/> instance.</param>
-        /// <param name="exception">The <see cref="Exception"/> caught.</param>
+        /// <param name="exception">The <see cref="System.Exception"/> caught.</param>
         public SerialPortEvent(string eventType, MonoSerialPort serialPort, Exception exception)
             : base(eventType, serialPort)
         {
-            m_exception = exception;
+            this.exception = exception;
         }
 
         #endregion Constructors
@@ -72,18 +73,18 @@ namespace QuickUnity.IO.Ports
         /// Gets the serial port packet.
         /// </summary>
         /// <value>The <see cref="ISerialPortPacket"/> unpacked.</value>
-        public ISerialPortPacket serialPortPacket
+        public ISerialPortPacket SerialPortPacket
         {
-            get { return m_serialPortPacket; }
+            get { return serialPortPacket; }
         }
 
         /// <summary>
-        /// Gets the <see cref="Exception"/> caught.
+        /// Gets the <see cref="System.Exception"/> caught.
         /// </summary>
-        /// <value>The <see cref="Exception"/> caught.</value>
-        public Exception exception
+        /// <value>The <see cref="System.Exception"/> caught.</value>
+        public Exception Exception
         {
-            get { return m_exception; }
+            get { return exception; }
         }
     }
 }

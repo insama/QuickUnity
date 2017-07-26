@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using QuickUnity.Core.Miscs;
-using QuickUnity.Data;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,11 +10,11 @@ namespace QuickUnity.Data
     /// </summary>
     internal class BoxDBAdapterTestVO
     {
-        public int id;
+        public int Id;
 
-        public string name;
+        public string Name;
 
-        public float value;
+        public float Value;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BoxDBAdapterTestVO"/> class.
@@ -32,9 +31,9 @@ namespace QuickUnity.Data
         /// <param name="value">The value.</param>
         public BoxDBAdapterTestVO(int id, string name, float value)
         {
-            this.id = id;
-            this.name = name;
-            this.value = value;
+            Id = id;
+            Name = name;
+            Value = value;
         }
 
         /// <summary>
@@ -43,7 +42,7 @@ namespace QuickUnity.Data
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
-            return string.Format("id={0}, name={1}, value={2}", id, name, value);
+            return string.Format("Id={0}, Name={1}, Value={2}", Id, Name, Value);
         }
     }
 
@@ -101,8 +100,8 @@ namespace QuickUnity.Data
             BoxDBAdapter db = GetBoxDBAdapter();
             List<BoxDBQueryCondition> list = new List<BoxDBQueryCondition>()
             {
-                new BoxDBQueryCondition("id", 1),
-                new BoxDBQueryCondition("id", 2)
+                new BoxDBQueryCondition("Id", 1),
+                new BoxDBQueryCondition("Id", 2)
             };
 
             long count = db.SelectCount(tableName, list,
@@ -133,14 +132,14 @@ namespace QuickUnity.Data
             BoxDBAdapter db = GetBoxDBAdapter();
             List<BoxDBQueryCondition> list = new List<BoxDBQueryCondition>()
             {
-                new BoxDBQueryCondition("id", 1),
-                new BoxDBQueryCondition("id", 2)
+                new BoxDBQueryCondition("Id", 1),
+                new BoxDBQueryCondition("Id", 2)
             };
 
             List<BoxDBAdapterTestVO> result = db.Select<BoxDBAdapterTestVO>(tableName, list,
                 new List<BoxDBMultiConditionOperator>(new BoxDBMultiConditionOperator[1] { BoxDBMultiConditionOperator.Or }));
             db.Dispose();
-            Assert.AreEqual(2f, result[0].value);
+            Assert.AreEqual(2f, result[0].Value);
         }
 
         /// <summary>
@@ -179,7 +178,7 @@ namespace QuickUnity.Data
             BoxDBAdapterTestVO vo = db.Select<BoxDBAdapterTestVO>(tableName, 1);
             db.Dispose();
 
-            Assert.AreEqual("test1_update", vo.name);
+            Assert.AreEqual("test1_update", vo.Name);
         }
 
         /// <summary>
@@ -207,7 +206,7 @@ namespace QuickUnity.Data
         private BoxDBAdapter GetBoxDBAdapter()
         {
             BoxDBAdapter db = new BoxDBAdapter(Application.persistentDataPath);
-            db.EnsureTable<BoxDBAdapterTestVO>(tableName, "id");
+            db.EnsureTable<BoxDBAdapterTestVO>(tableName, "Id");
             db.Open();
             return db;
         }

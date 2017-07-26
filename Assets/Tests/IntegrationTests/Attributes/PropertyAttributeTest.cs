@@ -6,16 +6,16 @@ namespace QuickUnity.Tests.IntegrationTests
     [IntegrationTest.SucceedWithAssertions]
     public class PropertyAttributeTest : MonoBehaviour
     {
-        private PropertyAttributeTestCase m_testCase;
+        private PropertyAttributeTestCase testCase;
 
         private void Start()
         {
-            m_testCase = FindObjectOfType<PropertyAttributeTestCase>();
+            testCase = FindObjectOfType<PropertyAttributeTestCase>();
 
-            if (m_testCase)
+            if (testCase)
             {
-                if (m_testCase.readOnlyIntVal == 1 &&
-                    m_testCase.testEnumVal == (TestEnum.TestA | TestEnum.TestB))
+                if (testCase.ReadOnlyIntVal == 1 &&
+                    testCase.TestEnumVal == (TestEnum.TestA | TestEnum.TestB))
                 {
                     IntegrationTest.Pass();
                 }

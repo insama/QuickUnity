@@ -66,22 +66,22 @@ namespace QuickUnity.Data
         /// <summary>
         /// The primary key.
         /// </summary>
-        public const string PrimaryKey = "type";
+        public const string PrimaryKey = "Type";
 
         /// <summary>
         /// The type.
         /// </summary>
-        public string type;
+        public string Type;
 
         /// <summary>
         /// The local address.
         /// </summary>
-        public long localAddress;
+        public long LocalAddress;
 
         /// <summary>
         /// The field name of primary key.
         /// </summary>
-        public string primaryFieldName;
+        public string PrimaryFieldName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataTableAddressMap"/> class.

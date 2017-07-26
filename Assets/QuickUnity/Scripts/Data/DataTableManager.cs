@@ -46,17 +46,17 @@ namespace QuickUnity.Data
         /// <summary>
         /// The scriptable object of preferences data.
         /// </summary>
-        private DataTablePreferences m_preferencesData;
+        private DataTablePreferences preferencesData;
 
         /// <summary>
         /// The database path.
         /// </summary>
-        private string m_databasePath;
+        private string databasePath;
 
         /// <summary>
         /// The database adapter of address map.
         /// </summary>
-        private BoxDBAdapter m_addressMapDBAdapter;
+        private BoxDBAdapter addressMapDBAdapter;
 
         /// <summary>
         /// Prevents a default instance of the <see cref="DataTableManager"/> class from being created.
@@ -93,8 +93,8 @@ namespace QuickUnity.Data
             {
                 try
                 {
-                    string tableName = addressMap.type;
-                    dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
+                    string tableName = addressMap.Type;
+                    dbAdapter.EnsureTable<T>(tableName, addressMap.PrimaryFieldName);
                     dbAdapter.Open();
                     data = dbAdapter.Select<T>(tableName, primaryValue);
                 }
@@ -132,8 +132,8 @@ namespace QuickUnity.Data
             {
                 try
                 {
-                    string tableName = addressMap.type;
-                    dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
+                    string tableName = addressMap.Type;
+                    dbAdapter.EnsureTable<T>(tableName, addressMap.PrimaryFieldName);
                     dbAdapter.Open();
                     results = dbAdapter.Select<T>(tableName, conditions, multiConditionOperators);
                 }
@@ -165,8 +165,8 @@ namespace QuickUnity.Data
             {
                 try
                 {
-                    string tableName = addressMap.type;
-                    dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
+                    string tableName = addressMap.Type;
+                    dbAdapter.EnsureTable<T>(tableName, addressMap.PrimaryFieldName);
                     dbAdapter.Open();
                     results = dbAdapter.SelectAll<T>(tableName);
                 }
@@ -198,8 +198,8 @@ namespace QuickUnity.Data
             {
                 try
                 {
-                    string tableName = addressMap.type;
-                    dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
+                    string tableName = addressMap.Type;
+                    dbAdapter.EnsureTable<T>(tableName, addressMap.PrimaryFieldName);
                     dbAdapter.Open();
                     count = dbAdapter.SelectCount(tableName);
                 }
@@ -234,8 +234,8 @@ namespace QuickUnity.Data
             {
                 try
                 {
-                    string tableName = addressMap.type;
-                    dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
+                    string tableName = addressMap.Type;
+                    dbAdapter.EnsureTable<T>(tableName, addressMap.PrimaryFieldName);
                     dbAdapter.Open();
                     count = dbAdapter.SelectCount(tableName, conditions, multiConditionOperators);
                 }
@@ -268,30 +268,30 @@ namespace QuickUnity.Data
         /// </summary>
         private void Initialize()
         {
-            m_preferencesData = Resources.Load<DataTablePreferences>("DataTablePreferences");
-            m_databasePath = Path.Combine(Application.persistentDataPath, DataTablesStorageFolderName);
+            preferencesData = Resources.Load<DataTablePreferences>("DataTablePreferences");
+            databasePath = Path.Combine(Application.persistentDataPath, DataTablesStorageFolderName);
 
-            if (m_preferencesData && m_preferencesData.dataTablesStorageLocation == DataTableStorageLocation.StreamingAssetsPath)
+            if (preferencesData && preferencesData.DataTablesStorageLocation == DataTableStorageLocation.StreamingAssetsPath)
             {
-                m_databasePath = Path.Combine(Application.streamingAssetsPath, DataTablesStorageFolderName);
+                databasePath = Path.Combine(Application.streamingAssetsPath, DataTablesStorageFolderName);
             }
 
-            if (m_preferencesData && m_preferencesData.dataTablesStorageLocation == DataTableStorageLocation.ResourcesPath)
+            if (preferencesData && preferencesData.DataTablesStorageLocation == DataTableStorageLocation.ResourcesPath)
             {
                 TextAsset binAsset = Resources.Load<TextAsset>(DataTablesStorageFolderName + "/db1");
 
                 if (binAsset)
                 {
-                    m_addressMapDBAdapter = new BoxDBAdapter(m_databasePath, binAsset.bytes);
+                    addressMapDBAdapter = new BoxDBAdapter(databasePath, binAsset.bytes);
                 }
             }
             else
             {
-                m_addressMapDBAdapter = new BoxDBAdapter(m_databasePath);
+                addressMapDBAdapter = new BoxDBAdapter(databasePath);
             }
 
-            m_addressMapDBAdapter.EnsureTable<DataTableAddressMap>(typeof(DataTableAddressMap).Name, DataTableAddressMap.PrimaryKey);
-            m_addressMapDBAdapter.Open();
+            addressMapDBAdapter.EnsureTable<DataTableAddressMap>(typeof(DataTableAddressMap).Name, DataTableAddressMap.PrimaryKey);
+            addressMapDBAdapter.Open();
         }
 
         /// <summary>
@@ -303,12 +303,12 @@ namespace QuickUnity.Data
         {
             string name = typeof(T).Name;
 
-            if (m_addressMapDBAdapter == null)
+            if (addressMapDBAdapter == null)
             {
                 Initialize();
             }
 
-            DataTableAddressMap addressMap = m_addressMapDBAdapter.Select<DataTableAddressMap>(typeof(DataTableAddressMap).Name, name);
+            DataTableAddressMap addressMap = addressMapDBAdapter.Select<DataTableAddressMap>(typeof(DataTableAddressMap).Name, name);
             return addressMap;
         }
 
@@ -321,20 +321,20 @@ namespace QuickUnity.Data
         {
             BoxDBAdapter dbAdapter = null;
 
-            if (addressMap != null && addressMap.localAddress > 1)
+            if (addressMap != null && addressMap.LocalAddress > 1)
             {
-                if (m_preferencesData.dataTablesStorageLocation == DataTableStorageLocation.ResourcesPath)
+                if (preferencesData.DataTablesStorageLocation == DataTableStorageLocation.ResourcesPath)
                 {
-                    TextAsset binAsset = Resources.Load<TextAsset>(DataTablesStorageFolderName + "/db" + addressMap.localAddress);
+                    TextAsset binAsset = Resources.Load<TextAsset>(DataTablesStorageFolderName + "/db" + addressMap.LocalAddress);
 
                     if (binAsset)
                     {
-                        dbAdapter = new BoxDBAdapter(m_databasePath, binAsset.bytes);
+                        dbAdapter = new BoxDBAdapter(databasePath, binAsset.bytes);
                     }
                 }
                 else
                 {
-                    dbAdapter = new BoxDBAdapter(m_databasePath, addressMap.localAddress);
+                    dbAdapter = new BoxDBAdapter(databasePath, addressMap.LocalAddress);
                 }
             }
 
@@ -344,15 +344,18 @@ namespace QuickUnity.Data
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        /// unmanaged resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {
-                if (m_addressMapDBAdapter != null)
+                if (addressMapDBAdapter != null)
                 {
-                    m_addressMapDBAdapter.Dispose();
-                    m_addressMapDBAdapter = null;
+                    addressMapDBAdapter.Dispose();
+                    addressMapDBAdapter = null;
                 }
             }
         }

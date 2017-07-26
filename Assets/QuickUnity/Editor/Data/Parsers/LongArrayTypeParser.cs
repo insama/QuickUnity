@@ -25,13 +25,13 @@
 namespace QuickUnityEditor.Data.Parsers
 {
     /// <summary>
-    /// The parser of type System.Int64[].
+    /// The parser of Type System.Int64[].
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Int64[]}"/>
     internal class LongArrayTypeParser : TypeParser<long[]>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "long[]";
 

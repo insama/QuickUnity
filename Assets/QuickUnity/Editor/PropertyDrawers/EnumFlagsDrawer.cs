@@ -49,7 +49,7 @@ namespace QuickUnityEditor.PropertyDrawers
             EnumFlagsAttribute flagsAttribute = (EnumFlagsAttribute)attribute;
             Enum targetEnum = GetBaseProperty<Enum>(property);
 
-            string propertyDisplayName = flagsAttribute.label;
+            string propertyDisplayName = flagsAttribute.Label;
 
             if (string.IsNullOrEmpty(propertyDisplayName))
             {
@@ -68,9 +68,9 @@ namespace QuickUnityEditor.PropertyDrawers
         /// <summary>
         /// Gets the base property.
         /// </summary>
-        /// <typeparam name="T">The type definition of property.</typeparam>
+        /// <typeparam name="T">The Type definition of property.</typeparam>
         /// <param name="property">The property.</param>
-        /// <returns>The property with type definition.</returns>
+        /// <returns>The property with Type definition.</returns>
         private static T GetBaseProperty<T>(SerializedProperty property)
         {
             // Separate the steps it takes to get to this property.

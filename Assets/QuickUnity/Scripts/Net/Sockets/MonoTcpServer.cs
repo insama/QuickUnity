@@ -40,7 +40,7 @@ namespace QuickUnity.Net.Sockets
     /// <seealso cref="IThreadEventDispatcher"/>
     public class MonoTcpServer : TcpServerBase, IThreadEventDispatcher
     {
-        protected ThreadEventDispatcher m_eventDispatcher;
+        private ThreadEventDispatcher eventDispatcher;
 
         #region Constructors
 
@@ -95,7 +95,7 @@ namespace QuickUnity.Net.Sockets
         /// </summary>
         ~MonoTcpServer()
         {
-            m_eventDispatcher = null;
+            eventDispatcher = null;
         }
 
         #region Public Functions
@@ -123,12 +123,12 @@ namespace QuickUnity.Net.Sockets
         /// </summary>
         public void Update()
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                m_eventDispatcher.Update();
+                eventDispatcher.Update();
             }
 
-            foreach (KeyValuePair<IPEndPoint, TcpClientBase> kvp in clients)
+            foreach (KeyValuePair<IPEndPoint, TcpClientBase> kvp in Clients)
             {
                 if (kvp.Value != null)
                 {
@@ -146,9 +146,9 @@ namespace QuickUnity.Net.Sockets
         /// <param name="listener">The listener function that processes the event.</param>
         public void AddEventListener(string eventType, Action<Event> listener)
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                m_eventDispatcher.AddEventListener(eventType, listener);
+                eventDispatcher.AddEventListener(eventType, listener);
             }
         }
 
@@ -158,9 +158,9 @@ namespace QuickUnity.Net.Sockets
         /// <param name="eventObject">The event object.</param>
         public void DispatchEvent(Event eventObject)
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                m_eventDispatcher.DispatchEvent(eventObject);
+                eventDispatcher.DispatchEvent(eventObject);
             }
         }
 
@@ -175,9 +175,9 @@ namespace QuickUnity.Net.Sockets
         /// </returns>
         public bool HasEventListener(string eventType, Action<Event> listener)
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                return m_eventDispatcher.HasEventListener(eventType, listener);
+                return eventDispatcher.HasEventListener(eventType, listener);
             }
 
             return false;
@@ -190,9 +190,9 @@ namespace QuickUnity.Net.Sockets
         /// <param name="listener">The listener object to remove.</param>
         public void RemoveEventListener(string eventType, Action<Event> listener)
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                m_eventDispatcher.RemoveEventListener(eventType, listener);
+                eventDispatcher.RemoveEventListener(eventType, listener);
             }
         }
 
@@ -207,7 +207,7 @@ namespace QuickUnity.Net.Sockets
         {
             base.Initialize();
 
-            m_eventDispatcher = new ThreadEventDispatcher();
+            eventDispatcher = new ThreadEventDispatcher();
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace QuickUnity.Net.Sockets
         /// </summary>
         protected override void DispatchServerStartEvent()
         {
-            m_eventDispatcher.DispatchEvent(new SocketEvent(SocketEvent.ServerStart, this));
+            eventDispatcher.DispatchEvent(new SocketEvent(SocketEvent.ServerStart, this));
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace QuickUnity.Net.Sockets
         /// </summary>
         protected override void DispatchServerStopEvent()
         {
-            m_eventDispatcher.DispatchEvent(new SocketEvent(SocketEvent.ServerStop, this));
+            eventDispatcher.DispatchEvent(new SocketEvent(SocketEvent.ServerStop, this));
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace QuickUnity.Net.Sockets
         /// <param name="exception">The <see cref="Exception"/> from server error.</param>
         protected override void DispathServerSocketExceptionEvent(Exception exception)
         {
-            m_eventDispatcher.DispatchEvent(new SocketEvent(SocketEvent.ServerSocketException, this, exception));
+            eventDispatcher.DispatchEvent(new SocketEvent(SocketEvent.ServerSocketException, this, exception));
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace QuickUnity.Net.Sockets
         private void OnClientSocketConnected(Event eventObj)
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
-            MonoTcpClient tcpClient = socketEvent.tcpClient;
+            MonoTcpClient tcpClient = socketEvent.TcpClient;
             DispatchEvent(new SocketEvent(SocketEvent.ClientConnected, tcpClient));
         }
 
@@ -293,7 +293,7 @@ namespace QuickUnity.Net.Sockets
         private void OnClientSocketDisconnected(Event eventObj)
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
-            MonoTcpClient tcpClient = socketEvent.tcpClient;
+            MonoTcpClient tcpClient = socketEvent.TcpClient;
             DispatchEvent(new SocketEvent(SocketEvent.ClientDisconnected, tcpClient));
         }
 
@@ -304,8 +304,8 @@ namespace QuickUnity.Net.Sockets
         private void OnClientSocketDataReceived(Event eventObj)
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
-            MonoTcpClient tcpClient = socketEvent.tcpClient;
-            ISocketPacket socketPacket = socketEvent.socketPacket;
+            MonoTcpClient tcpClient = socketEvent.TcpClient;
+            ISocketPacket socketPacket = socketEvent.SocketPacket;
             DispatchEvent(new SocketEvent(SocketEvent.ClientData, tcpClient, socketPacket));
         }
 
@@ -316,7 +316,7 @@ namespace QuickUnity.Net.Sockets
         private void OnClientSocketClosed(Event eventObj)
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
-            MonoTcpClient tcpClient = socketEvent.tcpClient;
+            MonoTcpClient tcpClient = socketEvent.TcpClient;
             DispatchEvent(new SocketEvent(SocketEvent.ClientClosed, tcpClient));
         }
 
@@ -327,8 +327,8 @@ namespace QuickUnity.Net.Sockets
         private void OnClientSocketException(Event eventObj)
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
-            MonoTcpClient tcpClient = socketEvent.tcpClient;
-            Exception ex = socketEvent.exception;
+            MonoTcpClient tcpClient = socketEvent.TcpClient;
+            Exception ex = socketEvent.Exception;
             DispatchEvent(new SocketEvent(SocketEvent.ClientSocketException, tcpClient, ex));
         }
 

@@ -40,27 +40,27 @@ namespace QuickUnityEditor.Preferences
             /// <summary>
             /// The style of field isAutoSaveEnabled.
             /// </summary>
-            public static readonly GUIContent isAutoSaveEnabledStyle = Utils.EditorGUIHelper.TextContent("Enable AutoSave", "Whether to automatically save after a time interval");
+            public static readonly GUIContent IsAutoSaveEnabledStyle = Utils.EditorGUIHelper.TextContent("Enable AutoSave", "Whether to automatically save after a time interval");
 
             /// <summary>
             /// The style of field isAutoSaveScenesEnabled.
             /// </summary>
-            public static readonly GUIContent isAutoSaveScenesEnabledStyle = Utils.EditorGUIHelper.TextContent("Save Scenes", "Whether to automatically save scenes during an autosave");
+            public static readonly GUIContent IsAutoSaveScenesEnabledStyle = Utils.EditorGUIHelper.TextContent("Save Scenes", "Whether to automatically save scenes during an autosave");
 
             /// <summary>
             /// The style of field isAutoSaveAssetsEnabled.
             /// </summary>
-            public static readonly GUIContent isAutoSaveAssetsEnabledStyle = Utils.EditorGUIHelper.TextContent("Save Assets", "Whether to automatically save assets during an autosave");
+            public static readonly GUIContent IsAutoSaveAssetsEnabledStyle = Utils.EditorGUIHelper.TextContent("Save Assets", "Whether to automatically save assets during an autosave");
 
             /// <summary>
             /// The style of field frequencyInMinutes.
             /// </summary>
-            public static readonly GUIContent frequencyInMinutesStyle = Utils.EditorGUIHelper.TextContent("Frequency in Minutes", "The time interval after which to auto save");
+            public static readonly GUIContent FrequencyInMinutesStyle = Utils.EditorGUIHelper.TextContent("Frequency in Minutes", "The time interval after which to auto save");
 
             /// <summary>
             /// The style of field askWhenSaving.
             /// </summary>
-            public static readonly GUIContent askWhenSavingStyle = Utils.EditorGUIHelper.TextContent("Ask When Saving", "Whether to show confirm dialog when saving");
+            public static readonly GUIContent AskWhenSavingStyle = Utils.EditorGUIHelper.TextContent("Ask When Saving", "Whether to show confirm dialog when saving");
         }
 
         /// <summary>
@@ -72,39 +72,39 @@ namespace QuickUnityEditor.Preferences
             // AutoSave toggle button.
             GUILayout.Space(10);
             GUILayout.BeginVertical();
-            AutoSave.Instance.isAutoSaveEnabled = EditorGUILayout.Toggle(Styles.isAutoSaveEnabledStyle, AutoSave.Instance.isAutoSaveEnabled);
+            AutoSave.Instance.IsAutoSaveEnabled = EditorGUILayout.Toggle(Styles.IsAutoSaveEnabledStyle, AutoSave.Instance.IsAutoSaveEnabled);
             GUILayout.EndVertical();
 
-            EditorGUI.BeginDisabledGroup(!AutoSave.Instance.isAutoSaveEnabled);
+            EditorGUI.BeginDisabledGroup(!AutoSave.Instance.IsAutoSaveEnabled);
 
             // AutoSave scenes toggle button.
             GUILayout.BeginVertical();
-            AutoSave.Instance.isAutoSaveScenesEnabled = EditorGUILayout.Toggle("Save Scenes", AutoSave.Instance.isAutoSaveScenesEnabled);
+            AutoSave.Instance.IsAutoSaveScenesEnabled = EditorGUILayout.Toggle("Save Scenes", AutoSave.Instance.IsAutoSaveScenesEnabled);
             GUILayout.EndVertical();
 
             // AutoSave assets toggle button.
             GUILayout.BeginVertical();
-            AutoSave.Instance.isAutoSaveAssetsEnabled = EditorGUILayout.Toggle("Save Assets", AutoSave.Instance.isAutoSaveAssetsEnabled);
+            AutoSave.Instance.IsAutoSaveAssetsEnabled = EditorGUILayout.Toggle("Save Assets", AutoSave.Instance.IsAutoSaveAssetsEnabled);
             GUILayout.EndVertical();
 
             // AutoSave time minutes int value field.
             GUILayout.BeginVertical();
-            int value = EditorGUILayout.IntField(Styles.frequencyInMinutesStyle, (int)AutoSave.Instance.autoSaveTimeMinutes);
+            int value = EditorGUILayout.IntField(Styles.FrequencyInMinutesStyle, (int)AutoSave.Instance.AutoSaveTimeMinutes);
 
             if (value >= 1)
             {
-                AutoSave.Instance.autoSaveTimeMinutes = (uint)value;
+                AutoSave.Instance.AutoSaveTimeMinutes = (uint)value;
             }
             else
             {
-                AutoSave.Instance.autoSaveTimeMinutes = 1;
+                AutoSave.Instance.AutoSaveTimeMinutes = 1;
             }
 
             GUILayout.EndVertical();
 
             // AutoSave warning seconds int value slider field.
             GUILayout.BeginVertical();
-            AutoSave.Instance.askWhenSaving = EditorGUILayout.Toggle(Styles.askWhenSavingStyle, AutoSave.Instance.askWhenSaving);
+            AutoSave.Instance.AskWhenSaving = EditorGUILayout.Toggle(Styles.AskWhenSavingStyle, AutoSave.Instance.AskWhenSaving);
             GUILayout.EndVertical();
 
             EditorGUI.EndDisabledGroup();

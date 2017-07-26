@@ -40,7 +40,7 @@ namespace QuickUnity.Timers
         /// <summary>
         /// The timer list.
         /// </summary>
-        private ITimerList m_timerList;
+        private ITimerList timerList;
 
         #region Messages
 
@@ -51,7 +51,7 @@ namespace QuickUnity.Timers
         {
             base.Awake();
 
-            m_timerList = new TimerList();
+            timerList = new TimerList();
         }
 
         /// <summary>
@@ -93,15 +93,15 @@ namespace QuickUnity.Timers
         /// </summary>
         private void Update()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.ForEach((timer) =>
+                timerList.ForEach((timer) =>
                 {
                     float deltaTime = Time.deltaTime;
 
                     try
                     {
-                        if (timer.ignoreTimeScale)
+                        if (timer.IgnoreTimeScale)
                         {
                             deltaTime = Time.unscaledDeltaTime;
                         }
@@ -122,7 +122,7 @@ namespace QuickUnity.Timers
         private void OnDestroy()
         {
             Clear();
-            m_timerList = null;
+            timerList = null;
         }
 
         #endregion Messages
@@ -137,9 +137,9 @@ namespace QuickUnity.Timers
         {
             get
             {
-                if (m_timerList != null)
+                if (timerList != null)
                 {
-                    return m_timerList.Count;
+                    return timerList.Count;
                 }
 
                 return 0;
@@ -159,18 +159,20 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
-        /// Copies the elements of the <see cref="TimerManager"/> to an <see cref="System.Array"/>, starting at a particular <see cref="System.Array"/> index.
+        /// Copies the elements of the <see cref="TimerManager"/> to an <see cref="System.Array"/>,
+        /// starting at a particular <see cref="System.Array"/> index.
         /// </summary>
         /// <param name="array">
-        /// The one-dimensional <see cref="System.Array"/> that is the destination of the elements copied from <see cref="TimerManager"/>. The <see
-        /// cref="System.Array"/> must have zero-based indexing.
+        /// The one-dimensional <see cref="System.Array"/> that is the destination of the elements
+        /// copied from <see cref="TimerManager"/>. The <see cref="System.Array"/> must have
+        /// zero-based indexing.
         /// </param>
         /// <param name="arrayIndex">The zero-based index in <c>array</c> at which copying begins.</param>
         void ICollection<ITimer>.CopyTo(ITimer[] array, int arrayIndex)
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.CopyTo(array, arrayIndex);
+                timerList.CopyTo(array, arrayIndex);
             }
         }
 
@@ -180,9 +182,9 @@ namespace QuickUnity.Timers
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         IEnumerator<ITimer> IEnumerable<ITimer>.GetEnumerator()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                return m_timerList.GetEnumerator();
+                return timerList.GetEnumerator();
             }
 
             return null;
@@ -194,9 +196,9 @@ namespace QuickUnity.Timers
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                return m_timerList.GetEnumerator();
+                return timerList.GetEnumerator();
             }
 
             return null;
@@ -208,9 +210,9 @@ namespace QuickUnity.Timers
         /// <param name="item">The <see cref="ITimer"/> object to add to the <see cref="ITimerCollection"/>.</param>
         public void Add(ITimer item)
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.Add(item);
+                timerList.Add(item);
             }
         }
 
@@ -219,22 +221,26 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Clear()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.Clear();
+                timerList.Clear();
             }
         }
 
         /// <summary>
-        /// Determines whether the <see cref="ITimerCollection"/>. contains a specific <see cref="ITimer"/> object.
+        /// Determines whether the <see cref="ITimerCollection"/>. contains a specific <see
+        /// cref="ITimer"/> object.
         /// </summary>
         /// <param name="item">The <see cref="ITimer"/> object to locate in the <see cref="ITimerCollection"/>.</param>
-        /// <returns><c>true</c> if <see cref="ITimer"/> item is found in the <see cref="ITimerCollection"/>; otherwise, <c>false</c>.</returns>
+        /// <returns>
+        /// <c>true</c> if <see cref="ITimer"/> item is found in the <see cref="ITimerCollection"/>;
+        /// otherwise, <c>false</c>.
+        /// </returns>
         public bool Contains(ITimer item)
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                return m_timerList.Contains(item);
+                return timerList.Contains(item);
             }
 
             return false;
@@ -245,14 +251,15 @@ namespace QuickUnity.Timers
         /// </summary>
         /// <param name="item">The object to remove from the <see cref="ITimerCollection"/>.</param>
         /// <returns>
-        /// <c>true</c> if item was successfully removed from the <see cref="ITimerCollection"/>; otherwise, <c>false</c>. This method also returns
-        /// <c>false</c> if item is not found in the original <see cref="ITimerCollection"/>.
+        /// <c>true</c> if item was successfully removed from the <see cref="ITimerCollection"/>;
+        /// otherwise, <c>false</c>. This method also returns <c>false</c> if item is not found in
+        /// the original <see cref="ITimerCollection"/>.
         /// </returns>
         public bool Remove(ITimer item)
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                return m_timerList.Remove(item);
+                return timerList.Remove(item);
             }
 
             return false;
@@ -263,9 +270,9 @@ namespace QuickUnity.Timers
         /// </summary>
         public void PauseAll()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.PauseAll();
+                timerList.PauseAll();
             }
         }
 
@@ -274,9 +281,9 @@ namespace QuickUnity.Timers
         /// </summary>
         public void ResetAll()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.ResetAll();
+                timerList.ResetAll();
             }
         }
 
@@ -285,9 +292,9 @@ namespace QuickUnity.Timers
         /// </summary>
         public void ResumeAll()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.ResumeAll();
+                timerList.ResumeAll();
             }
         }
 
@@ -295,13 +302,14 @@ namespace QuickUnity.Timers
         /// Sets all timers in the <see cref="ITimerCollection"/> to be enabled or not.
         /// </summary>
         /// <param name="value">
-        /// Set to <c>true</c> to enable all timers in the <see cref="ITimerCollection"/> control to trigger their timer event; otherwise, set to <c>false</c>.
+        /// Set to <c>true</c> to enable all timers in the <see cref="ITimerCollection"/> control to
+        /// trigger their timer event; otherwise, set to <c>false</c>.
         /// </param>
         public void SetAllEnabled(bool value = true)
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.SetAllEnabled(value);
+                timerList.SetAllEnabled(value);
             }
         }
 
@@ -310,9 +318,9 @@ namespace QuickUnity.Timers
         /// </summary>
         public void StartAll()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.StartAll();
+                timerList.StartAll();
             }
         }
 
@@ -321,9 +329,9 @@ namespace QuickUnity.Timers
         /// </summary>
         public void StopAll()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.StopAll();
+                timerList.StopAll();
             }
         }
 

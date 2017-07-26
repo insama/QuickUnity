@@ -37,7 +37,7 @@ namespace QuickUnity.Patterns.Singleton
     /// <seealso cref="SingletonMonoBehaviour{T}"/>
     public abstract class SingletonBehaviourEventDispatcher<T> : SingletonMonoBehaviour<T>, IEventDispatcher where T : MonoBehaviour
     {
-        private IEventDispatcher m_eventDispatcher;
+        private IEventDispatcher eventDispatcher;
 
         #region Messages
 
@@ -48,7 +48,7 @@ namespace QuickUnity.Patterns.Singleton
         {
             base.Awake();
 
-            m_eventDispatcher = new EventDispatcher();
+            eventDispatcher = new EventDispatcher();
         }
 
         #endregion Messages
@@ -66,9 +66,9 @@ namespace QuickUnity.Patterns.Singleton
         /// <param name="listener">The listener function that processes the event.</param>
         public void AddEventListener<V>(string eventType, Action<V> listener) where V : CSharpExtensions.Events.Event
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                m_eventDispatcher.AddEventListener(eventType, listener);
+                eventDispatcher.AddEventListener(eventType, listener);
             }
         }
 
@@ -81,9 +81,9 @@ namespace QuickUnity.Patterns.Singleton
         /// <param name="eventObject">The event object.</param>
         public void DispatchEvent<V>(V eventObject) where V : CSharpExtensions.Events.Event
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                m_eventDispatcher.DispatchEvent<V>(eventObject);
+                eventDispatcher.DispatchEvent<V>(eventObject);
             }
         }
 
@@ -93,9 +93,9 @@ namespace QuickUnity.Patterns.Singleton
         /// <returns><c>true</c> if [has event listeners]; otherwise, <c>false</c>.</returns>
         public bool HasAnyEventListener()
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                return m_eventDispatcher.HasAnyEventListener();
+                return eventDispatcher.HasAnyEventListener();
             }
 
             return false;
@@ -114,9 +114,9 @@ namespace QuickUnity.Patterns.Singleton
         /// </returns>
         public bool HasEventListener<V>(string eventType, Action<V> listener) where V : CSharpExtensions.Events.Event
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                return m_eventDispatcher.HasEventListener(eventType, listener);
+                return eventDispatcher.HasEventListener(eventType, listener);
             }
 
             return false;
@@ -131,9 +131,9 @@ namespace QuickUnity.Patterns.Singleton
         /// </returns>
         public bool HasEventListeners(object target)
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                return m_eventDispatcher.HasEventListeners(target);
+                return eventDispatcher.HasEventListeners(target);
             }
 
             return false;
@@ -148,9 +148,9 @@ namespace QuickUnity.Patterns.Singleton
         /// </returns>
         public bool HasEventListeners(string eventType)
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                return m_eventDispatcher.HasEventListeners(eventType);
+                return eventDispatcher.HasEventListeners(eventType);
             }
 
             return false;
@@ -161,9 +161,9 @@ namespace QuickUnity.Patterns.Singleton
         /// </summary>
         public void RemoveAllEventListeners()
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                m_eventDispatcher.RemoveAllEventListeners();
+                eventDispatcher.RemoveAllEventListeners();
             }
         }
 
@@ -173,9 +173,9 @@ namespace QuickUnity.Patterns.Singleton
         /// <param name="eventType">Type of the event.</param>
         public void RemoveEventListener(string eventType)
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                m_eventDispatcher.RemoveEventListener(eventType);
+                eventDispatcher.RemoveEventListener(eventType);
             }
         }
 
@@ -189,9 +189,9 @@ namespace QuickUnity.Patterns.Singleton
         /// <param name="listener">The listener object to remove.</param>
         public void RemoveEventListener<V>(string eventType, Action<V> listener) where V : CSharpExtensions.Events.Event
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                m_eventDispatcher.RemoveEventListener(eventType, listener);
+                eventDispatcher.RemoveEventListener(eventType, listener);
             }
         }
 
@@ -201,9 +201,9 @@ namespace QuickUnity.Patterns.Singleton
         /// <param name="target">The target object.</param>
         public void RemoveEventListeners(object target)
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                m_eventDispatcher.RemoveEventListeners(target);
+                eventDispatcher.RemoveEventListeners(target);
             }
         }
 

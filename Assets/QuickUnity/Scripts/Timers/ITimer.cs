@@ -38,43 +38,47 @@ namespace QuickUnity.Timers
         /// Gets the current count of <see cref="ITimer"/>.
         /// </summary>
         /// <value>The current count of <see cref="ITimer"/>.</value>
-        uint currentCount { get; }
+        uint CurrentCount { get; }
 
         /// <summary>
         /// Gets the delay time of <see cref="ITimer"/>.
         /// </summary>
         /// <value>The delay timer of <see cref="ITimer"/>.</value>
-        float delay { get; set; }
+        float Delay { get; set; }
 
         /// <summary>
         /// Gets the repeat count of <see cref="ITimer"/>.
         /// </summary>
         /// <value>The repeat count of <see cref="ITimer"/>.</value>
-        uint repeatCount { get; set; }
+        uint RepeatCount { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="ITimer"/> is enabled.
         /// </summary>
         /// <value><c>true</c> if enabled Tick function will be invoked; otherwise, <c>false</c>.</value>
-        bool enabled { set; }
+        bool Enabled { set; }
 
         /// <summary>
         /// Gets the state of the <see cref="ITimer"/>.
         /// </summary>
         /// <value>The state of the <see cref="ITimer"/>.</value>
-        TimerState timerState { get; }
+        TimerState TimerState { get; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="ITimer"/> ignore time scale of Unity.
         /// </summary>
         /// <value><c>true</c> if ignore time scale of Unity; otherwise, <c>false</c>.</value>
-        bool ignoreTimeScale { get; set; }
+        bool IgnoreTimeScale { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="ITimer"/> stop when the <see cref="ITimer"/> is disabled.
+        /// Gets a value indicating whether the <see cref="ITimer"/> stop when the <see
+        /// cref="ITimer"/> is disabled.
         /// </summary>
-        /// <value><c>true</c> if the <see cref="ITimer"/> stop whtn the <see cref="ITimer"/> is disabled; otherwise, <c>false</c>.</value>
-        bool stopOnDisable { get; set; }
+        /// <value>
+        /// <c>true</c> if the <see cref="ITimer"/> stop whtn the <see cref="ITimer"/> is disabled;
+        /// otherwise, <c>false</c>.
+        /// </value>
+        bool StopOnDisable { get; set; }
 
         /// <summary>
         /// This <see cref="ITimer"/> start timing.
@@ -92,7 +96,7 @@ namespace QuickUnity.Timers
         void Resume();
 
         /// <summary>
-        /// This <see cref="ITimer"/> resets timing. Set currentCount to 0.
+        /// This <see cref="ITimer"/> resets timing. Set CurrentCount to 0.
         /// </summary>
         void Reset();
 

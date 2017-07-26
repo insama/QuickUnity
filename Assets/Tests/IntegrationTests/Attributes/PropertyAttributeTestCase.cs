@@ -7,25 +7,25 @@ namespace QuickUnity.Tests.IntegrationTests
     {
         [SerializeField]
         [ReadOnlyField]
-        private int m_readOnlyIntVal;
+        private int readOnlyIntVal;
 
-        public int readOnlyIntVal
+        public int ReadOnlyIntVal
         {
-            get { return m_readOnlyIntVal; }
+            get { return readOnlyIntVal; }
         }
 
         [SerializeField]
         [EnumFlags]
-        private TestEnum m_testEnumVal;
+        private TestEnum testEnumVal;
 
-        public TestEnum testEnumVal
+        public TestEnum TestEnumVal
         {
-            get { return m_testEnumVal; }
+            get { return testEnumVal; }
         }
 
         private void Awake()
         {
-            m_readOnlyIntVal = 1;
+            readOnlyIntVal = 1;
         }
     }
 }

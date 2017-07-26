@@ -32,165 +32,165 @@ using System.Threading;
 namespace QuickUnityEditor.Data.Parsers
 {
     /// <summary>
-    /// The parser of type System.Boolean.
+    /// The parser of Type System.Boolean.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Boolean}"/>
     internal class BoolTypeParser : TypeParser<bool>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "bool";
     }
 
     /// <summary>
-    /// The parser of type System.Byte.
+    /// The parser of Type System.Byte.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Byte}"/>
     internal class ByteTypeParser : TypeParser<byte>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "byte";
     }
 
     /// <summary>
-    /// The parser of type System.SByte.
+    /// The parser of Type System.SByte.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.SByte}"/>
     internal class SByteTypeParser : TypeParser<sbyte>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "sbyte";
     }
 
     /// <summary>
-    /// The parser of type System.Decimal.
+    /// The parser of Type System.Decimal.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Decimal}"/>
     internal class DecimalTypeParser : TypeParser<decimal>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "decimal";
     }
 
     /// <summary>
-    /// The parser of type System.Double.
+    /// The parser of Type System.Double.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Byte}"/>
     internal class DoubleTypeParser : TypeParser<double>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "double";
     }
 
     /// <summary>
-    /// The parser of type System.Single.
+    /// The parser of Type System.Single.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Single}"/>
     internal class FloatTypeParser : TypeParser<float>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "float";
     }
 
     /// <summary>
-    /// The parser of type System.Int32.
+    /// The parser of Type System.Int32.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Int32}"/>
     internal class IntTypeParser : TypeParser<int>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "int";
     }
 
     /// <summary>
-    /// The parser of type System.UInt32.
+    /// The parser of Type System.UInt32.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.UInt32}"/>
     internal class UIntTypeParser : TypeParser<uint>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "uint";
     }
 
     /// <summary>
-    /// The parser of type System.Int64.
+    /// The parser of Type System.Int64.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Int64}"/>
     internal class LongTypeParser : TypeParser<long>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "long";
     }
 
     /// <summary>
-    /// The parser of type System.UInt64.
+    /// The parser of Type System.UInt64.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.UInt64}"/>
     internal class ULongTypeParser : TypeParser<ulong>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "ulong";
     }
 
     /// <summary>
-    /// The parser of type System.Int16.
+    /// The parser of Type System.Int16.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Int16}"/>
     internal class ShortTypeParser : TypeParser<short>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "short";
     }
 
     /// <summary>
-    /// The parser of type System.UInt16.
+    /// The parser of Type System.UInt16.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.UInt16}"/>
     internal class UShortTypeParser : TypeParser<ushort>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "ushort";
     }
 
     /// <summary>
-    /// The parser of type System.String.
+    /// The parser of Type System.String.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.String}"/>
     internal class StringTypeParser : TypeParser<string>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "string";
     }
 
     /// <summary>
-    /// The data type parser abstract class.
+    /// The data Type parser abstract class.
     /// </summary>
-    /// <typeparam name="T">The type definition.</typeparam>
+    /// <typeparam name="T">The Type definition.</typeparam>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.ITypeParser{T}"/>
     internal abstract class TypeParser<T> : ITypeParser
     {
@@ -218,7 +218,7 @@ namespace QuickUnityEditor.Data.Parsers
         /// <summary>
         /// Parses the specified value.
         /// </summary>
-        /// <typeparam name="V">The type definition of returned object.</typeparam>
+        /// <typeparam name="V">The Type definition of returned object.</typeparam>
         /// <param name="value">The value.</param>
         /// <returns>The parsed data.</returns>
         protected V Parse<V>(string value)
@@ -279,7 +279,7 @@ namespace QuickUnityEditor.Data.Parsers
         /// <summary>
         /// Parses the number value.
         /// </summary>
-        /// <typeparam name="T">The type definition of the number.</typeparam>
+        /// <typeparam name="T">The Type definition of the number.</typeparam>
         /// <param name="value">The value.</param>
         /// <returns>The parsed number data.</returns>
         protected U ParseNumber<U>(string value)
@@ -302,7 +302,7 @@ namespace QuickUnityEditor.Data.Parsers
         /// <summary>
         /// Parses the array string.
         /// </summary>
-        /// <typeparam name="W">The type definition of array element.</typeparam>
+        /// <typeparam name="W">The Type definition of array element.</typeparam>
         /// <param name="value">The string value.</param>
         /// <returns>The parsed array data.</returns>
         protected W[] ParseArrayString<W>(string value)

@@ -38,19 +38,19 @@ namespace QuickUnityEditor
         /// <summary>
         /// The space button texts.
         /// </summary>
-        private static readonly string[] s_spaceButtonTexts = new string[] { "Local", "Global" };
+        private static readonly string[] spaceButtonTexts = new string[] { "Local", "Global" };
 
         /// <summary>
         /// The selected index of space buttons.
         /// </summary>
-        private int m_selectedIndex;
+        private int selectedIndex;
 
         /// <summary>
         /// This function is called when the ScriptableObject script is started.
         /// </summary>
         private void Awake()
         {
-            m_selectedIndex = QuickUnityEditorApplication.GetEditorConfigValue<int>("TransformEditor", "selectedSpaceIndex");
+            selectedIndex = QuickUnityEditorApplication.GetEditorConfigValue<int>("TransformEditor", "selectedSpaceIndex");
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace QuickUnityEditor
         /// </summary>
         private void OnDestroy()
         {
-            QuickUnityEditorApplication.SetEditorConfigValue<int>("TransformEditor", "selectedSpaceIndex", m_selectedIndex);
+            QuickUnityEditorApplication.SetEditorConfigValue<int>("TransformEditor", "selectedSpaceIndex", selectedIndex);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace QuickUnityEditor
             // Draw button bar to select local space or global space.
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            m_selectedIndex = GUILayout.Toolbar(m_selectedIndex, s_spaceButtonTexts, GUILayout.Width(250));
+            selectedIndex = GUILayout.Toolbar(selectedIndex, spaceButtonTexts, GUILayout.Width(250));
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
 
@@ -83,7 +83,7 @@ namespace QuickUnityEditor
 
             if (targetObject)
             {
-                if (m_selectedIndex == 0)
+                if (selectedIndex == 0)
                 {
                     // Draw local space properties.
                     targetObject.localPosition = EditorGUILayout.Vector3Field(new GUIContent("Local Position", "Position of the transform relative to the parent transform."),

@@ -13,7 +13,7 @@ namespace QuickUnity.Tests.IntegrationTests
         /// <summary>
         /// The name of DispatcherMock object.
         /// </summary>
-        private const string k_mockObjectName = "DispatcherMock";
+        private const string mockObjectName = "DispatcherMock";
 
         /// <summary>
         /// Start is called just before any of the Update methods is called the first time.

@@ -41,15 +41,15 @@ namespace QuickUnityEditor.Utils
         /// <summary>
         /// The extension of ScriptableObject asset.
         /// </summary>
-        private static readonly string s_scriptableObjectAssetExtension = ".asset";
+        private const string scriptableObjectAssetExtension = ".asset";
 
         /// <summary>
         /// Loads the asset of ScriptableObject.
         /// </summary>
-        /// <typeparam name="T">The type definition of ScriptableObject.</typeparam>
+        /// <typeparam name="T">The Type definition of ScriptableObject.</typeparam>
         /// <param name="path">The path.</param>
         /// <param name="assetName">Name of the asset.</param>
-        /// <returns>The ScriptableObject of type definition.</returns>
+        /// <returns>The ScriptableObject of Type definition.</returns>
         public static T LoadScriptableObjectAsset<T>(string path, string assetName = null) where T : ScriptableObject
         {
             if (string.IsNullOrEmpty(assetName))
@@ -57,17 +57,17 @@ namespace QuickUnityEditor.Utils
                 assetName = typeof(T).Name;
             }
 
-            string assetPath = Path.Combine(path, assetName + s_scriptableObjectAssetExtension);
+            string assetPath = Path.Combine(path, assetName + scriptableObjectAssetExtension);
             return AssetDatabase.LoadAssetAtPath<T>(assetPath);
         }
 
         /// <summary>
         /// Creates the asset of ScriptableObject.
         /// </summary>
-        /// <typeparam name="T">The type definition of ScriptableObject.</typeparam>
+        /// <typeparam name="T">The Type definition of ScriptableObject.</typeparam>
         /// <param name="path">The path.</param>
         /// <param name="assetName">Name of the asset.</param>
-        /// <returns>The new instance of ScriptableObject of type definition.</returns>
+        /// <returns>The new instance of ScriptableObject of Type definition.</returns>
         public static T CreateScriptableObjectAsset<T>(string path, string assetName = null) where T : ScriptableObject
         {
             T asset = ScriptableObject.CreateInstance<T>();
@@ -78,7 +78,7 @@ namespace QuickUnityEditor.Utils
         /// <summary>
         /// Saves the asset of ScriptableObject.
         /// </summary>
-        /// <typeparam name="T">The type definition of ScriptableObject.</typeparam>
+        /// <typeparam name="T">The Type definition of ScriptableObject.</typeparam>
         /// <param name="path">The path.</param>
         /// <param name="scriptableObject">The object of ScriptableObject.</param>
         /// <param name="assetName">Name of the asset.</param>
@@ -95,7 +95,7 @@ namespace QuickUnityEditor.Utils
                         assetName = typeof(T).Name;
                     }
 
-                    assetName += s_scriptableObjectAssetExtension;
+                    assetName += scriptableObjectAssetExtension;
                     string assetPath = Path.Combine(path, assetName);
 
                     T targetAsset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
@@ -142,7 +142,7 @@ namespace QuickUnityEditor.Utils
         /// Gets the asset paths.
         /// </summary>
         /// <param name="nameFilter">The name filter.</param>
-        /// <param name="typeFilter">The type filter.</param>
+        /// <param name="typeFilter">The Type filter.</param>
         /// <param name="searchInFolders">The search in folders.</param>
         /// <returns>The paths about this asset name.</returns>
         public static string[] GetAssetPath(string nameFilter, string typeFilter = null, string[] searchInFolders = null)
@@ -218,7 +218,9 @@ namespace QuickUnityEditor.Utils
         /// Get the references.
         /// </summary>
         /// <param name="targetAssetPathList">The target asset path list.</param>
-        /// <returns>Dictionary&lt;System.String, System.String[]&gt; The dictionary of asset references.</returns>
+        /// <returns>
+        /// Dictionary&lt;System.String, System.String[]&gt; The dictionary of asset references.
+        /// </returns>
         public static Dictionary<string, List<string>> GetReferences(List<string> targetAssetPathList)
         {
             string[] allAssetGuids = AssetDatabase.FindAssets("");

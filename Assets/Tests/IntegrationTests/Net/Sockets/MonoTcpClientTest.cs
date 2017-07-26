@@ -13,27 +13,27 @@ namespace QuickUnity.Tests.IntegrationTests
     {
         private class TestPacket : ISocketPacket
         {
-            private byte[] m_Bytes;
-            private string m_Text;
+            private byte[] bytes;
+            private string text;
 
             public TestPacket(byte[] bytes)
             {
-                m_Bytes = bytes;
+                this.bytes = bytes;
             }
 
             public TestPacket(string text)
             {
-                m_Text = text;
+                this.text = text;
             }
 
             public byte[] Bytes
             {
-                get { return m_Bytes; }
+                get { return bytes; }
             }
 
             public string Text
             {
-                get { return m_Text; }
+                get { return text; }
             }
         }
 
@@ -64,39 +64,39 @@ namespace QuickUnity.Tests.IntegrationTests
             }
         }
 
-        private MonoTcpClient m_client;
+        private MonoTcpClient client;
 
         private void Start()
         {
-            m_client = new MonoTcpClient();
-            m_client.SocketPacketHandler = new TestPacketHandler();
-            m_client.AddEventListener(SocketEvent.SocketConnected, OnSocketConnected);
-            m_client.AddEventListener(SocketEvent.SocketDisconnected, OnSocketDisconnected);
-            m_client.AddEventListener(SocketEvent.SocketDataReceived, OnSocketData);
-            m_client.AddEventListener(SocketEvent.SocketClosed, OnSocketClosed);
-            m_client.AddEventListener(SocketEvent.SocketException, OnSocketException);
-            m_client.BeginConnect("127.0.0.1", 10000, true);
+            client = new MonoTcpClient();
+            client.SocketPacketHandler = new TestPacketHandler();
+            client.AddEventListener(SocketEvent.SocketConnected, OnSocketConnected);
+            client.AddEventListener(SocketEvent.SocketDisconnected, OnSocketDisconnected);
+            client.AddEventListener(SocketEvent.SocketDataReceived, OnSocketData);
+            client.AddEventListener(SocketEvent.SocketClosed, OnSocketClosed);
+            client.AddEventListener(SocketEvent.SocketException, OnSocketException);
+            client.BeginConnect("127.0.0.1", 10000, true);
         }
 
         private void Update()
         {
-            if (m_client != null)
+            if (client != null)
             {
-                m_client.Update();
+                client.Update();
             }
         }
 
         private void OnDisable()
         {
-            if (m_client != null)
+            if (client != null)
             {
-                m_client.RemoveEventListener(SocketEvent.SocketConnected, OnSocketConnected);
-                m_client.RemoveEventListener(SocketEvent.SocketDisconnected, OnSocketDisconnected);
-                m_client.RemoveEventListener(SocketEvent.SocketDataReceived, OnSocketData);
-                m_client.RemoveEventListener(SocketEvent.SocketClosed, OnSocketClosed);
-                m_client.RemoveEventListener(SocketEvent.SocketException, OnSocketException);
-                m_client.Close();
-                m_client = null;
+                client.RemoveEventListener(SocketEvent.SocketConnected, OnSocketConnected);
+                client.RemoveEventListener(SocketEvent.SocketDisconnected, OnSocketDisconnected);
+                client.RemoveEventListener(SocketEvent.SocketDataReceived, OnSocketData);
+                client.RemoveEventListener(SocketEvent.SocketClosed, OnSocketClosed);
+                client.RemoveEventListener(SocketEvent.SocketException, OnSocketException);
+                client.Close();
+                client = null;
             }
         }
 
@@ -123,7 +123,7 @@ namespace QuickUnity.Tests.IntegrationTests
         private void OnSocketException(CSharpExtensions.Events.Event eventObj)
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
-            Exception e = socketEvent.exception;
+            Exception e = socketEvent.Exception;
             Debug.Log(e.Message);
             Debug.Log(e.StackTrace);
         }

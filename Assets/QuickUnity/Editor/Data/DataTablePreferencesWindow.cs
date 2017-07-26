@@ -59,39 +59,38 @@ namespace QuickUnityEditor.Data
             /// <summary>
             /// The style of field dataTablesStorageLocation.
             /// </summary>
-            public static readonly GUIContent dataTablesStorageLocationStyle = Utils.EditorGUIHelper.TextContent("DataTables Storage Location", "Where to store data tables.");
+            public static readonly GUIContent DataTablesStorageLocationStyle = Utils.EditorGUIHelper.TextContent("DataTables Storage Location", "Where to store data tables.");
 
             /// <summary>
             /// The style of field dataRowScriptsStorageLocation.
             /// </summary>
-            public static readonly GUIContent dataRowScriptsStorageLocationStyle = Utils.EditorGUIHelper.TextContent("DataTableRow Scripts Storage Location", "Where to store DataTableRow scripts.");
+            public static readonly GUIContent DataRowScriptsStorageLocationStyle = Utils.EditorGUIHelper.TextContent("DataTableRow Scripts Storage Location", "Where to store DataTableRow scripts.");
 
             /// <summary>
             /// The style of field autoGenerateScriptsNamespace.
             /// </summary>
-            public static readonly GUIContent autoGenerateScriptsNamespaceStyle = Utils.EditorGUIHelper.TextContent("Auto Generate Scripts Namespace", "Whether to generate namespace automatically.");
+            public static readonly GUIContent AutoGenerateScriptsNamespaceStyle = Utils.EditorGUIHelper.TextContent("Auto Generate Scripts Namespace", "Whether to generate namespace automatically.");
 
             /// <summary>
             /// The style of field dataTableRowScriptsNamespace.
             /// </summary>
-            public static readonly GUIContent dataTableRowScriptsNamespaceStyle = Utils.EditorGUIHelper.TextContent("DataTableRow Scripts Namespace", "The namespace of DataTableRow scripts.");
+            public static readonly GUIContent DataTableRowScriptsNamespaceStyle = Utils.EditorGUIHelper.TextContent("DataTableRow Scripts Namespace", "The namespace of DataTableRow scripts.");
 
             /// <summary>
             /// The style of field dataRowsStartRow.
             /// </summary>
-            public static readonly GUIContent dataRowsStartRowStyle = Utils.EditorGUIHelper.TextContent("Data rows Start Row", "The start row of data rows. (Should be > 3)");
+            public static readonly GUIContent DataRowsStartRowStyle = Utils.EditorGUIHelper.TextContent("Data rows Start Row", "The start row of data rows. (Should be > 3)");
         }
 
         /// <summary>
         /// The resources path.
         /// </summary>
-        private static readonly string s_resourcesPath = Path.Combine(QuickUnityEditorApplication.AssetsFolderName,
-            QuickUnityApplication.ResourcesFolderName);
+        private static readonly string resourcesPath = Path.Combine(QuickUnityEditorApplication.AssetsFolderName, QuickUnityApplication.ResourcesFolderName);
 
         /// <summary>
         /// The editor window instance.
         /// </summary>
-        private static DataTablePreferencesWindow s_editorWindow;
+        private static DataTablePreferencesWindow editorWindow;
 
         /// <summary>
         /// Shows the editor window.
@@ -99,15 +98,15 @@ namespace QuickUnityEditor.Data
         [MenuItem("Tools/QuickUnity/DataTable/Preferences...", false, 102)]
         public static void ShowEditorWindow()
         {
-            if (s_editorWindow == null)
+            if (editorWindow == null)
             {
-                s_editorWindow = CreateInstance<DataTablePreferencesWindow>();
-                s_editorWindow.titleContent = new GUIContent("DataTable Preferences");
-                s_editorWindow.minSize = new Vector2(500, 120);
+                editorWindow = CreateInstance<DataTablePreferencesWindow>();
+                editorWindow.titleContent = new GUIContent("DataTable Preferences");
+                editorWindow.minSize = new Vector2(500, 120);
             }
 
-            s_editorWindow.ShowUtility();
-            s_editorWindow.Focus();
+            editorWindow.ShowUtility();
+            editorWindow.Focus();
         }
 
         /// <summary>
@@ -116,13 +115,13 @@ namespace QuickUnityEditor.Data
         /// <returns>The loaded preferences data.</returns>
         public static DataTablePreferences LoadPreferencesData()
         {
-            if (!AssetDatabase.IsValidFolder(s_resourcesPath))
+            if (!AssetDatabase.IsValidFolder(resourcesPath))
             {
                 AssetDatabase.CreateFolder(QuickUnityEditorApplication.AssetsFolderName,
                     QuickUnityApplication.ResourcesFolderName);
             }
 
-            return Utils.EditorUtil.LoadScriptableObjectAsset<DataTablePreferences>(s_resourcesPath);
+            return Utils.EditorUtil.LoadScriptableObjectAsset<DataTablePreferences>(resourcesPath);
         }
 
         /// <summary>
@@ -131,7 +130,7 @@ namespace QuickUnityEditor.Data
         /// <returns>The default preferences data.</returns>
         public static DataTablePreferences CreateDefaultPreferencesData()
         {
-            return Utils.EditorUtil.CreateScriptableObjectAsset<DataTablePreferences>(s_resourcesPath);
+            return Utils.EditorUtil.CreateScriptableObjectAsset<DataTablePreferences>(resourcesPath);
         }
 
         /// <summary>
@@ -140,18 +139,18 @@ namespace QuickUnityEditor.Data
         /// <param name="preferencesData">The preferences data.</param>
         public static void SavePreferenceData(DataTablePreferences preferencesData)
         {
-            Utils.EditorUtil.SaveScriptableObjectAsset(s_resourcesPath, preferencesData);
+            Utils.EditorUtil.SaveScriptableObjectAsset(resourcesPath, preferencesData);
         }
 
         /// <summary>
         /// The preferences data
         /// </summary>
-        private DataTablePreferences m_preferencesData;
+        private DataTablePreferences preferencesData;
 
         /// <summary>
         /// The last data tables storage location.
         /// </summary>
-        private DataTableStorageLocation m_lastDataTablesStorageLocation;
+        private DataTableStorageLocation lastDataTablesStorageLocation;
 
         #region Messages
 
@@ -164,14 +163,14 @@ namespace QuickUnityEditor.Data
 
             if (preferencesData != null)
             {
-                m_preferencesData = preferencesData;
+                this.preferencesData = preferencesData;
             }
             else
             {
-                m_preferencesData = CreateDefaultPreferencesData();
+                this.preferencesData = CreateDefaultPreferencesData();
             }
 
-            m_lastDataTablesStorageLocation = ObjectUtil.DeepClone(m_preferencesData.dataTablesStorageLocation);
+            lastDataTablesStorageLocation = ObjectUtil.DeepClone(this.preferencesData.DataTablesStorageLocation);
         }
 
         /// <summary>
@@ -185,43 +184,43 @@ namespace QuickUnityEditor.Data
             GUILayout.Space(10);
             GUILayout.BeginVertical();
             GUILayout.Space(10);
-            m_preferencesData.dataTablesStorageLocation = (DataTableStorageLocation)EditorGUILayout.EnumPopup(Styles.dataTablesStorageLocationStyle, m_preferencesData.dataTablesStorageLocation);
+            preferencesData.DataTablesStorageLocation = (DataTableStorageLocation)EditorGUILayout.EnumPopup(Styles.DataTablesStorageLocationStyle, preferencesData.DataTablesStorageLocation);
             GUILayout.Space(2.5f);
-            m_preferencesData.dataTableRowScriptsStorageLocation = Utils.EditorGUIHelper.FolderField(Styles.dataRowScriptsStorageLocationStyle, m_preferencesData.dataTableRowScriptsStorageLocation,
+            preferencesData.DataTableRowScriptsStorageLocation = Utils.EditorGUIHelper.FolderField(Styles.DataRowScriptsStorageLocationStyle, preferencesData.DataTableRowScriptsStorageLocation,
                 "Data Row Scripts Storage Location",
                 QuickUnityEditorApplication.AssetsFolderName);
-            m_preferencesData.dataTableRowScriptsStorageLocation = Utils.EditorUtil.ConvertToAssetPath(m_preferencesData.dataTableRowScriptsStorageLocation);
+            preferencesData.DataTableRowScriptsStorageLocation = Utils.EditorUtil.ConvertToAssetPath(preferencesData.DataTableRowScriptsStorageLocation);
 
             // Check scripts storage location.
-            if (!string.IsNullOrEmpty(m_preferencesData.dataTableRowScriptsStorageLocation)
-                && m_preferencesData.dataTableRowScriptsStorageLocation.IndexOf(QuickUnityEditorApplication.AssetsFolderName) != 0)
+            if (!string.IsNullOrEmpty(preferencesData.DataTableRowScriptsStorageLocation)
+                && preferencesData.DataTableRowScriptsStorageLocation.IndexOf(QuickUnityEditorApplication.AssetsFolderName) != 0)
             {
                 QuickUnityEditorApplication.DisplaySimpleDialog("", DialogMessages.MakeSureScriptsStorageLocationInProjectMessage, () =>
                 {
-                    m_preferencesData.dataTableRowScriptsStorageLocation = null;
+                    preferencesData.DataTableRowScriptsStorageLocation = null;
                 });
             }
 
             GUILayout.Space(2.5f);
-            m_preferencesData.autoGenerateScriptsNamespace = EditorGUILayout.Toggle(Styles.autoGenerateScriptsNamespaceStyle, m_preferencesData.autoGenerateScriptsNamespace);
+            preferencesData.AutoGenerateScriptsNamespace = EditorGUILayout.Toggle(Styles.AutoGenerateScriptsNamespaceStyle, preferencesData.AutoGenerateScriptsNamespace);
             GUILayout.Space(2.5f);
-            EditorGUI.BeginDisabledGroup(m_preferencesData.autoGenerateScriptsNamespace);
-            m_preferencesData.dataTableRowScriptsNamespace = EditorGUILayout.TextField(Styles.dataTableRowScriptsNamespaceStyle, m_preferencesData.dataTableRowScriptsNamespace);
+            EditorGUI.BeginDisabledGroup(preferencesData.AutoGenerateScriptsNamespace);
+            preferencesData.DataTableRowScriptsNamespace = EditorGUILayout.TextField(Styles.DataTableRowScriptsNamespaceStyle, preferencesData.DataTableRowScriptsNamespace);
 
             // Handle empty namespace.
-            if (m_preferencesData.autoGenerateScriptsNamespace)
+            if (preferencesData.AutoGenerateScriptsNamespace)
             {
-                m_preferencesData.dataTableRowScriptsNamespace = null;
+                preferencesData.DataTableRowScriptsNamespace = null;
             }
-            else if (string.IsNullOrEmpty(m_preferencesData.dataTableRowScriptsNamespace))
+            else if (string.IsNullOrEmpty(preferencesData.DataTableRowScriptsNamespace))
             {
-                m_preferencesData.dataTableRowScriptsNamespace = DataTablePreferences.DefaultNamespace;
+                preferencesData.DataTableRowScriptsNamespace = DataTablePreferences.DefaultNamespace;
             }
 
             EditorGUI.EndDisabledGroup();
             GUILayout.Space(2.5f);
-            m_preferencesData.dataRowsStartRow = EditorGUILayout.IntField(Styles.dataRowsStartRowStyle, m_preferencesData.dataRowsStartRow);
-            m_preferencesData.dataRowsStartRow = Math.Max(m_preferencesData.dataRowsStartRow, DataTablePreferences.MinDataRowsStartRow);
+            preferencesData.DataRowsStartRow = EditorGUILayout.IntField(Styles.DataRowsStartRowStyle, preferencesData.DataRowsStartRow);
+            preferencesData.DataRowsStartRow = Math.Max(preferencesData.DataRowsStartRow, DataTablePreferences.MinDataRowsStartRow);
             GUILayout.Space(10);
             GUILayout.EndVertical();
             GUILayout.Space(10);
@@ -233,12 +232,12 @@ namespace QuickUnityEditor.Data
         /// </summary>
         private void OnDestroy()
         {
-            if (m_lastDataTablesStorageLocation != m_preferencesData.dataTablesStorageLocation)
+            if (lastDataTablesStorageLocation != preferencesData.DataTablesStorageLocation)
             {
-                MoveDbFiles(m_lastDataTablesStorageLocation, m_preferencesData.dataTablesStorageLocation);
+                MoveDbFiles(lastDataTablesStorageLocation, preferencesData.DataTablesStorageLocation);
             }
 
-            SavePreferenceData(m_preferencesData);
+            SavePreferenceData(preferencesData);
         }
 
         #endregion Messages
@@ -248,10 +247,10 @@ namespace QuickUnityEditor.Data
         /// </summary>
         private void CalculateLabelWidth()
         {
-            SetEditorLabelWidth(EditorStyles.popup, Styles.dataTablesStorageLocationStyle);
-            SetEditorLabelWidth(EditorStyles.label, Styles.dataRowScriptsStorageLocationStyle);
-            SetEditorLabelWidth(EditorStyles.toggle, Styles.autoGenerateScriptsNamespaceStyle);
-            SetEditorLabelWidth(EditorStyles.textField, Styles.dataTableRowScriptsNamespaceStyle);
+            SetEditorLabelWidth(EditorStyles.popup, Styles.DataTablesStorageLocationStyle);
+            SetEditorLabelWidth(EditorStyles.label, Styles.DataRowScriptsStorageLocationStyle);
+            SetEditorLabelWidth(EditorStyles.toggle, Styles.AutoGenerateScriptsNamespaceStyle);
+            SetEditorLabelWidth(EditorStyles.textField, Styles.DataTableRowScriptsNamespaceStyle);
         }
 
         /// <summary>
@@ -276,7 +275,7 @@ namespace QuickUnityEditor.Data
         /// <param name="newLocation">The new location.</param>
         private void MoveDbFiles(DataTableStorageLocation oldLocation, DataTableStorageLocation newLocation)
         {
-            string oldPath = DataImport.dataTablesLocationMap[oldLocation];
+            string oldPath = DataImport.DataTablesLocationMap[oldLocation];
 
             if (!Directory.Exists(oldPath))
             {
@@ -288,7 +287,7 @@ namespace QuickUnityEditor.Data
             if (filePaths != null && filePaths.Length > 0)
             {
                 // Check new path.
-                string newPath = DataImport.dataTablesLocationMap[newLocation];
+                string newPath = DataImport.DataTablesLocationMap[newLocation];
 
                 if (!Directory.Exists(newPath))
                 {
@@ -306,7 +305,7 @@ namespace QuickUnityEditor.Data
                         if (newLocation == DataTableStorageLocation.ResourcesPath)
                         {
                             // Files move to Resources folder need to be renamed.
-                            if (fileInfo.Extension == DataImport.BoxDbFileExtension)
+                            if (fileInfo.Extension == DataImport.boxDbFileExtension)
                             {
                                 string destPath = Path.Combine(newPath, fileInfo.GetFileNameWithoutExtension() + QuickUnityEditorApplication.BytesAssetFileExtension);
                                 File.Move(filePath, destPath);
@@ -317,7 +316,7 @@ namespace QuickUnityEditor.Data
                             // Files move from Resources folder also need to be renamed.
                             if (fileInfo.Extension == QuickUnityEditorApplication.BytesAssetFileExtension)
                             {
-                                string destPath = Path.Combine(newPath, fileInfo.GetFileNameWithoutExtension() + DataImport.BoxDbFileExtension);
+                                string destPath = Path.Combine(newPath, fileInfo.GetFileNameWithoutExtension() + DataImport.boxDbFileExtension);
                                 File.Move(filePath, destPath);
                             }
                         }

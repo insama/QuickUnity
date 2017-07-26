@@ -14,12 +14,12 @@ namespace QuickUnity.Tests.IntegrationTests
         /// <summary>
         /// The image path.
         /// </summary>
-        private static readonly string k_imagePath = Application.streamingAssetsPath + "/text.txt";
+        private static readonly string imagePath = Application.streamingAssetsPath + "/text.txt";
 
         /// <summary>
         /// The FileStream object.
         /// </summary>
-        private FileStream m_fileStream;
+        private FileStream fileStream;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ThreadTextReader"/> class.
@@ -35,8 +35,8 @@ namespace QuickUnity.Tests.IntegrationTests
         public void BeginRead()
         {
             byte[] buffer = new byte[204800];
-            m_fileStream = new FileStream(k_imagePath, FileMode.Open, FileAccess.Read);
-            m_fileStream.BeginRead(buffer, 0, buffer.Length, new System.AsyncCallback(AsyncReadCallback), this);
+            fileStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read);
+            fileStream.BeginRead(buffer, 0, buffer.Length, new System.AsyncCallback(AsyncReadCallback), this);
         }
 
         /// <summary>
@@ -45,11 +45,11 @@ namespace QuickUnity.Tests.IntegrationTests
         /// <param name="asyncResult">The asynchronous result.</param>
         private void AsyncReadCallback(IAsyncResult asyncResult)
         {
-            if (m_fileStream != null)
+            if (fileStream != null)
             {
-                m_fileStream.EndRead(asyncResult);
-                m_fileStream.Close();
-                m_fileStream = null;
+                fileStream.EndRead(asyncResult);
+                fileStream.Close();
+                fileStream = null;
                 DispatchEvent(new TestEvent(TestEvent.Complete));
             }
         }

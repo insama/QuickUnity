@@ -59,17 +59,17 @@ namespace QuickUnity.Data
         /// <summary>
         /// The field.
         /// </summary>
-        public string field;
+        public string Field;
 
         /// <summary>
         /// The value.
         /// </summary>
-        public object value;
+        public object Value;
 
         /// <summary>
         /// The query operator.
         /// </summary>
-        public BoxDBQueryOperator queryOperator;
+        public BoxDBQueryOperator QueryOperator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BoxDBQueryCondition"/> struct.
@@ -79,9 +79,9 @@ namespace QuickUnity.Data
         /// <param name="queryOperator">The query operator.</param>
         public BoxDBQueryCondition(string field, object value, BoxDBQueryOperator queryOperator = BoxDBQueryOperator.Equal)
         {
-            this.field = field;
-            this.value = value;
-            this.queryOperator = queryOperator;
+            Field = field;
+            Value = value;
+            QueryOperator = queryOperator;
         }
     }
 
@@ -94,12 +94,12 @@ namespace QuickUnity.Data
         /// <summary>
         /// The default multi condition operator.
         /// </summary>
-        private const BoxDBMultiConditionOperator DefaultMultiConditionOperator = BoxDBMultiConditionOperator.And;
+        private const BoxDBMultiConditionOperator defaultMultiConditionOperator = BoxDBMultiConditionOperator.And;
 
         /// <summary>
         /// The query operator map.
         /// </summary>
-        private static readonly Dictionary<BoxDBQueryOperator, string> s_queryOpMap =
+        private static readonly Dictionary<BoxDBQueryOperator, string> queryOperators =
             new Dictionary<BoxDBQueryOperator, string>()
         {
             { BoxDBQueryOperator.Equal, "==" },
@@ -113,7 +113,7 @@ namespace QuickUnity.Data
         /// <summary>
         /// The multi-condition operator map.
         /// </summary>
-        private static readonly Dictionary<BoxDBMultiConditionOperator, string> s_multiConditionOpMap =
+        private static readonly Dictionary<BoxDBMultiConditionOperator, string> multiConditionOperators =
             new Dictionary<BoxDBMultiConditionOperator, string>()
         {
                 { BoxDBMultiConditionOperator.And, " &" },
@@ -123,13 +123,13 @@ namespace QuickUnity.Data
         /// <summary>
         /// The database server.
         /// </summary>
-        protected DB m_dbServer;
+        private DB dbServer;
 
         /// <summary>
         /// Gets the database server.
         /// </summary>
         /// <value>The database server.</value>
-        public DB dbServer
+        public DB DbServer
         {
             get { return dbServer; }
         }
@@ -137,15 +137,15 @@ namespace QuickUnity.Data
         /// <summary>
         /// The database.
         /// </summary>
-        protected AutoBox m_database;
+        private AutoBox database;
 
         /// <summary>
         /// Gets the database.
         /// </summary>
         /// <value>The database.</value>
-        public AutoBox database
+        public AutoBox Database
         {
-            get { return m_database; }
+            get { return database; }
         }
 
         /// <summary>
@@ -156,9 +156,9 @@ namespace QuickUnity.Data
         public BoxDBAdapter(string dbPath, byte[] bin)
         {
             DB.Root(dbPath);
-            m_dbServer = new DB(bin);
-            m_dbServer.MinConfig();
-            m_dbServer.GetConfig().DBConfig.FileIncSize = 1;
+            dbServer = new DB(bin);
+            dbServer.MinConfig();
+            dbServer.GetConfig().DBConfig.FileIncSize = 1;
         }
 
         /// <summary>
@@ -169,9 +169,9 @@ namespace QuickUnity.Data
         public BoxDBAdapter(string dbPath, long dbDestAddr = 1)
         {
             DB.Root(dbPath);
-            m_dbServer = new DB(dbDestAddr, dbPath);
-            m_dbServer.MinConfig();
-            m_dbServer.GetConfig().DBConfig.FileIncSize = 1;
+            dbServer = new DB(dbDestAddr, dbPath);
+            dbServer.MinConfig();
+            dbServer.GetConfig().DBConfig.FileIncSize = 1;
         }
 
         /// <summary>
@@ -195,9 +195,9 @@ namespace QuickUnity.Data
         {
             try
             {
-                if (m_dbServer != null)
+                if (dbServer != null)
                 {
-                    return m_dbServer.GetConfig().EnsureTable<T>(tableName, names);
+                    return dbServer.GetConfig().EnsureTable<T>(tableName, names);
                 }
             }
             catch (Exception exception)
@@ -213,11 +213,11 @@ namespace QuickUnity.Data
         /// </summary>
         public void Open()
         {
-            if (m_dbServer != null)
+            if (dbServer != null)
             {
                 try
                 {
-                    m_database = m_dbServer.Open();
+                    database = dbServer.Open();
                 }
                 catch (Exception exception)
                 {
@@ -234,9 +234,9 @@ namespace QuickUnity.Data
         /// <returns>The new identifier.</returns>
         public long MakeNewId(byte name = 0, long step = 1)
         {
-            if (m_database != null)
+            if (database != null)
             {
-                return m_database.NewId(name, step);
+                return database.NewId(name, step);
             }
 
             return 0;
@@ -251,9 +251,9 @@ namespace QuickUnity.Data
         {
             try
             {
-                if (m_database != null)
+                if (database != null)
                 {
-                    return m_database.SelectCount(string.Format("from {0}", tableName));
+                    return database.SelectCount(string.Format("from {0}", tableName));
                 }
             }
             catch (Exception exception)
@@ -276,14 +276,14 @@ namespace QuickUnity.Data
         {
             try
             {
-                if (m_database != null)
+                if (database != null)
                 {
                     object[] values;
                     string sql = GenerateMultiConditionQuerySQL(out values, tableName, conditions, multiConditionOperators);
 
                     if (!string.IsNullOrEmpty(sql))
                     {
-                        return m_database.SelectCount(sql, values);
+                        return database.SelectCount(sql, values);
                     }
                 }
             }
@@ -306,9 +306,9 @@ namespace QuickUnity.Data
         {
             try
             {
-                if (m_database != null)
+                if (database != null)
                 {
-                    return m_database.SelectKey<T>(tableName, primaryKeyValue);
+                    return database.SelectKey<T>(tableName, primaryKeyValue);
                 }
             }
             catch (Exception exception)
@@ -332,14 +332,14 @@ namespace QuickUnity.Data
         {
             try
             {
-                if (m_database != null)
+                if (database != null)
                 {
                     object[] values;
                     string sql = GenerateMultiConditionQuerySQL(out values, tableName, conditions, multiConditionOperators);
 
                     if (!string.IsNullOrEmpty(sql))
                     {
-                        IBEnumerable<T> items = m_database.Select<T>(sql, values);
+                        IBEnumerable<T> items = database.Select<T>(sql, values);
                         return new List<T>(items);
                     }
                 }
@@ -362,14 +362,14 @@ namespace QuickUnity.Data
         {
             try
             {
-                if (m_database != null)
+                if (database != null)
                 {
                     object[] values;
                     string sql = GenerateMultiConditionQuerySQL(out values, tableName);
 
                     if (!string.IsNullOrEmpty(sql))
                     {
-                        IBEnumerable<T> items = m_database.Select<T>(sql, values);
+                        IBEnumerable<T> items = database.Select<T>(sql, values);
                         return new List<T>(items);
                     }
                 }
@@ -393,9 +393,9 @@ namespace QuickUnity.Data
         {
             try
             {
-                if (m_database != null && values != null)
+                if (database != null && values != null)
                 {
-                    using (IBox box = m_database.Cube())
+                    using (IBox box = database.Cube())
                     {
                         for (int i = 0, length = values.Length; i < length; ++i)
                         {
@@ -435,9 +435,9 @@ namespace QuickUnity.Data
         {
             try
             {
-                if (m_database != null && values != null)
+                if (database != null && values != null)
                 {
-                    using (IBox box = m_database.Cube())
+                    using (IBox box = database.Cube())
                     {
                         for (int i = 0, length = values.Length; i < length; ++i)
                         {
@@ -476,9 +476,9 @@ namespace QuickUnity.Data
         {
             try
             {
-                if (m_database != null && primaryKeyValues != null)
+                if (database != null && primaryKeyValues != null)
                 {
-                    using (IBox box = m_database.Cube())
+                    using (IBox box = database.Cube())
                     {
                         for (int i = 0, length = primaryKeyValues.Length; i < length; ++i)
                         {
@@ -512,13 +512,13 @@ namespace QuickUnity.Data
         /// </summary>
         public void Close()
         {
-            if (m_dbServer != null)
+            if (dbServer != null)
             {
                 try
                 {
-                    if (!m_dbServer.IsClosed())
+                    if (!dbServer.IsClosed())
                     {
-                        m_dbServer.Close();
+                        dbServer.Close();
                     }
                 }
                 catch (Exception exception)
@@ -563,24 +563,24 @@ namespace QuickUnity.Data
                 for (int i = 0, length = conditions.Count; i < length; i++)
                 {
                     BoxDBQueryCondition condition = conditions[i];
-                    string queryOpString = s_queryOpMap[condition.queryOperator];
-                    sql += string.Format(" {0}{1}?", condition.field, queryOpString);
+                    string queryOpString = queryOperators[condition.QueryOperator];
+                    sql += string.Format(" {0}{1}?", condition.Field, queryOpString);
 
                     if (i < length - 1)
                     {
-                        BoxDBMultiConditionOperator multiConditionOpString = DefaultMultiConditionOperator;
+                        BoxDBMultiConditionOperator multiConditionOpString = defaultMultiConditionOperator;
 
                         if (multiConditionOperators != null && i < multiConditionOperators.Count)
                         {
                             multiConditionOpString = multiConditionOperators[i];
                         }
 
-                        sql += s_multiConditionOpMap[multiConditionOpString];
+                        sql += BoxDBAdapter.multiConditionOperators[multiConditionOpString];
                     }
 
                     if (values != null)
                     {
-                        values[i] = condition.value;
+                        values[i] = condition.Value;
                     }
                 }
             }
@@ -601,12 +601,12 @@ namespace QuickUnity.Data
             {
                 Close();
 
-                if (m_dbServer != null)
+                if (dbServer != null)
                 {
-                    m_dbServer.Dispose();
+                    dbServer.Dispose();
                 }
 
-                m_dbServer = null;
+                dbServer = null;
             }
         }
 

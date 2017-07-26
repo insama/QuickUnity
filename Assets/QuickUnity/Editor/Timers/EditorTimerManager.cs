@@ -34,7 +34,8 @@ using CSharpExtensions.Patterns.Singleton;
 namespace QuickUnityEditor
 {
     /// <summary>
-    /// The EditorTimerManager is a convenience class for managing editor timer systems. This class cannot be inherited.
+    /// The EditorTimerManager is a convenience class for managing editor timer systems. This class
+    /// cannot be inherited.
     /// </summary>
     /// <seealso cref="SingletonBase{EditorTimerManager}"/>
     /// <seealso cref="ITimerCollection"/>
@@ -44,12 +45,12 @@ namespace QuickUnityEditor
         /// <summary>
         /// The last time.
         /// </summary>
-        private double m_lastTime = 0.0d;
+        private double lastTime = 0.0d;
 
         /// <summary>
         /// The timer list.
         /// </summary>
-        private ITimerList m_timerList;
+        private ITimerList timerList;
 
         /// <summary>
         /// Initializes static members of the <see cref="EditorTimerManager"/> class.
@@ -64,8 +65,8 @@ namespace QuickUnityEditor
         /// </summary>
         public void Initialize()
         {
-            m_lastTime = EditorApplication.timeSinceStartup;
-            m_timerList = new TimerList();
+            lastTime = EditorApplication.timeSinceStartup;
+            timerList = new TimerList();
             EditorApplication.update += OnEditorUpdate;
         }
 
@@ -79,9 +80,9 @@ namespace QuickUnityEditor
         {
             get
             {
-                if (m_timerList != null)
+                if (timerList != null)
                 {
-                    return m_timerList.Count;
+                    return timerList.Count;
                 }
 
                 return 0;
@@ -91,7 +92,9 @@ namespace QuickUnityEditor
         /// <summary>
         /// Gets a value indicating whether the <see cref="EditorTimerManager"/> is read-only.
         /// </summary>
-        /// <value><c>true</c> if the <see cref="EditorTimerManager"/> is read-only; otherwise, <c>false</c>.</value>
+        /// <value>
+        /// <c>true</c> if the <see cref="EditorTimerManager"/> is read-only; otherwise, <c>false</c>.
+        /// </value>
         bool ICollection<ITimer>.IsReadOnly
         {
             get
@@ -101,19 +104,20 @@ namespace QuickUnityEditor
         }
 
         /// <summary>
-        /// Copies the elements of the <see cref="EditorTimerManager"/> to an <see cref="System.Array"/>, starting at a particular <see
-        /// cref="System.Array"/> index.
+        /// Copies the elements of the <see cref="EditorTimerManager"/> to an <see
+        /// cref="System.Array"/>, starting at a particular <see cref="System.Array"/> index.
         /// </summary>
         /// <param name="array">
-        /// The one-dimensional <see cref="System.Array"/> that is the destination of the elements copied from <see cref="EditorTimerManager"/>. The
-        /// <see cref="System.Array"/> must have zero-based indexing.
+        /// The one-dimensional <see cref="System.Array"/> that is the destination of the elements
+        /// copied from <see cref="EditorTimerManager"/>. The <see cref="System.Array"/> must have
+        /// zero-based indexing.
         /// </param>
         /// <param name="arrayIndex">The zero-based index in <c>array</c> at which copying begins.</param>
         void ICollection<ITimer>.CopyTo(ITimer[] array, int arrayIndex)
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.CopyTo(array, arrayIndex);
+                timerList.CopyTo(array, arrayIndex);
             }
         }
 
@@ -123,9 +127,9 @@ namespace QuickUnityEditor
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         IEnumerator<ITimer> IEnumerable<ITimer>.GetEnumerator()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                return m_timerList.GetEnumerator();
+                return timerList.GetEnumerator();
             }
 
             return null;
@@ -137,9 +141,9 @@ namespace QuickUnityEditor
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                return m_timerList.GetEnumerator();
+                return timerList.GetEnumerator();
             }
 
             return null;
@@ -148,12 +152,14 @@ namespace QuickUnityEditor
         /// <summary>
         /// Adds an <see cref="QuickUnity.Timers.ITimer"/> item to the <see cref="QuickUnity.Timers.ITimerCollection"/>.
         /// </summary>
-        /// <param name="item">The <see cref="QuickUnity.Timers.ITimer"/> object to add to the <see cref="QuickUnity.Timers.ITimerCollection"/>.</param>
+        /// <param name="item">
+        /// The <see cref="QuickUnity.Timers.ITimer"/> object to add to the <see cref="QuickUnity.Timers.ITimerCollection"/>.
+        /// </param>
         public void Add(ITimer item)
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.Add(item);
+                timerList.Add(item);
             }
         }
 
@@ -162,24 +168,28 @@ namespace QuickUnityEditor
         /// </summary>
         public void Clear()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.Clear();
+                timerList.Clear();
             }
         }
 
         /// <summary>
-        /// Determines whether the <see cref="QuickUnity.Timers.ITimerCollection"/>. contains a specific <see cref="QuickUnity.Timers.ITimer"/> object.
+        /// Determines whether the <see cref="QuickUnity.Timers.ITimerCollection"/>. contains a
+        /// specific <see cref="QuickUnity.Timers.ITimer"/> object.
         /// </summary>
-        /// <param name="item">The <see cref="QuickUnity.Timers.ITimer"/> object to locate in the <see cref="QuickUnity.Timers.ITimerCollection"/>.</param>
+        /// <param name="item">
+        /// The <see cref="QuickUnity.Timers.ITimer"/> object to locate in the <see cref="QuickUnity.Timers.ITimerCollection"/>.
+        /// </param>
         /// <returns>
-        /// <c>true</c> if <see cref="QuickUnity.Timers.ITimer"/> item is found in the <see cref="QuickUnity.Timers.ITimerCollection"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if <see cref="QuickUnity.Timers.ITimer"/> item is found in the <see
+        /// cref="QuickUnity.Timers.ITimerCollection"/>; otherwise, <c>false</c>.
         /// </returns>
         public bool Contains(ITimer item)
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                return m_timerList.Contains(item);
+                return timerList.Contains(item);
             }
 
             return false;
@@ -190,14 +200,15 @@ namespace QuickUnityEditor
         /// </summary>
         /// <param name="item">The object to remove from the <see cref="QuickUnity.Timers.ITimerCollection"/>.</param>
         /// <returns>
-        /// <c>true</c> if item was successfully removed from the <see cref="QuickUnity.Timers.ITimerCollection"/>; otherwise, <c>false</c>. This
-        /// method also returns <c>false</c> if item is not found in the original <see cref="QuickUnity.Timers.ITimerCollection"/>.
+        /// <c>true</c> if item was successfully removed from the <see
+        /// cref="QuickUnity.Timers.ITimerCollection"/>; otherwise, <c>false</c>. This method also
+        /// returns <c>false</c> if item is not found in the original <see cref="QuickUnity.Timers.ITimerCollection"/>.
         /// </returns>
         public bool Remove(ITimer item)
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                return m_timerList.Remove(item);
+                return timerList.Remove(item);
             }
 
             return false;
@@ -215,9 +226,9 @@ namespace QuickUnityEditor
         /// </summary>
         public void ResetAll()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.ResetAll();
+                timerList.ResetAll();
             }
         }
 
@@ -226,9 +237,9 @@ namespace QuickUnityEditor
         /// </summary>
         public void ResumeAll()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.ResumeAll();
+                timerList.ResumeAll();
             }
         }
 
@@ -236,14 +247,15 @@ namespace QuickUnityEditor
         /// Sets all timers in the <see cref="QuickUnity.Timers.ITimerCollection"/> to be enabled or not.
         /// </summary>
         /// <param name="value">
-        /// Set to <c>true</c> to enable all timers in the <see cref="QuickUnity.Timers.ITimerCollection"/> control to trigger their timer event;
+        /// Set to <c>true</c> to enable all timers in the <see
+        /// cref="QuickUnity.Timers.ITimerCollection"/> control to trigger their timer event;
         /// otherwise, set to <c>false</c>.
         /// </param>
         public void SetAllEnabled(bool value = true)
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.SetAllEnabled(value);
+                timerList.SetAllEnabled(value);
             }
         }
 
@@ -252,9 +264,9 @@ namespace QuickUnityEditor
         /// </summary>
         public void StartAll()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.StartAll();
+                timerList.StartAll();
             }
         }
 
@@ -263,9 +275,9 @@ namespace QuickUnityEditor
         /// </summary>
         public void StopAll()
         {
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.StopAll();
+                timerList.StopAll();
             }
         }
 
@@ -278,16 +290,16 @@ namespace QuickUnityEditor
         /// </summary>
         private void OnEditorUpdate()
         {
-            float deltaTime = (float)(EditorApplication.timeSinceStartup - m_lastTime);
-            m_lastTime = EditorApplication.timeSinceStartup;
+            float deltaTime = (float)(EditorApplication.timeSinceStartup - lastTime);
+            lastTime = EditorApplication.timeSinceStartup;
 
-            if (m_timerList != null)
+            if (timerList != null)
             {
-                m_timerList.ForEach((timer) =>
+                timerList.ForEach((timer) =>
                 {
                     try
                     {
-                        if (!timer.ignoreTimeScale)
+                        if (!timer.IgnoreTimeScale)
                         {
                             deltaTime = deltaTime * Time.timeScale;
                         }

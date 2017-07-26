@@ -25,13 +25,13 @@
 namespace QuickUnityEditor.Data.Parsers
 {
     /// <summary>
-    /// The parser of type System.SByte[].
+    /// The parser of Type System.SByte[].
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.SByte[]}"/>
     internal class SByteArrayTypeParser : TypeParser<sbyte[]>
     {
         /// <summary>
-        /// The type keyword.
+        /// The Type keyword.
         /// </summary>
         public const string TypeKeyword = "sbyte[]";
 

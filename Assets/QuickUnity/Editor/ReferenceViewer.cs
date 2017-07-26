@@ -49,7 +49,7 @@ namespace QuickUnityEditor
         /// <summary>
         /// The singleton instance of ReferenceViewer.
         /// </summary>
-        private static ReferenceViewer s_referenceViewer;
+        private static ReferenceViewer referenceViewer;
 
         /// <summary>
         /// Shows the reference viewer.
@@ -57,27 +57,27 @@ namespace QuickUnityEditor
         [MenuItem("Assets/Reference Viewer...", false, 21)]
         public static void ShowWindow()
         {
-            if (s_referenceViewer == null)
+            if (referenceViewer == null)
             {
-                s_referenceViewer = CreateInstance<ReferenceViewer>();
-                s_referenceViewer.titleContent = new GUIContent("Reference Viewer");
-                s_referenceViewer.minSize = new Vector2(500, 300);
+                referenceViewer = CreateInstance<ReferenceViewer>();
+                referenceViewer.titleContent = new GUIContent("Reference Viewer");
+                referenceViewer.minSize = new Vector2(500, 300);
             }
 
-            s_referenceViewer.ShowUtility();
-            s_referenceViewer.Focus();
-            s_referenceViewer.FindAllReferences();
+            referenceViewer.ShowUtility();
+            referenceViewer.Focus();
+            referenceViewer.FindAllReferences();
         }
 
         /// <summary>
         /// The references list map.
         /// </summary>
-        private Dictionary<string, ReorderableList> m_referencesListMap;
+        private Dictionary<string, ReorderableList> referencesListMap;
 
         /// <summary>
         /// The position of scroll view.
         /// </summary>
-        private Vector2 m_scrollViewPos;
+        private Vector2 scrollViewPosition;
 
         /// <summary>
         /// Finds all references.
@@ -105,12 +105,12 @@ namespace QuickUnityEditor
 
             if (referencesMap.Count > 0)
             {
-                m_referencesListMap = GenerateReferencesListMap(referencesMap);
+                referencesListMap = GenerateReferencesListMap(referencesMap);
                 Repaint();
             }
             else
             {
-                m_referencesListMap = null;
+                referencesListMap = null;
                 Repaint();
             }
         }
@@ -128,11 +128,11 @@ namespace QuickUnityEditor
 
             GUILayout.Space(20);
 
-            m_scrollViewPos = EditorGUILayout.BeginScrollView(m_scrollViewPos);
+            scrollViewPosition = EditorGUILayout.BeginScrollView(scrollViewPosition);
 
-            if (m_referencesListMap != null)
+            if (referencesListMap != null)
             {
-                foreach (KeyValuePair<string, ReorderableList> kvp in m_referencesListMap)
+                foreach (KeyValuePair<string, ReorderableList> kvp in referencesListMap)
                 {
                     EditorGUILayout.BeginVertical();
 

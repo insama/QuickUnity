@@ -13,15 +13,15 @@ namespace QuickUnity.Tests.IntegrationTests
         /// <summary>
         /// The image reader.
         /// </summary>
-        private ThreadTextReader m_threadImageReader;
+        private ThreadTextReader threadImageReader;
 
         /// <summary>
         /// Awake is called when the script instance is being loaded.
         /// </summary>
         private void Awake()
         {
-            m_threadImageReader = new ThreadTextReader();
-            m_threadImageReader.AddEventListener(TestEvent.Complete, OnThreadImageReaderComplete);
+            threadImageReader = new ThreadTextReader();
+            threadImageReader.AddEventListener(TestEvent.Complete, OnThreadImageReaderComplete);
         }
 
         /// <summary>
@@ -29,8 +29,8 @@ namespace QuickUnity.Tests.IntegrationTests
         /// </summary>
         private void Start()
         {
-            if (m_threadImageReader != null)
-                m_threadImageReader.BeginRead();
+            if (threadImageReader != null)
+                threadImageReader.BeginRead();
         }
 
         /// <summary>
@@ -38,10 +38,10 @@ namespace QuickUnity.Tests.IntegrationTests
         /// </summary>
         private void OnDestroy()
         {
-            if (m_threadImageReader != null)
+            if (threadImageReader != null)
             {
-                m_threadImageReader.RemoveEventListener(TestEvent.Complete, OnThreadImageReaderComplete);
-                m_threadImageReader = null;
+                threadImageReader.RemoveEventListener(TestEvent.Complete, OnThreadImageReaderComplete);
+                threadImageReader = null;
             }
         }
 
@@ -50,8 +50,8 @@ namespace QuickUnity.Tests.IntegrationTests
         /// </summary>
         private void Update()
         {
-            if (m_threadImageReader != null)
-                m_threadImageReader.Update();
+            if (threadImageReader != null)
+                threadImageReader.Update();
         }
 
         /// <summary>

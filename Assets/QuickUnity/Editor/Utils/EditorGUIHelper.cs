@@ -42,7 +42,7 @@ namespace QuickUnityEditor.Utils
             /// <summary>
             /// The style of path field.
             /// </summary>
-            public static readonly GUIStyle pathFieldStyle = new GUIStyle(EditorStyles.textField)
+            public static readonly GUIStyle PathFieldStyle = new GUIStyle(EditorStyles.textField)
             {
                 normal = {
                     background = EditorStyles.textField.normal.background,
@@ -54,7 +54,7 @@ namespace QuickUnityEditor.Utils
             /// <summary>
             /// The style of browse button.
             /// </summary>
-            public static readonly GUIStyle browseButtonStyle = new GUIStyle(EditorStyles.miniButton)
+            public static readonly GUIStyle BrowseButtonStyle = new GUIStyle(EditorStyles.miniButton)
             {
                 fixedWidth = 75,
                 fixedHeight = EditorStyles.miniButton.fixedHeight + 16
@@ -64,14 +64,14 @@ namespace QuickUnityEditor.Utils
         /// <summary>
         /// The cached GUI contents.
         /// </summary>
-        private static Dictionary<string, GUIContent> s_textGUIContents;
+        private static Dictionary<string, GUIContent> textGUIContents;
 
         /// <summary>
         /// Initializes static members of the <see cref="EditorGUIUtility"/> class.
         /// </summary>
         static EditorGUIHelper()
         {
-            s_textGUIContents = new Dictionary<string, GUIContent>();
+            textGUIContents = new Dictionary<string, GUIContent>();
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace QuickUnityEditor.Utils
 
             GUIContent guiContent = null;
 
-            if (!s_textGUIContents.ContainsKey(text))
+            if (!textGUIContents.ContainsKey(text))
             {
                 guiContent = new GUIContent(text);
 
@@ -98,11 +98,11 @@ namespace QuickUnityEditor.Utils
                     guiContent.tooltip = tooltip;
                 }
 
-                s_textGUIContents.Add(text, guiContent);
+                textGUIContents.Add(text, guiContent);
             }
             else
             {
-                guiContent = s_textGUIContents[text];
+                guiContent = textGUIContents[text];
             }
 
             return guiContent;
@@ -121,8 +121,8 @@ namespace QuickUnityEditor.Utils
         {
             string text = filePath;
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(label, new GUIContent(text), Styles.pathFieldStyle);
-            bool buttonClicked = GUILayout.Button("Browse...", Styles.browseButtonStyle);
+            EditorGUILayout.LabelField(label, new GUIContent(text), Styles.PathFieldStyle);
+            bool buttonClicked = GUILayout.Button("Browse...", Styles.BrowseButtonStyle);
 
             if (buttonClicked)
             {
@@ -151,8 +151,8 @@ namespace QuickUnityEditor.Utils
         {
             string text = filePath;
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(label, new GUIContent(text), Styles.pathFieldStyle);
-            bool buttonClicked = GUILayout.Button("Browse...", Styles.browseButtonStyle);
+            EditorGUILayout.LabelField(label, new GUIContent(text), Styles.PathFieldStyle);
+            bool buttonClicked = GUILayout.Button("Browse...", Styles.BrowseButtonStyle);
 
             if (buttonClicked)
             {

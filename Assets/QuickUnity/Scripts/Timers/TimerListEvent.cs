@@ -27,33 +27,34 @@ using CSharpExtensions.Events;
 namespace QuickUnity.Timers
 {
     /// <summary>
-    /// The TimerListEvent class represents event objects that are specific to the <see cref="TimerList"/> object.
+    /// The TimerListEvent class represents event objects that are specific to the <see
+    /// cref="Timers.TimerList"/> object.
     /// </summary>
     /// <seealso cref="QuickUnity.Events.Event"/>
     public class TimerListEvent : Event
     {
         /// <summary>
-        /// Dispatched whenever all timers of the <see cref="TimerList"/> object start to run.
+        /// Dispatched whenever all timers of the <see cref="Timers.TimerList"/> object start to run.
         /// </summary>
         public const string AllStart = "AllStart";
 
         /// <summary>
-        /// Dispatched whenever all timers of the <see cref="TimerList"/> object pause.
+        /// Dispatched whenever all timers of the <see cref="Timers.TimerList"/> object pause.
         /// </summary>
         public const string AllPause = "AllPause";
 
         /// <summary>
-        /// Dispatched whenever all timers of the <see cref="TimerList"/> object resume to run.
+        /// Dispatched whenever all timers of the <see cref="Timers.TimerList"/> object resume to run.
         /// </summary>
         public const string AllResume = "AllResume";
 
         /// <summary>
-        /// Dispatched whenever all timers of the <see cref="TimerList"/> object stop.
+        /// Dispatched whenever all timers of the <see cref="Timers.TimerList"/> object stop.
         /// </summary>
         public const string AllStop = "AllStop";
 
         /// <summary>
-        /// Dispatched whenever all timers of the <see cref="TimerList"/> object reset.
+        /// Dispatched whenever all timers of the <see cref="Timers.TimerList"/> object reset.
         /// </summary>
         public const string AllReset = "AllReset";
 
@@ -61,9 +62,9 @@ namespace QuickUnity.Timers
         /// Gets the <see cref="ITimerList"/> object.
         /// </summary>
         /// <value>The <see cref="ITimerList"/> object.</value>
-        public ITimerList timerList
+        public ITimerList TimerList
         {
-            get { return (ITimerList)m_Context; }
+            get { return (ITimerList)Context; }
         }
 
         /// <summary>

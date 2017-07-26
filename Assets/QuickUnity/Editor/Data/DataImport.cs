@@ -54,31 +54,31 @@ namespace QuickUnityEditor.Data
         private struct DataTableRowInfo
         {
             /// <summary>
-            /// The field name.
+            /// The name of the field.
             /// </summary>
-            public string fieldName;
+            public string FieldName;
 
             /// <summary>
-            /// The type string.
+            /// The type string of the data.
             /// </summary>
-            public string type;
+            public string Type;
 
             /// <summary>
             /// The comments.
             /// </summary>
-            public string comments;
+            public string Comments;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="DataTableRowInfo"/> struct.
             /// </summary>
-            /// <param name="fieldName">Name of the field.</param>
-            /// <param name="dataType">Type of the data.</param>
-            /// <param name="comments">The comments.</param>
+            /// <param name="fieldName">The name of the field.</param>
+            /// <param name="type">The type string of the data.</param>
+            /// <param name="comments">The comments string.</param>
             public DataTableRowInfo(string fieldName, string type, string comments)
             {
-                this.fieldName = fieldName;
-                this.type = type;
-                this.comments = comments;
+                FieldName = fieldName;
+                Type = type;
+                Comments = comments;
             }
         }
 
@@ -132,47 +132,47 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// The title of import progress bar.
         /// </summary>
-        private const string ImportProgressBarTitle = "Data Import Progress";
+        private const string importProgressBarTitle = "Data Import Progress";
 
         /// <summary>
         /// The generating scripts progress bar information
         /// </summary>
-        private const string GeneratingScriptsProgressBarInfo = "Generating Script file: {0}.cs... {1}/{2}";
+        private const string generatingScriptsProgressBarInfo = "Generating Script file: {0}.cs... {1}/{2}";
 
         /// <summary>
         /// The saving data progress bar information
         /// </summary>
-        private const string SavingDataProgressBarInfo = "Saving Data of {0}.. {1}/{2}";
+        private const string savingDataProgressBarInfo = "Saving Data of {0}.. {1}/{2}";
 
         /// <summary>
         /// The file name of DataTableRow script template.
         /// </summary>
-        private const string DataTableRowScriptTemplateFileName = "NewDataTableRowScript";
+        private const string dataTableRowScriptTemplateFileName = "NewDataTableRowScript";
 
         /// <summary>
         /// The extension of excel file.
         /// </summary>
-        private const string ExcelFileExtension = ".xls";
+        private const string excelFileExtension = ".xls";
 
         /// <summary>
         /// The extension of script file.
         /// </summary>
-        private const string ScriptFileExtension = ".cs";
+        private const string scriptFileExtension = ".cs";
 
         /// <summary>
         /// The extension of box database file.
         /// </summary>
-        public const string BoxDbFileExtension = ".box";
+        public const string boxDbFileExtension = ".box";
 
         /// <summary>
         /// The extension of database configuration file.
         /// </summary>
-        private const string DbConfigFileExtension = ".swp";
+        private const string dbConfigFileExtension = ".swp";
 
         /// <summary>
         /// The map of data tables location.
         /// </summary>
-        public static readonly Dictionary<DataTableStorageLocation, string> dataTablesLocationMap = new Dictionary<DataTableStorageLocation, string>()
+        public static readonly Dictionary<DataTableStorageLocation, string> DataTablesLocationMap = new Dictionary<DataTableStorageLocation, string>()
         {
             { DataTableStorageLocation.PersistentDataPath, Path.Combine(Application.persistentDataPath, DataTableManager.DataTablesStorageFolderName) },
             { DataTableStorageLocation.ResourcesPath, Path.Combine(Path.Combine(Application.dataPath, QuickUnityEditorApplication.ResourcesFolderName), DataTableManager.DataTablesStorageFolderName) },
@@ -182,54 +182,54 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// The search patterns of excel files.
         /// </summary>
-        private static readonly string s_excelFileSearchPatterns = string.Format("*{0}", ExcelFileExtension);
+        private static readonly string excelFileSearchPatterns = string.Format("*{0}", excelFileExtension);
 
         /// <summary>
-        /// The preference key of scriptsGenerated.
+        /// The preference key of ScriptsGenerated.
         /// </summary>
-        private static readonly string s_scriptsGeneratedPrefKey = string.Format("{0}_scriptsGenerated", PlayerSettings.productGUID.ToString());
+        private static readonly string scriptsGeneratedPrefKey = string.Format("{0}_scriptsGenerated", PlayerSettings.productGUID.ToString());
 
         /// <summary>
-        /// The preference key of excelFilesFolderPath.
+        /// The preference key of ExcelFilesPath.
         /// </summary>
-        private static readonly string s_excelFilesFolderPathPrefKey = string.Format("{0}_excelFilesFolderPath", PlayerSettings.productGUID.ToString());
+        private static readonly string excelFilesFolderPathPrefKey = string.Format("{0}_excelFilesFolderPath", PlayerSettings.productGUID.ToString());
 
         /// <summary>
-        /// The map of cached type parsers.
+        /// The map of cached Type parsers.
         /// </summary>
-        private static Dictionary<Type, ITypeParser> s_cachedTypeParsersMap;
+        private static Dictionary<Type, ITypeParser> cachedTypeParsersMap;
 
         /// <summary>
-        /// The scripts generated.
+        /// Gets or sets a value indicating whether scripts generated.
         /// </summary>
-        /// <value><c>true</c> if [scripts generated]; otherwise, <c>false</c>.</value>
-        public static bool scriptsGenerated
+        /// <value><c>true</c> if scripts generated; otherwise, <c>false</c>.</value>
+        public static bool ScriptsGenerated
         {
             get
             {
-                return EditorPrefs.GetBool(s_scriptsGeneratedPrefKey, false);
+                return EditorPrefs.GetBool(scriptsGeneratedPrefKey, false);
             }
 
             set
             {
-                EditorPrefs.SetBool(s_scriptsGeneratedPrefKey, value);
+                EditorPrefs.SetBool(scriptsGeneratedPrefKey, value);
             }
         }
 
         /// <summary>
-        /// Gets or sets the excel files folder path.
+        /// Gets or sets the path of excel files.
         /// </summary>
-        /// <value>The excel files folder path.</value>
-        public static string excelFilesFolderPath
+        /// <value>The path of excel files.</value>
+        public static string ExcelFilesPath
         {
             get
             {
-                return EditorPrefs.GetString(s_excelFilesFolderPathPrefKey, null);
+                return EditorPrefs.GetString(excelFilesFolderPathPrefKey, null);
             }
 
             set
             {
-                EditorPrefs.SetString(s_excelFilesFolderPathPrefKey, value);
+                EditorPrefs.SetString(excelFilesFolderPathPrefKey, value);
             }
         }
 
@@ -246,10 +246,10 @@ namespace QuickUnityEditor.Data
         /// </summary>
         private static void OnEditorUpdate()
         {
-            if (scriptsGenerated && !EditorApplication.isCompiling)
+            if (ScriptsGenerated && !EditorApplication.isCompiling)
             {
                 GenerateDBFiles();
-                scriptsGenerated = false;
+                ScriptsGenerated = false;
             }
         }
 
@@ -267,7 +267,7 @@ namespace QuickUnityEditor.Data
                 if (!string.IsNullOrEmpty(filesFolderPath))
                 {
                     Utils.EditorUtil.ClearConsole();
-                    excelFilesFolderPath = filesFolderPath;
+                    ExcelFilesPath = filesFolderPath;
                     GenerateDataTableRowScripts(filesFolderPath);
                 }
                 else
@@ -295,7 +295,7 @@ namespace QuickUnityEditor.Data
             }
 
             // Check preferences data is safe.
-            if (string.IsNullOrEmpty(preferencesData.dataTableRowScriptsStorageLocation))
+            if (string.IsNullOrEmpty(preferencesData.DataTableRowScriptsStorageLocation))
             {
                 QuickUnityEditorApplication.DisplaySimpleDialog("", DialogMessages.DataTableRowScriptsStorageLocationNullMessage, () =>
                 {
@@ -313,7 +313,7 @@ namespace QuickUnityEditor.Data
         /// <returns>The text content of template.</returns>
         private static string GetTplText()
         {
-            string[] assetPaths = Utils.EditorUtil.GetAssetPath(DataTableRowScriptTemplateFileName, "t:TextAsset");
+            string[] assetPaths = Utils.EditorUtil.GetAssetPath(dataTableRowScriptTemplateFileName, "t:TextAsset");
             string tplPath = null;
             string tplText = null;
 
@@ -351,14 +351,14 @@ namespace QuickUnityEditor.Data
 
             if (preferencesData)
             {
-                if (preferencesData.autoGenerateScriptsNamespace)
+                if (preferencesData.AutoGenerateScriptsNamespace)
                 {
                     // Generate namespace automatically.
                     namespaceString = GenerateNamespace(preferencesData);
                 }
                 else
                 {
-                    namespaceString = preferencesData.dataTableRowScriptsNamespace;
+                    namespaceString = preferencesData.DataTableRowScriptsNamespace;
                 }
             }
 
@@ -382,7 +382,7 @@ namespace QuickUnityEditor.Data
 
             if (preferencesData)
             {
-                string path = preferencesData.dataTableRowScriptsStorageLocation;
+                string path = preferencesData.DataTableRowScriptsStorageLocation;
                 path = path.Replace(Path.AltDirectorySeparatorChar, '.');
                 int index = path.IndexOf(QuickUnityEditorApplication.ScriptsFolderName);
 
@@ -453,15 +453,15 @@ namespace QuickUnityEditor.Data
 
             ForEachExcelFile(excelFilesFolderPath, (DataTable table, string fileName, int index, int length) =>
             {
-                EditorUtility.DisplayProgressBar(ImportProgressBarTitle,
-                    string.Format(GeneratingScriptsProgressBarInfo, fileName, index + 1, length), (float)(index + 1) / length);
+                EditorUtility.DisplayProgressBar(importProgressBarTitle,
+                    string.Format(generatingScriptsProgressBarInfo, fileName, index + 1, length), (float)(index + 1) / length);
                 List<DataTableRowInfo> rowInfos = GenerateDataTableRowInfos(table);
                 GenerateDataTableRowScript((string)tplText.Clone(), namespaceString, fileName, rowInfos);
             });
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            scriptsGenerated = true;
+            ScriptsGenerated = true;
         }
 
         /// <summary>
@@ -481,12 +481,12 @@ namespace QuickUnityEditor.Data
 
             if (preferencesData)
             {
-                if (!Directory.Exists(preferencesData.dataTableRowScriptsStorageLocation))
+                if (!Directory.Exists(preferencesData.DataTableRowScriptsStorageLocation))
                 {
-                    Directory.CreateDirectory(preferencesData.dataTableRowScriptsStorageLocation);
+                    Directory.CreateDirectory(preferencesData.DataTableRowScriptsStorageLocation);
                 }
 
-                string scriptFilePath = Path.Combine(preferencesData.dataTableRowScriptsStorageLocation, scriptName + ScriptFileExtension);
+                string scriptFilePath = Path.Combine(preferencesData.DataTableRowScriptsStorageLocation, scriptName + scriptFileExtension);
                 UnityEngine.Object scriptAsset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(scriptFilePath);
 
                 if (scriptAsset)
@@ -522,15 +522,15 @@ namespace QuickUnityEditor.Data
         /// </summary>
         private static void GenerateDBFiles()
         {
-            string path = excelFilesFolderPath;
+            string path = ExcelFilesPath;
             string namespaceString = GetNamespace();
 
             DeleteOldDBFiles();
 
             ForEachExcelFile(path, (DataTable table, string fileName, int index, int length) =>
             {
-                EditorUtility.DisplayProgressBar(ImportProgressBarTitle,
-                    string.Format(SavingDataProgressBarInfo, fileName, index + 1, length), (float)(index + 1) / length);
+                EditorUtility.DisplayProgressBar(importProgressBarTitle,
+                    string.Format(savingDataProgressBarInfo, fileName, index + 1, length), (float)(index + 1) / length);
                 List<DataTableRowInfo> rowInfos = GenerateDataTableRowInfos(table);
                 List<DataTableRow> collection = GenerateDataTableRowCollection(table, namespaceString, fileName, rowInfos);
 
@@ -546,7 +546,7 @@ namespace QuickUnityEditor.Data
                 }
                 else
                 {
-                    DebugLogger.LogErrorFormat(null, "Can not find the type: {0}", classFullName);
+                    DebugLogger.LogErrorFormat(null, "Can not find the Type: {0}", classFullName);
                 }
             });
 
@@ -581,7 +581,7 @@ namespace QuickUnityEditor.Data
             {
                 int rowCount = table.Rows.Count;
 
-                for (int i = preferencesData.dataRowsStartRow - 1; i < rowCount; ++i)
+                for (int i = preferencesData.DataRowsStartRow - 1; i < rowCount; ++i)
                 {
                     DataTableRow rowData = (DataTableRow)UnityReflectionUtil.CreateClassInstance(classFullName);
 
@@ -592,16 +592,16 @@ namespace QuickUnityEditor.Data
                         if (!string.IsNullOrEmpty(cellValue))
                         {
                             DataTableRowInfo rowInfo = rowInfos[j];
-                            ITypeParser typeParser = GetTypeParser(rowInfo.type);
+                            ITypeParser typeParser = GetTypeParser(rowInfo.Type);
 
                             if (typeParser != null)
                             {
                                 object value = typeParser.Parse(cellValue);
-                                ReflectionUtil.SetObjectFieldValue(rowData, rowInfo.fieldName, value);
+                                ReflectionUtil.SetObjectFieldValue(rowData, rowInfo.FieldName, value);
                             }
                             else
                             {
-                                Debug.LogWarningFormat("Type '{0}' is not supported!", rowInfo.type);
+                                Debug.LogWarningFormat("Type '{0}' is not supported!", rowInfo.Type);
                             }
                         }
                     }
@@ -629,11 +629,11 @@ namespace QuickUnityEditor.Data
                     DataTableRowInfo rowInfo = rowInfos[i];
                     fieldsString += string.Format("\t\t/// <summary>{0}\t\t/// {1}{2}\t\t/// </summary>{3}\t\tpublic {4} {5};",
                         Environment.NewLine,
-                        rowInfo.comments,
+                        rowInfo.Comments,
                         Environment.NewLine,
                         Environment.NewLine,
-                        rowInfo.type,
-                        rowInfo.fieldName);
+                        rowInfo.Type,
+                        rowInfo.FieldName);
 
                     if (i < length - 1)
                         fieldsString += Environment.NewLine + Environment.NewLine;
@@ -661,17 +661,17 @@ namespace QuickUnityEditor.Data
         }
 
         /// <summary>
-        /// Gets the type parser.
+        /// Gets the Type parser.
         /// </summary>
-        /// <param name="typeKeyword">The type keyword.</param>
-        /// <returns>The type parser.</returns>
+        /// <param name="typeKeyword">The Type keyword.</param>
+        /// <returns>The Type parser.</returns>
         private static ITypeParser GetTypeParser(string typeKeyword)
         {
             if (!string.IsNullOrEmpty(typeKeyword))
             {
-                if (s_cachedTypeParsersMap == null)
+                if (cachedTypeParsersMap == null)
                 {
-                    s_cachedTypeParsersMap = new Dictionary<Type, ITypeParser>();
+                    cachedTypeParsersMap = new Dictionary<Type, ITypeParser>();
                 }
 
                 Type type = TypeParserFactory.GetTypeParserType(typeKeyword);
@@ -679,20 +679,20 @@ namespace QuickUnityEditor.Data
 
                 if (type != null)
                 {
-                    if (s_cachedTypeParsersMap.ContainsKey(type))
+                    if (cachedTypeParsersMap.ContainsKey(type))
                     {
-                        typeParser = s_cachedTypeParsersMap[type];
+                        typeParser = cachedTypeParsersMap[type];
 
                         if (typeParser == null)
                         {
                             typeParser = TypeParserFactory.CreateTypeParser(typeKeyword);
-                            s_cachedTypeParsersMap[type] = typeParser;
+                            cachedTypeParsersMap[type] = typeParser;
                         }
                     }
                     else
                     {
                         typeParser = TypeParserFactory.CreateTypeParser(typeKeyword);
-                        s_cachedTypeParsersMap.Add(type, typeParser);
+                        cachedTypeParsersMap.Add(type, typeParser);
                     }
 
                     return typeParser;
@@ -717,7 +717,7 @@ namespace QuickUnityEditor.Data
             }
 
             DirectoryInfo dirInfo = new DirectoryInfo(folderPath);
-            FileInfo[] fileInfos = dirInfo.GetFiles(s_excelFileSearchPatterns, SearchOption.AllDirectories);
+            FileInfo[] fileInfos = dirInfo.GetFiles(excelFileSearchPatterns, SearchOption.AllDirectories);
 
             for (int i = 0, length = fileInfos.Length; i < length; ++i)
             {
@@ -735,7 +735,7 @@ namespace QuickUnityEditor.Data
                     {
                         fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
 
-                        if (fileExtension == ExcelFileExtension)
+                        if (fileExtension == excelFileExtension)
                         {
                             // '97-2003 format; *.xls
                             excelReader = ExcelReaderFactory.CreateBinaryReader(fileStream);
@@ -786,7 +786,7 @@ namespace QuickUnityEditor.Data
 
             if (preferencesData)
             {
-                string path = dataTablesLocationMap[preferencesData.dataTablesStorageLocation];
+                string path = DataTablesLocationMap[preferencesData.DataTablesStorageLocation];
 
                 // If directory doesn't exist, create it.
                 if (!Directory.Exists(path))
@@ -816,25 +816,25 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// Saves the data.
         /// </summary>
-        /// <typeparam name="T">The type definition of data.</typeparam>
+        /// <typeparam name="T">The Type definition of data.</typeparam>
         /// <param name="tableName">Name of the table.</param>
         /// <param name="rowInfos">The row infomation list.</param>
         /// <param name="collection">The data collection.</param>
         /// <param name="index">The index for database.</param>
         private static void SaveData<T>(string tableName, List<DataTableRowInfo> rowInfos, List<DataTableRow> collection, int index) where T : DataTableRow
         {
-            string primayFieldName = rowInfos[0].fieldName;
+            string primayFieldName = rowInfos[0].FieldName;
             BoxDBAdapter addressMapDbAdapter = GetAddressMapDBAdapter();
             DataTableAddressMap addressMap = new DataTableAddressMap();
-            addressMap.type = tableName;
-            addressMap.primaryFieldName = primayFieldName;
-            addressMap.localAddress = index + 2;
+            addressMap.Type = tableName;
+            addressMap.PrimaryFieldName = primayFieldName;
+            addressMap.LocalAddress = index + 2;
             bool success = addressMapDbAdapter.Insert(typeof(DataTableAddressMap).Name, addressMap);
 
             if (success)
             {
                 string dbPath = GetDBFilesPath();
-                BoxDBAdapter adpater = new BoxDBAdapter(dbPath, addressMap.localAddress);
+                BoxDBAdapter adpater = new BoxDBAdapter(dbPath, addressMap.LocalAddress);
                 adpater.EnsureTable<T>(tableName, primayFieldName);
                 adpater.Open();
 
@@ -860,13 +860,13 @@ namespace QuickUnityEditor.Data
         /// <returns>The database files path.</returns>
         private static string GetDBFilesPath()
         {
-            string path = dataTablesLocationMap[DataTableStorageLocation.PersistentDataPath];
+            string path = DataTablesLocationMap[DataTableStorageLocation.PersistentDataPath];
 
             DataTablePreferences preferencesData = DataTablePreferencesWindow.LoadPreferencesData();
 
             if (preferencesData)
             {
-                path = dataTablesLocationMap[preferencesData.dataTablesStorageLocation];
+                path = DataTablesLocationMap[preferencesData.DataTablesStorageLocation];
             }
 
             return path;
@@ -900,7 +900,7 @@ namespace QuickUnityEditor.Data
                     string filePath = filePaths[i];
                     FileInfo fileInfo = new FileInfo(filePath);
 
-                    if (fileInfo.Extension == DbConfigFileExtension)
+                    if (fileInfo.Extension == dbConfigFileExtension)
                     {
                         try
                         {
@@ -923,9 +923,9 @@ namespace QuickUnityEditor.Data
         {
             DataTablePreferences preferencesData = DataTablePreferencesWindow.LoadPreferencesData();
 
-            if (preferencesData && preferencesData.dataTablesStorageLocation == DataTableStorageLocation.ResourcesPath)
+            if (preferencesData && preferencesData.DataTablesStorageLocation == DataTableStorageLocation.ResourcesPath)
             {
-                string path = dataTablesLocationMap[preferencesData.dataTablesStorageLocation];
+                string path = DataTablesLocationMap[preferencesData.DataTablesStorageLocation];
                 string[] filePaths = Directory.GetFiles(path);
 
                 for (int i = 0, length = filePaths.Length; i < length; ++i)
@@ -933,7 +933,7 @@ namespace QuickUnityEditor.Data
                     string filePath = filePaths[i];
                     FileInfo fileInfo = new FileInfo(filePath);
 
-                    if (fileInfo.Extension == BoxDbFileExtension)
+                    if (fileInfo.Extension == boxDbFileExtension)
                     {
                         string newFileName = fileInfo.GetFileNameWithoutExtension() + QuickUnityEditorApplication.BytesAssetFileExtension;
                         fileInfo.Rename(newFileName);

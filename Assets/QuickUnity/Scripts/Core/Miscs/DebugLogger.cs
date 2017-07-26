@@ -37,43 +37,43 @@ namespace QuickUnity.Core.Miscs
         /// <summary>
         /// The log files folder name.
         /// </summary>
-        private const string LogFilesFolderName = "Logs";
+        private const string logFilesFolderName = "Logs";
 
         /// <summary>
         /// The log file extension.
         /// </summary>
-        private const string LogFileExtension = ".log";
+        private const string logFileExtension = ".log";
 
 #if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
 
         /// <summary>
         /// The log files root path
         /// </summary>
-        private static readonly string s_rootPath = Application.persistentDataPath;
+        private static readonly string rootPath = Application.persistentDataPath;
 
 #else
 
         /// <summary>
         /// The log files root path
         /// </summary>
-        private static readonly string s_rootPath = Directory.GetCurrentDirectory();
+        private static readonly string rootPath = Directory.GetCurrentDirectory();
 
 #endif
 
         /// <summary>
         /// The log files path.
         /// </summary>
-        private static readonly string s_logFilesPath = Path.Combine(s_rootPath, LogFilesFolderName);
+        private static readonly string logFilesPath = Path.Combine(rootPath, logFilesFolderName);
 
         /// <summary>
         /// Whether allow to write log messages into file.
         /// </summary>
-        public static bool logFileEnabled = true;
+        public static bool LogFileEnabled = true;
 
         /// <summary>
         /// Whether allow to show log messages in Console window.
         /// </summary>
-        public static bool showInConsole = true;
+        public static bool ShowInConsole = true;
 
         #region Public Static Functions
 
@@ -274,12 +274,12 @@ namespace QuickUnity.Core.Miscs
 
             string messageToShow = builder.ToString();
 
-            if (showInConsole)
+            if (ShowInConsole)
             {
                 Debug.logger.Log(logType, messageToShow, context);
             }
 
-            if (logFileEnabled)
+            if (LogFileEnabled)
             {
                 WriteIntoLogFile(messageToShow);
             }
@@ -295,7 +295,7 @@ namespace QuickUnity.Core.Miscs
             {
                 string dirPath = CheckPaths();
                 string timestamp = DateTime.Now.ToString("yyyyMMddHH");
-                string filePath = Path.Combine(dirPath, timestamp + LogFileExtension);
+                string filePath = Path.Combine(dirPath, timestamp + logFileExtension);
                 File.AppendAllText(filePath, message);
             }
             catch (Exception exception)
@@ -311,13 +311,13 @@ namespace QuickUnity.Core.Miscs
         private static string CheckPaths()
         {
             // Create log files path.
-            if (!Directory.Exists(s_logFilesPath))
+            if (!Directory.Exists(logFilesPath))
             {
-                Directory.CreateDirectory(s_logFilesPath);
+                Directory.CreateDirectory(logFilesPath);
             }
 
             string dateTime = DateTime.Now.ToString("yyyy-MM-dd");
-            string dirPath = Path.Combine(s_logFilesPath, dateTime);
+            string dirPath = Path.Combine(logFilesPath, dateTime);
 
             if (!Directory.Exists(dirPath))
             {

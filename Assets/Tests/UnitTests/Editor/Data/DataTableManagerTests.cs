@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
-using QuickUnity.Data;
 using System.Collections.Generic;
 using UnityEngine;
 using QuickUnity.Extensions;
+using Tests.UnitTests.Editor.Data;
 
 namespace QuickUnity.Data
 {
@@ -23,10 +23,10 @@ namespace QuickUnity.Data
 
             if (testData != null)
             {
-                if (testData.testVector2.ToVector2() == new Vector2(1, 2) &&
-                    testData.testVector3.ToVector3() == new Vector3(1, 2, 3) &&
-                    testData.testQuaternion.ToQuaternion() == new Quaternion(1, 2, 3, 4) &&
-                    testData.testInt == 2147483647)
+                if (testData.TestVector2.ToVector2() == new Vector2(1, 2) &&
+                    testData.TestVector3.ToVector3() == new Vector3(1, 2, 3) &&
+                    testData.TestQuaternion.ToQuaternion() == new Quaternion(1, 2, 3, 4) &&
+                    testData.TestInt == 2147483647)
                 {
                     Assert.Pass();
                 }
@@ -45,8 +45,8 @@ namespace QuickUnity.Data
         {
             List<BoxDBQueryCondition> conditions = new List<BoxDBQueryCondition>()
             {
-                new BoxDBQueryCondition("testUShort", (ushort)0),
-                new BoxDBQueryCondition("testBoolean", false)
+                new BoxDBQueryCondition("TestUShort", (ushort)0),
+                new BoxDBQueryCondition("TestBoolean", false)
             };
 
             List<BoxDBMultiConditionOperator> multiConditionOps = new List<BoxDBMultiConditionOperator>()
@@ -97,9 +97,9 @@ namespace QuickUnity.Data
         {
             List<BoxDBQueryCondition> conditions = new List<BoxDBQueryCondition>()
             {
-                new BoxDBQueryCondition("testInt", 2147483647),
-                new BoxDBQueryCondition("testBoolean", true),
-                new BoxDBQueryCondition("testUInt", (uint)0)
+                new BoxDBQueryCondition("TestInt", 2147483647),
+                new BoxDBQueryCondition("TestBoolean", true),
+                new BoxDBQueryCondition("TestUInt", (uint)0)
             };
 
             List<BoxDBMultiConditionOperator> multiConditionOps = new List<BoxDBMultiConditionOperator>()

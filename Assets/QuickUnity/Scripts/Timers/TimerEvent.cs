@@ -38,7 +38,8 @@ namespace QuickUnity.Timers
         public const string TimerStart = "TimerStart";
 
         /// <summary>
-        /// Dispatched whenever a Timer object reaches an interval specified according to the Timer.delay property.
+        /// Dispatched whenever a Timer object reaches an interval specified according to the
+        /// Timer.delay property.
         /// </summary>
         public const string Timer = "Timer";
 
@@ -71,10 +72,10 @@ namespace QuickUnity.Timers
         /// Gets or sets the timer object.
         /// </summary>
         /// <value>The timer object.</value>
-        public ITimer timer
+        public ITimer TimerObject
         {
-            get { return (ITimer)m_Context; }
-            set { m_Context = value; }
+            get { return (ITimer)Context; }
+            set { Context = value; }
         }
 
         /// <summary>

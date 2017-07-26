@@ -38,7 +38,7 @@ namespace QuickUnity.Net.Sockets
     /// <seealso cref="IThreadEventDispatcher"/>
     public class MonoTcpClient : TcpClientBase, IThreadEventDispatcher
     {
-        protected ThreadEventDispatcher m_eventDispatcher;
+        private ThreadEventDispatcher eventDispatcher;
 
         #region Constructors
 
@@ -48,37 +48,44 @@ namespace QuickUnity.Net.Sockets
         {
         }
 
-        /// <summary> Initializes a new instance of the <see cref="<see cref="Array"/>"/> class with the specified <see
-        /// cref="System.Net.Sockets.TcpClient"/> and the specified <see cref="ISocketPacketHandler"/>. </summary> <param name="client">The <see
-        /// cref="System.Net.Sockets.TcpClient"/> instance.</param> <param name="packetHandler">The <see cref="ISocketPacketHandler"/> to handle socket packet.</param>
+        /// <summary> Initializes a new instance of the <see cref="<see cref="Array"/>"/> class with
+        /// the specified <see cref="System.Net.Sockets.TcpClient"/> and the specified <see
+        /// cref="ISocketPacketHandler"/>. </summary> <param name="client">The <see
+        /// cref="System.Net.Sockets.TcpClient"/> instance.</param> <param name="packetHandler">The
+        /// <see cref="ISocketPacketHandler"/> to handle socket packet.</param>
         public MonoTcpClient(System.Net.Sockets.TcpClient client, ISocketPacketHandler packetHandler)
             : base(client, packetHandler)
         {
         }
 
-        /// <summary> Initializes a new instance of the <see cref="<see cref="Array"/>"/> class and binds it to the specified local endpoint.
-        /// </summary> <param name="localEP">The <see cref="IPEndPoint"/> to which you bind the TCP <see cref="Socket"/>.</param> <exception
+        /// <summary> Initializes a new instance of the <see cref="<see cref="Array"/>"/> class and
+        /// binds it to the specified local endpoint. </summary> <param name="localEP">The <see
+        /// cref="IPEndPoint"/> to which you bind the TCP <see cref="Socket"/>.</param> <exception
         /// cref="ArgumentNullException">The <c>localEP</c> parameter is <c>null</c>.</exception>
         public MonoTcpClient(IPEndPoint localEP)
             : base(localEP)
         {
         }
 
-        /// <summary> Initializes a new instance of the <see cref="<see cref="Array"/>"/> class with the specified family. </summary> <param
-        /// name="family">The <see cref="AddressFamily"/> of the IP protocol.</param> <exception cref="ArgumentException"> <para>The <c>family</c>
-        /// parameter is not equal to AddressFamily.InterNetwork.</para> <para>-or-</para> <para>The <c>family</c> parameter is not equal to
-        /// AddressFamily.InterNetworkV6.</para> </exception>
+        /// <summary> Initializes a new instance of the <see cref="<see cref="Array"/>"/> class with
+        /// the specified family. </summary> <param name="family">The <see cref="AddressFamily"/> of
+        /// the IP protocol.</param> <exception cref="ArgumentException"> <para>The <c>family</c>
+        /// parameter is not equal to AddressFamily.InterNetwork.</para> <para>-or-</para> <para>The
+        /// <c>family</c> parameter is not equal to AddressFamily.InterNetworkV6.</para> </exception>
         public MonoTcpClient(AddressFamily family)
             : base(family)
         {
         }
 
-        /// <summary> Initializes a new instance of the <see cref="<see cref="Array"/>"/> class and connects to the specified port on the specified
-        /// host. </summary> <param name="hostname">The DNS name of the remote host to which you intend to connect.</param> <param name="port">The port
-        /// number of the remote host to which you intend to connect.</param> <exception cref="ArgumentNullException">The <c>hostname</c> parameter is
-        /// <c>null</c>.</exception> <exception cref="ArgumentOutOfRangeException"> The <c>port</c> parameter is not between <see
-        /// cref="IPEndPoint.MinPort"/> and <see cref="IPEndPoint.MaxPort"/>. </exception> <exception cref="SocketException">An error occurred when
-        /// accessing the socket.</exception>
+        /// <summary> Initializes a new instance of the <see cref="<see cref="Array"/>"/> class and
+        /// connects to the specified port on the specified host. </summary> <param
+        /// name="hostname">The DNS name of the remote host to which you intend to connect.</param>
+        /// <param name="port">The port number of the remote host to which you intend to
+        /// connect.</param> <exception cref="ArgumentNullException">The <c>hostname</c> parameter is
+        /// <c>null</c>.</exception> <exception cref="ArgumentOutOfRangeException"> The <c>port</c>
+        /// parameter is not between <see cref="IPEndPoint.MinPort"/> and <see
+        /// cref="IPEndPoint.MaxPort"/>. </exception> <exception cref="SocketException">An error
+        /// occurred when accessing the socket.</exception>
         public MonoTcpClient(string hostname, int port)
             : base(hostname, port)
         {
@@ -91,7 +98,7 @@ namespace QuickUnity.Net.Sockets
         /// </summary>
         ~MonoTcpClient()
         {
-            m_eventDispatcher = null;
+            eventDispatcher = null;
         }
 
         #region Public Functions
@@ -102,7 +109,9 @@ namespace QuickUnity.Net.Sockets
         /// <param name="modeOn">if set to <c>true</c> [keepalive of TCP mode on].</param>
         /// <param name="keepaliveTime">The keepalive time in milliseconds.</param>
         /// <param name="keepaliveInterval">The keepalive interval in milliseconds.</param>
-        /// <exception cref="NotImplementedException">The <see cref="Socket.IOControl"/> didn't implement in Mono environment.</exception>
+        /// <exception cref="NotImplementedException">
+        /// The <see cref="Socket.IOControl"/> didn't implement in Mono environment.
+        /// </exception>
         public override void SetKeepalive(bool modeOn = true, int keepaliveTime = 5000, int keepaliveInterval = 75)
         {
             throw new NotImplementedException();
@@ -117,22 +126,23 @@ namespace QuickUnity.Net.Sockets
         /// </summary>
         public void Update()
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                m_eventDispatcher.Update();
+                eventDispatcher.Update();
             }
         }
 
         /// <summary>
-        /// Registers an event listener object with an EventDispatcher object so that the listener receives notification of an event.
+        /// Registers an event listener object with an EventDispatcher object so that the listener
+        /// receives notification of an event.
         /// </summary>
         /// <param name="eventType">The type of event.</param>
         /// <param name="listener">The listener function that processes the event.</param>
         public void AddEventListener(string eventType, Action<Event> listener)
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                m_eventDispatcher.AddEventListener(eventType, listener);
+                eventDispatcher.AddEventListener(eventType, listener);
             }
         }
 
@@ -142,23 +152,26 @@ namespace QuickUnity.Net.Sockets
         /// <param name="eventObject">The event object.</param>
         public void DispatchEvent(Event eventObject)
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                m_eventDispatcher.DispatchEvent(eventObject);
+                eventDispatcher.DispatchEvent(eventObject);
             }
         }
 
         /// <summary>
-        /// Checks whether the EventDispatcher object has any listeners registered for a specific type of event.
+        /// Checks whether the EventDispatcher object has any listeners registered for a specific
+        /// type of event.
         /// </summary>
         /// <param name="eventType">The type of event.</param>
         /// <param name="listener">The listener function that processes the event.</param>
-        /// <returns>A value of <c>true</c> if a listener of the specified type is registered; <c>false</c> otherwise.</returns>
+        /// <returns>
+        /// A value of <c>true</c> if a listener of the specified type is registered; <c>false</c> otherwise.
+        /// </returns>
         public bool HasEventListener(string eventType, Action<Event> listener)
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                return m_eventDispatcher.HasEventListener(eventType, listener);
+                return eventDispatcher.HasEventListener(eventType, listener);
             }
 
             return false;
@@ -171,9 +184,9 @@ namespace QuickUnity.Net.Sockets
         /// <param name="listener">The listener object to remove.</param>
         public void RemoveEventListener(string eventType, Action<Event> listener)
         {
-            if (m_eventDispatcher != null)
+            if (eventDispatcher != null)
             {
-                m_eventDispatcher.RemoveEventListener(eventType, listener);
+                eventDispatcher.RemoveEventListener(eventType, listener);
             }
         }
 
@@ -188,7 +201,7 @@ namespace QuickUnity.Net.Sockets
         {
             base.Initialize();
 
-            m_eventDispatcher = new ThreadEventDispatcher();
+            eventDispatcher = new ThreadEventDispatcher();
         }
 
         /// <summary>

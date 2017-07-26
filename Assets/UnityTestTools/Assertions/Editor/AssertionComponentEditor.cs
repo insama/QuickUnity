@@ -124,7 +124,7 @@ namespace UnityTest
 
         private void DrawCompareToType(ComparerBase comparer)
         {
-            comparer.compareToType = (ComparerBase.CompareToType)EditorGUILayout.EnumPopup("Compare to type",
+            comparer.compareToType = (ComparerBase.CompareToType)EditorGUILayout.EnumPopup("Compare to Type",
                                                                                            comparer.compareToType,
                                                                                            EditorStyles.popup);
 

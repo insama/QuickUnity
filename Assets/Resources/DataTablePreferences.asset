@@ -11,8 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 443a6976f0fa56b4d8e53c89fe18c0ad, type: 3}
   m_Name: DataTablePreferences
   m_EditorClassIdentifier: 
-  dataTablesStorageLocation: 0
-  dataTableRowScriptsStorageLocation: Assets/Tests/UnitTests/Editor/DataTables
-  autoGenerateScriptsNamespace: 1
-  dataTableRowScriptsNamespace: 
-  dataRowsStartRow: 4
+  DataTablesStorageLocation: 0
+  DataTableRowScriptsStorageLocation: Assets/Tests/UnitTests/Editor/Data
+  AutoGenerateScriptsNamespace: 1
+  DataTableRowScriptsNamespace: 
+  DataRowsStartRow: 4

@@ -182,7 +182,7 @@ namespace UnityTest
             var attributes = new Dictionary<string, string>
             {
                 {"name", resultsName},
-                {"type", "Assembly"},
+                {"Type", "Assembly"},
                 {"executed", "True"},
                 {"result", summaryResults.Success ? "Success" : "Failure"},
                 {"success", summaryResults.Success ? "True" : "False"},

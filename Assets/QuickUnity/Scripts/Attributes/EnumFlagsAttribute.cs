@@ -37,15 +37,15 @@ namespace QuickUnity.Attributes
         /// <summary>
         /// Caption/label for the attribute.
         /// </summary>
-        private string m_label;
+        private string label;
 
         /// <summary>
         /// Gets the caption/label for the attribute.
         /// </summary>
         /// <value>The caption/label for the attribute.</value>
-        public string label
+        public string Label
         {
-            get { return m_label; }
+            get { return label; }
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace QuickUnity.Attributes
         /// <param name="label">The label.</param>
         public EnumFlagsAttribute(string label)
         {
-            m_label = label;
+            this.label = label;
         }
     }
 }

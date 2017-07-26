@@ -37,7 +37,16 @@ namespace QuickUnity.Patterns.State
         /// <summary>
         /// The state machine object.
         /// </summary>
-        protected IStateMachine m_stateMachine;
+        private IStateMachine stateMachine;
+
+        /// <summary>
+        /// Gets the current <see cref="IState"/>.
+        /// </summary>
+        /// <value>The current <see cref="IState"/>.</value>
+        public IState CurrentState
+        {
+            get { return stateMachine.CurrentState; }
+        }
 
         #region Messages
 
@@ -48,7 +57,7 @@ namespace QuickUnity.Patterns.State
         {
             base.Awake();
 
-            m_stateMachine = new StateMachine();
+            stateMachine = new StateMachine();
         }
 
         /// <summary>
@@ -66,9 +75,9 @@ namespace QuickUnity.Patterns.State
         {
             base.OnDestroy();
 
-            if (m_stateMachine != null)
+            if (stateMachine != null)
             {
-                m_stateMachine = null;
+                stateMachine = null;
             }
         }
 
@@ -82,9 +91,9 @@ namespace QuickUnity.Patterns.State
         /// <param name="state">The state object.</param>
         public void SetState(IState state)
         {
-            if (m_stateMachine != null)
+            if (stateMachine != null)
             {
-                m_stateMachine.SetState(state);
+                stateMachine.SetState(state);
             }
         }
 
@@ -95,9 +104,9 @@ namespace QuickUnity.Patterns.State
         /// <param name="state">The state.</param>
         public void RegisterTransitionEvent(string eventType, IState state)
         {
-            if (m_stateMachine != null)
+            if (stateMachine != null)
             {
-                m_stateMachine.RegisterTransitionEvent(eventType, state);
+                stateMachine.RegisterTransitionEvent(eventType, state);
             }
         }
 
@@ -107,9 +116,9 @@ namespace QuickUnity.Patterns.State
         /// <param name="eventType">Type of the event.</param>
         public void ChangeState(string eventType)
         {
-            if (m_stateMachine != null)
+            if (stateMachine != null)
             {
-                m_stateMachine.ChangeState(eventType);
+                stateMachine.ChangeState(eventType);
             }
         }
 
@@ -118,9 +127,9 @@ namespace QuickUnity.Patterns.State
         /// </summary>
         public void Run()
         {
-            if (m_stateMachine != null)
+            if (stateMachine != null)
             {
-                m_stateMachine.Run();
+                stateMachine.Run();
             }
         }
 

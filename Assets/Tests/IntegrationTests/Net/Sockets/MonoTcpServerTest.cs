@@ -3,7 +3,6 @@ using QuickUnity.Net.Sockets;
 using System;
 using System.IO;
 using System.Net;
-using System.Net.Sockets;
 using UnityEngine;
 
 namespace QuickUnity.Tests.IntegrationTests
@@ -15,27 +14,27 @@ namespace QuickUnity.Tests.IntegrationTests
     {
         private class TestPacket : ISocketPacket
         {
-            private byte[] m_Bytes;
-            private string m_Text;
+            private byte[] bytes;
+            private string text;
 
             public TestPacket(byte[] bytes)
             {
-                m_Bytes = bytes;
+                this.bytes = bytes;
             }
 
             public TestPacket(string text)
             {
-                m_Text = text;
+                this.text = text;
             }
 
             public byte[] Bytes
             {
-                get { return m_Bytes; }
+                get { return bytes; }
             }
 
             public string Text
             {
-                get { return m_Text; }
+                get { return text; }
             }
         }
 
@@ -66,37 +65,37 @@ namespace QuickUnity.Tests.IntegrationTests
             }
         }
 
-        private MonoTcpServer m_server;
+        private MonoTcpServer server;
 
         private void Start()
         {
-            m_server = new MonoTcpServer(IPAddress.Parse("127.0.0.1"), 10000);
-            m_server.SocketPacketHandler = new TestPacketHandler();
-            m_server.AddEventListener(SocketEvent.ServerStart, OnServerStart);
-            m_server.AddEventListener(SocketEvent.ServerStop, OnServerStop);
-            m_server.AddEventListener(SocketEvent.ServerSocketException, OnServerSocketException);
-            m_server.AddEventListener(SocketEvent.ClientConnected, OnClientConnected);
-            m_server.Start();
+            server = new MonoTcpServer(IPAddress.Parse("127.0.0.1"), 10000);
+            server.SocketPacketHandler = new TestPacketHandler();
+            server.AddEventListener(SocketEvent.ServerStart, OnServerStart);
+            server.AddEventListener(SocketEvent.ServerStop, OnServerStop);
+            server.AddEventListener(SocketEvent.ServerSocketException, OnServerSocketException);
+            server.AddEventListener(SocketEvent.ClientConnected, OnClientConnected);
+            server.Start();
         }
 
         private void Update()
         {
-            if (m_server != null)
+            if (server != null)
             {
-                m_server.Update();
+                server.Update();
             }
         }
 
         private void OnDisable()
         {
-            if (m_server != null)
+            if (server != null)
             {
-                m_server.Stop();
-                m_server.RemoveEventListener(SocketEvent.ServerStart, OnServerStart);
-                m_server.RemoveEventListener(SocketEvent.ServerStop, OnServerStop);
-                m_server.RemoveEventListener(SocketEvent.ServerSocketException, OnServerSocketException);
-                m_server.RemoveEventListener(SocketEvent.ClientConnected, OnClientConnected);
-                m_server = null;
+                server.Stop();
+                server.RemoveEventListener(SocketEvent.ServerStart, OnServerStart);
+                server.RemoveEventListener(SocketEvent.ServerStop, OnServerStop);
+                server.RemoveEventListener(SocketEvent.ServerSocketException, OnServerSocketException);
+                server.RemoveEventListener(SocketEvent.ClientConnected, OnClientConnected);
+                server = null;
             }
         }
 
@@ -113,7 +112,7 @@ namespace QuickUnity.Tests.IntegrationTests
         private void OnServerSocketException(CSharpExtensions.Events.Event eventObj)
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
-            Exception e = socketEvent.exception;
+            Exception e = socketEvent.Exception;
             Debug.Log(e.Message);
             Debug.Log(e.StackTrace);
         }

@@ -50,17 +50,20 @@ namespace QuickUnityEditor
             /// </summary>
             /// <param name="x">The first object to compare.</param>
             /// <param name="y">The second object to compare.</param>
-            /// <returns>A signed integer that indicates the relative values of x and y, as shown in the following table.</returns>
+            /// <returns>
+            /// A signed integer that indicates the relative values of x and y, as shown in the
+            /// following table.
+            /// </returns>
             public int Compare(Type x, Type y)
             {
                 InitializeOnEditorStartupAttribute[] xAttrs = x.GetCustomAttributes(typeof(InitializeOnEditorStartupAttribute), false) as InitializeOnEditorStartupAttribute[];
                 InitializeOnEditorStartupAttribute[] yAttrs = y.GetCustomAttributes(typeof(InitializeOnEditorStartupAttribute), false) as InitializeOnEditorStartupAttribute[];
 
-                if (xAttrs[0].executionOrder > yAttrs[0].executionOrder)
+                if (xAttrs[0].ExecutionOrder > yAttrs[0].ExecutionOrder)
                 {
                     return -1;
                 }
-                else if (xAttrs[0].executionOrder < yAttrs[0].executionOrder)
+                else if (xAttrs[0].ExecutionOrder < yAttrs[0].ExecutionOrder)
                 {
                     return 1;
                 }
@@ -74,23 +77,23 @@ namespace QuickUnityEditor
         /// <summary>
         /// The loaded types.
         /// </summary>
-        private static Type[] s_loadedTypes;
+        private static Type[] loadedTypes;
 
         /// <summary>
         /// Gets the loaded types.
         /// </summary>
         /// <value>The loaded types.</value>
-        internal static Type[] loadedTypes
+        internal static Type[] LoadedTypes
         {
             get
             {
-                if (s_loadedTypes == null)
+                if (loadedTypes == null)
                 {
                     Assembly assembly = Assembly.GetExecutingAssembly();
-                    s_loadedTypes = ReflectionUtil.GetTypesFromAssembly(assembly);
+                    loadedTypes = ReflectionUtil.GetTypesFromAssembly(assembly);
                 }
 
-                return s_loadedTypes;
+                return loadedTypes;
             }
         }
 
@@ -101,9 +104,9 @@ namespace QuickUnityEditor
         {
             List<Type> typeList = new List<Type>();
 
-            for (int i = 0, length = loadedTypes.Length; i < length; ++i)
+            for (int i = 0, length = LoadedTypes.Length; i < length; ++i)
             {
-                Type type = loadedTypes[i];
+                Type type = LoadedTypes[i];
 
                 if (type.IsDefined(typeof(InitializeOnEditorStartupAttribute), false))
                 {

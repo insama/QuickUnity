@@ -36,15 +36,15 @@ namespace QuickUnityEditor.Attributes
         /// <summary>
         /// The execution order.
         /// </summary>
-        private int m_executionOrder;
+        private int executionOrder;
 
         /// <summary>
         /// Gets the execution order.
         /// </summary>
         /// <value>The execution order.</value>
-        public int executionOrder
+        public int ExecutionOrder
         {
-            get { return m_executionOrder; }
+            get { return executionOrder; }
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace QuickUnityEditor.Attributes
         public InitializeOnEditorStartupAttribute(int executionOrder = 0)
             : base()
         {
-            m_executionOrder = executionOrder;
+            this.executionOrder = executionOrder;
         }
     }
 }

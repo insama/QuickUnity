@@ -22,7 +22,6 @@
  *	SOFTWARE.
  */
 
-using QuickUnity.Data;
 using UnityEngine;
 
 namespace QuickUnity.Data
@@ -46,26 +45,26 @@ namespace QuickUnity.Data
         /// <summary>
         /// The data tables storage location.
         /// </summary>
-        public DataTableStorageLocation dataTablesStorageLocation = DataTableStorageLocation.PersistentDataPath;
+        public DataTableStorageLocation DataTablesStorageLocation = DataTableStorageLocation.PersistentDataPath;
 
         /// <summary>
         /// The data table row scripts storage location.
         /// </summary>
-        public string dataTableRowScriptsStorageLocation;
+        public string DataTableRowScriptsStorageLocation;
 
         /// <summary>
         /// Whether to generate namespace automatically.
         /// </summary>
-        public bool autoGenerateScriptsNamespace = true;
+        public bool AutoGenerateScriptsNamespace = true;
 
         /// <summary>
         /// The namespace of DataTableRow scripts.
         /// </summary>
-        public string dataTableRowScriptsNamespace = "";
+        public string DataTableRowScriptsNamespace = "";
 
         /// <summary>
         /// The start row of data rows.
         /// </summary>
-        public int dataRowsStartRow = MinDataRowsStartRow;
+        public int DataRowsStartRow = MinDataRowsStartRow;
     }
 }

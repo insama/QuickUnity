@@ -29,14 +29,14 @@ using System.Collections.Generic;
 namespace QuickUnityEditor.Data.Parsers
 {
     /// <summary>
-    /// The factory class of type parser.
+    /// The factory class of Type parser.
     /// </summary>
     internal static class TypeParserFactory
     {
         /// <summary>
-        /// The map of type parsers.
+        /// The map of Type parsers.
         /// </summary>
-        private static readonly Dictionary<string, Type> s_typeParsersMap = new Dictionary<string, Type>()
+        private static readonly Dictionary<string, Type> typeParsersMap = new Dictionary<string, Type>()
         {
             { BoolTypeParser.TypeKeyword, typeof(BoolTypeParser) },
             { ByteTypeParser.TypeKeyword, typeof(ByteTypeParser) },
@@ -67,25 +67,25 @@ namespace QuickUnityEditor.Data.Parsers
         };
 
         /// <summary>
-        /// Gets the type of the type parser.
+        /// Gets the Type of the Type parser.
         /// </summary>
-        /// <param name="typeKeyword">The type keyword.</param>
-        /// <returns>Type The type of type parser.</returns>
+        /// <param name="typeKeyword">The Type keyword.</param>
+        /// <returns>Type The Type of Type parser.</returns>
         public static Type GetTypeParserType(string typeKeyword)
         {
-            if (!string.IsNullOrEmpty(typeKeyword) && s_typeParsersMap.ContainsKey(typeKeyword))
+            if (!string.IsNullOrEmpty(typeKeyword) && typeParsersMap.ContainsKey(typeKeyword))
             {
-                return s_typeParsersMap[typeKeyword];
+                return typeParsersMap[typeKeyword];
             }
 
             return null;
         }
 
         /// <summary>
-        /// Creates the type parser.
+        /// Creates the Type parser.
         /// </summary>
-        /// <param name="typeKeyword">The type keyword.</param>
-        /// <returns>The type parser.</returns>
+        /// <param name="typeKeyword">The Type keyword.</param>
+        /// <returns>The Type parser.</returns>
         public static ITypeParser CreateTypeParser(string typeKeyword)
         {
             Type type = GetTypeParserType(typeKeyword);

@@ -49,7 +49,7 @@ namespace QuickUnityEditor
         /// <summary>
         /// The singleton instance of SizeMap.
         /// </summary>
-        private static SizeMap s_sizeMapWindow;
+        private static SizeMap sizeMapWindow;
 
         /// <summary>
         /// Shows the window of Size Map.
@@ -57,37 +57,37 @@ namespace QuickUnityEditor
         [MenuItem("Assets/Size Map...", false, 22)]
         public static void ShowWindow()
         {
-            if (s_sizeMapWindow == null)
+            if (sizeMapWindow == null)
             {
-                s_sizeMapWindow = CreateInstance<SizeMap>();
-                s_sizeMapWindow.titleContent = new GUIContent("Size Map");
-                s_sizeMapWindow.minSize = new Vector2(300, 500);
+                sizeMapWindow = CreateInstance<SizeMap>();
+                sizeMapWindow.titleContent = new GUIContent("Size Map");
+                sizeMapWindow.minSize = new Vector2(300, 500);
             }
 
-            s_sizeMapWindow.ShowUtility();
-            s_sizeMapWindow.Focus();
-            s_sizeMapWindow.ShowSizeMap();
+            sizeMapWindow.ShowUtility();
+            sizeMapWindow.Focus();
+            sizeMapWindow.ShowSizeMap();
         }
 
         /// <summary>
         /// The position of scroll view.
         /// </summary>
-        private Vector2 m_scrollViewPos;
+        private Vector2 scrollViewPosition;
 
         /// <summary>
         /// The list of assets.
         /// </summary>
-        private List<ReorderableList> m_assetsList;
+        private List<ReorderableList> assets;
 
         /// <summary>
         /// The total runtime memory size.
         /// </summary>
-        private long m_totalRuntimeMemorySize = 0;
+        private long totalRuntimeMemorySize = 0;
 
         /// <summary>
         /// The total storage memory size.
         /// </summary>
-        private long m_totalStorageMemorySize = 0;
+        private long totalStorageMemorySize = 0;
 
         /// <summary>
         /// Shows the size map.
@@ -110,7 +110,7 @@ namespace QuickUnityEditor
                 }
             }
 
-            m_assetsList = GenerateAssetsList(targetAssets, out m_totalRuntimeMemorySize, out m_totalStorageMemorySize);
+            assets = GenerateAssetsList(targetAssets, out totalRuntimeMemorySize, out totalStorageMemorySize);
 
             if (targetAssets.Count == 0)
             {
@@ -133,19 +133,19 @@ namespace QuickUnityEditor
 
             GUILayout.Space(20);
 
-            m_scrollViewPos = EditorGUILayout.BeginScrollView(m_scrollViewPos);
+            scrollViewPosition = EditorGUILayout.BeginScrollView(scrollViewPosition);
 
-            EditorGUILayout.LabelField(string.Format("Total Assets Count: {0}", (m_assetsList != null) ? m_assetsList.Count : 0));
-            EditorGUILayout.LabelField(string.Format("Total Runtime Memory Size: {0}", EditorUtility.FormatBytes(m_totalRuntimeMemorySize)));
-            EditorGUILayout.LabelField(string.Format("Total Storage Memory Size: {0}", EditorUtility.FormatBytes(m_totalStorageMemorySize)));
+            EditorGUILayout.LabelField(string.Format("Total Assets Count: {0}", (assets != null) ? assets.Count : 0));
+            EditorGUILayout.LabelField(string.Format("Total Runtime Memory Size: {0}", EditorUtility.FormatBytes(totalRuntimeMemorySize)));
+            EditorGUILayout.LabelField(string.Format("Total Storage Memory Size: {0}", EditorUtility.FormatBytes(totalStorageMemorySize)));
 
             GUILayout.Space(20);
 
-            if (m_assetsList != null)
+            if (assets != null)
             {
-                for (int i = 0, length = m_assetsList.Count; i < length; ++i)
+                for (int i = 0, length = assets.Count; i < length; ++i)
                 {
-                    ReorderableList list = m_assetsList[i];
+                    ReorderableList list = assets[i];
 
                     if (list != null)
                     {

@@ -77,17 +77,17 @@ namespace QuickUnityEditor
         /// <summary>
         /// The editor configuration file path.
         /// </summary>
-        public static readonly string editorConfigFilePath = Path.Combine(new FileInfo(EditorApplication.applicationPath).DirectoryName, "Config/Editor.ini");
+        public static readonly string EditorConfigFilePath = Path.Combine(new FileInfo(EditorApplication.applicationPath).DirectoryName, "Config/Editor.ini");
 
         /// <summary>
         /// The editor configuration file path of the project.
         /// </summary>
-        public static readonly string projectEditorConfigFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Config/Editor.ini");
+        public static readonly string ProjectEditorConfigFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Config/Editor.ini");
 
         /// <summary>
         /// Gets the editor configuration value.
         /// </summary>
-        /// <typeparam name="T">The type definition.</typeparam>
+        /// <typeparam name="T">The Type definition.</typeparam>
         /// <param name="sectionName">Name of the section.</param>
         /// <param name="key">The key.</param>
         /// <param name="defaultValue">The default value.</param>
@@ -95,11 +95,11 @@ namespace QuickUnityEditor
         /// <returns>The value to get.</returns>
         public static T GetEditorConfigValue<T>(string sectionName, string key, T defaultValue = default(T), ConfigFileDomain configFileDomain = ConfigFileDomain.Editor)
         {
-            string configFilePath = editorConfigFilePath;
+            string configFilePath = EditorConfigFilePath;
 
             if (configFileDomain == ConfigFileDomain.Project)
             {
-                configFilePath = projectEditorConfigFilePath;
+                configFilePath = ProjectEditorConfigFilePath;
             }
 
             IniFileInfo fileInfo = new IniFileInfo(configFilePath);
@@ -120,18 +120,18 @@ namespace QuickUnityEditor
         /// <summary>
         /// Sets the editor configuration value.
         /// </summary>
-        /// <typeparam name="T">The type definition.</typeparam>
+        /// <typeparam name="T">The Type definition.</typeparam>
         /// <param name="sectionName">Name of the section.</param>
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
         /// <param name="configFileDomain">The configuration file domain.</param>
         public static void SetEditorConfigValue<T>(string sectionName, string key, T value, ConfigFileDomain configFileDomain = ConfigFileDomain.Editor)
         {
-            string configFilePath = editorConfigFilePath;
+            string configFilePath = EditorConfigFilePath;
 
             if (configFileDomain == ConfigFileDomain.Project)
             {
-                configFilePath = projectEditorConfigFilePath;
+                configFilePath = ProjectEditorConfigFilePath;
             }
 
             if (!File.Exists(configFilePath))

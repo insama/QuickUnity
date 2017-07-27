@@ -27,11 +27,23 @@ using UnityEngine;
 namespace QuickUnity.Data
 {
     /// <summary>
+    /// The enumeration of data table storage location.
+    /// </summary>
+    public enum DataTableStorageLocation
+    {
+        ResourcesPath,
+        StreamingAssetsPath,
+        PersistentDataPath
+    }
+
+    /// <summary>
     /// ScriptableObject class to save preferences of DataTable.
     /// </summary>
     /// <seealso cref="UnityEngine.ScriptableObject"/>
     public class DataTablePreferences : ScriptableObject
     {
+        #region Constants
+
         /// <summary>
         /// The default namespace string.
         /// </summary>
@@ -42,29 +54,71 @@ namespace QuickUnity.Data
         /// </summary>
         public const int MinDataRowsStartRow = 4;
 
-        /// <summary>
-        /// The data tables storage location.
-        /// </summary>
-        public DataTableStorageLocation DataTablesStorageLocation = DataTableStorageLocation.PersistentDataPath;
+        #endregion Constants
+
+        #region Fields
+
+        private DataTableStorageLocation dataTablesStorageLocation = DataTableStorageLocation.PersistentDataPath;
+
+        private bool autoGenerateScriptsNamespace = true;
+
+        private string dataTableRowScriptsNamespace = string.Empty;
+
+        private int dataRowsStartRow = MinDataRowsStartRow;
+
+        #endregion Fields
+
+        #region Properties
 
         /// <summary>
         /// The data table row scripts storage location.
         /// </summary>
-        public string DataTableRowScriptsStorageLocation;
+        public string DataTableRowScriptsStorageLocation
+        {
+            get;
+            set;
+        }
 
         /// <summary>
-        /// Whether to generate namespace automatically.
+        /// Gets or sets the data tables storage location.
         /// </summary>
-        public bool AutoGenerateScriptsNamespace = true;
+        /// <value>The data tables storage location.</value>
+        public DataTableStorageLocation DataTablesStorageLocation
+        {
+            get { return dataTablesStorageLocation; }
+            set { dataTablesStorageLocation = value; }
+        }
 
         /// <summary>
-        /// The namespace of DataTableRow scripts.
+        /// Gets or sets a value indicating whether automatic generate scripts namespace.
         /// </summary>
-        public string DataTableRowScriptsNamespace = "";
+        /// <value><c>true</c> if automatic generate scripts namespace; otherwise, <c>false</c>.</value>
+        public bool AutoGenerateScriptsNamespace
+        {
+            get { return autoGenerateScriptsNamespace; }
+            set { autoGenerateScriptsNamespace = value; }
+        }
 
         /// <summary>
-        /// The start row of data rows.
+        /// Gets or sets the namespace of the script <see cref="DataTableRow"/>.
         /// </summary>
-        public int DataRowsStartRow = MinDataRowsStartRow;
+        /// <value>The namespace of the script <see cref="DataTableRow"/>.</value>
+        public string DataTableRowScriptsNamespace
+        {
+            get { return dataTableRowScriptsNamespace; }
+            set { dataTableRowScriptsNamespace = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the start row of data rows.
+        /// </summary>
+        /// <value>The start row of data rows.</value>
+        public int DataRowsStartRow
+        {
+            get { return dataRowsStartRow; }
+            set { dataRowsStartRow = value; }
+        }
+
+        #endregion Properties
     }
 }

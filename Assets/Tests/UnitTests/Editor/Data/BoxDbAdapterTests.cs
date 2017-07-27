@@ -10,11 +10,23 @@ namespace QuickUnity.Data
     /// </summary>
     internal class BoxDBAdapterTestVO
     {
-        public int Id;
+        public int Id
+        {
+            get;
+            set;
+        }
 
-        public string Name;
+        public string Name
+        {
+            get;
+            set;
+        }
 
-        public float Value;
+        public float Value
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BoxDBAdapterTestVO"/> class.
@@ -53,13 +65,9 @@ namespace QuickUnity.Data
     internal class BoxDBAdapterTests
     {
         /// <summary>
-        /// Gets the name of the table.
+        /// The name of the table.
         /// </summary>
-        /// <value>The name of the table.</value>
-        private string tableName
-        {
-            get { return "BoxDBAdapterTestTable"; }
-        }
+        private const string tableName = "BoxDBAdapterTestTable";
 
         /// <summary>
         /// Test for the method BoxDBAdapterTest.Insert.
@@ -111,19 +119,6 @@ namespace QuickUnity.Data
         }
 
         /// <summary>
-        /// Test for the method BoxDBAdapterTest.Select.
-        /// </summary>
-        [Test]
-        public void SelectTest()
-        {
-            BoxDBAdapter db = GetBoxDBAdapter();
-            BoxDBAdapterTestVO vo = db.Select<BoxDBAdapterTestVO>(tableName, 1);
-            DebugLogger.Log(vo.ToString());
-            db.Dispose();
-            Assert.IsNotNull(vo);
-        }
-
-        /// <summary>
         /// Test for the method BoxDBAdapterTest.Select when on multi-conditions query.
         /// </summary>
         [Test]
@@ -140,6 +135,19 @@ namespace QuickUnity.Data
                 new List<BoxDBMultiConditionOperator>(new BoxDBMultiConditionOperator[1] { BoxDBMultiConditionOperator.Or }));
             db.Dispose();
             Assert.AreEqual(2f, result[0].Value);
+        }
+
+        /// <summary>
+        /// Test for the method BoxDBAdapterTest.Select.
+        /// </summary>
+        [Test]
+        public void SelectTest()
+        {
+            BoxDBAdapter db = GetBoxDBAdapter();
+            BoxDBAdapterTestVO vo = db.Select<BoxDBAdapterTestVO>(tableName, 1);
+            DebugLogger.Log(vo.ToString());
+            db.Dispose();
+            Assert.IsNotNull(vo);
         }
 
         /// <summary>

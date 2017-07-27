@@ -32,7 +32,7 @@ namespace #NAMESPACE#
     /// </summary>
     public class #SCRIPTNAME# : DataTableRow
     {
-#FIELDS#
+#PROPERTIES#
 
 		/// <summary>
         /// Initializes a new instance of the <see cref="#SCRIPTNAME#"/> class.

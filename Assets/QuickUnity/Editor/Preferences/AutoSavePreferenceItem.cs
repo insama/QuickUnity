@@ -38,27 +38,27 @@ namespace QuickUnityEditor.Preferences
         private static class Styles
         {
             /// <summary>
-            /// The style of field isAutoSaveEnabled.
+            /// The style of property isAutoSaveEnabled.
             /// </summary>
             public static readonly GUIContent IsAutoSaveEnabledStyle = Utils.EditorGUIHelper.TextContent("Enable AutoSave", "Whether to automatically save after a time interval");
 
             /// <summary>
-            /// The style of field isAutoSaveScenesEnabled.
+            /// The style of property isAutoSaveScenesEnabled.
             /// </summary>
             public static readonly GUIContent IsAutoSaveScenesEnabledStyle = Utils.EditorGUIHelper.TextContent("Save Scenes", "Whether to automatically save scenes during an autosave");
 
             /// <summary>
-            /// The style of field isAutoSaveAssetsEnabled.
+            /// The style of property isAutoSaveAssetsEnabled.
             /// </summary>
             public static readonly GUIContent IsAutoSaveAssetsEnabledStyle = Utils.EditorGUIHelper.TextContent("Save Assets", "Whether to automatically save assets during an autosave");
 
             /// <summary>
-            /// The style of field frequencyInMinutes.
+            /// The style of property frequencyInMinutes.
             /// </summary>
             public static readonly GUIContent FrequencyInMinutesStyle = Utils.EditorGUIHelper.TextContent("Frequency in Minutes", "The time interval after which to auto save");
 
             /// <summary>
-            /// The style of field askWhenSaving.
+            /// The style of property askWhenSaving.
             /// </summary>
             public static readonly GUIContent AskWhenSavingStyle = Utils.EditorGUIHelper.TextContent("Ask When Saving", "Whether to show confirm dialog when saving");
         }
@@ -87,7 +87,7 @@ namespace QuickUnityEditor.Preferences
             AutoSave.Instance.IsAutoSaveAssetsEnabled = EditorGUILayout.Toggle("Save Assets", AutoSave.Instance.IsAutoSaveAssetsEnabled);
             GUILayout.EndVertical();
 
-            // AutoSave time minutes int value field.
+            // Draws property AutoSaveTimeMinutes of the instance of class AutoSave.
             GUILayout.BeginVertical();
             int value = EditorGUILayout.IntField(Styles.FrequencyInMinutesStyle, (int)AutoSave.Instance.AutoSaveTimeMinutes);
 
@@ -102,7 +102,7 @@ namespace QuickUnityEditor.Preferences
 
             GUILayout.EndVertical();
 
-            // AutoSave warning seconds int value slider field.
+            // Draws property AskWhenSaving of the instance of class AutoSave.
             GUILayout.BeginVertical();
             AutoSave.Instance.AskWhenSaving = EditorGUILayout.Toggle(Styles.AskWhenSavingStyle, AutoSave.Instance.AskWhenSaving);
             GUILayout.EndVertical();

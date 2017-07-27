@@ -66,23 +66,41 @@ namespace QuickUnity.Core.Miscs
         private static readonly string logFilesPath = Path.Combine(rootPath, logFilesFolderName);
 
         /// <summary>
-        /// Whether allow to write log messages into file.
+        /// The flag whether allow to write log messages into file.
         /// </summary>
-        public static bool LogFileEnabled = true;
+        private static bool logFileEnabled = true;
 
         /// <summary>
-        /// Whether allow to show log messages in Console window.
+        /// Whether allow to show log messages in Console window of Unity.
         /// </summary>
-        public static bool ShowInConsole = true;
+        private static bool showInConsole = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether allow to write log messages into file.
+        /// </summary>
+        /// <value><c>true</c> if allow to write log messages into file; otherwise, <c>false</c>.</value>
+        public static bool LogFileEnabled
+        {
+            get { return logFileEnabled; }
+            set { logFileEnabled = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating Whether allow to show log messages in Console window of Unity.
+        /// </summary>
+        /// <value><c>true</c> if allow to show log messages in Console window of Unity; otherwise, <c>false</c>.</value>
+        public static bool ShowInConsole
+        {
+            get { return showInConsole; }
+            set { showInConsole = value; }
+        }
 
         #region Public Static Functions
 
         /// <summary>
         /// Logs information message to the log system.
         /// </summary>
-        /// <param name="message">
-        /// String or object to be converted to string representation for display.
-        /// </param>
+        /// <param name="message">String or object to be converted to string representation for display.</param>
         /// <param name="context">Object to which the message applies.</param>
         public static void Log(object message, object context = null)
         {
@@ -110,9 +128,7 @@ namespace QuickUnity.Core.Miscs
         /// <summary>
         /// Logs warning message to the log system.
         /// </summary>
-        /// <param name="message">
-        /// String or object to be converted to string representation for display.
-        /// </param>
+        /// <param name="message">String or object to be converted to string representation for display.</param>
         /// <param name="context">Object to which the message applies.</param>
         public static void LogWarning(object message, object context = null)
         {
@@ -140,9 +156,7 @@ namespace QuickUnity.Core.Miscs
         /// <summary>
         /// Logs error message to the log system.
         /// </summary>
-        /// <param name="message">
-        /// String or object to be converted to string representation for display.
-        /// </param>
+        /// <param name="message">String or object to be converted to string representation for display.</param>
         /// <param name="context">Object to which the message applies.</param>
         public static void LogError(object message, object context = null)
         {
@@ -171,9 +185,7 @@ namespace QuickUnity.Core.Miscs
         /// Assert a condition and logs an error message to the log system.
         /// </summary>
         /// <param name="condition">Condition you expect to be true.</param>
-        /// <param name="message">
-        /// String or object to be converted to string representation for display.
-        /// </param>
+        /// <param name="message">String or object to be converted to string representation for display.</param>
         /// <param name="context">Object to which the message applies.</param>
         public static void LogAssert(bool condition, object message, object context = null)
         {
@@ -247,9 +259,7 @@ namespace QuickUnity.Core.Miscs
         /// <summary>
         /// Logs the message to log system.
         /// </summary>
-        /// <param name="message">
-        /// String or object to be converted to string representation for display.
-        /// </param>
+        /// <param name="message">String or object to be converted to string representation for display.</param>
         /// <param name="logType">The type of the log message.</param>
         /// <param name="context">Object to which the message applies.</param>
         private static void LogMessage(object message, LogType logType, object context = null)
@@ -274,12 +284,12 @@ namespace QuickUnity.Core.Miscs
 
             string messageToShow = builder.ToString();
 
-            if (ShowInConsole)
+            if (showInConsole)
             {
                 Debug.logger.Log(logType, messageToShow, context);
             }
 
-            if (LogFileEnabled)
+            if (logFileEnabled)
             {
                 WriteIntoLogFile(messageToShow);
             }

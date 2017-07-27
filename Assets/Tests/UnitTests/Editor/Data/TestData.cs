@@ -35,148 +35,264 @@ namespace Tests.UnitTests.Editor.Data
 		/// <summary>
 		/// ID
 		/// </summary>
-		public long Id;
+		public long Id
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试布尔
 		/// test bool
 		/// </summary>
-		public bool TestBoolean;
+		public bool TestBoolean
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// test byte
 		/// </summary>
-		public byte TestByte;
+		public byte TestByte
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// test sbyte
 		/// </summary>
-		public sbyte TestSByte;
+		public sbyte TestSByte
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// test short
 		/// </summary>
-		public short TestShort;
+		public short TestShort
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// test ushort
 		/// </summary>
-		public ushort TestUShort;
+		public ushort TestUShort
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// test int
 		/// </summary>
-		public int TestInt;
+		public int TestInt
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// test uint
 		/// </summary>
-		public uint TestUInt;
+		public uint TestUInt
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// test ulong
 		/// </summary>
-		public ulong TestULong;
+		public ulong TestULong
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// test float
 		/// </summary>
-		public float TestFloat;
+		public float TestFloat
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// test double
 		/// </summary>
-		public double TestDouble;
+		public double TestDouble
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// test decimal
 		/// </summary>
-		public decimal TestDecimal;
+		public decimal TestDecimal
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// test string
 		/// </summary>
-		public string TestString;
+		public string TestString
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试Vector2
 		/// </summary>
-		public string TestVector2;
+		public string TestVector2
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试Vector3
 		/// </summary>
-		public string TestVector3;
+		public string TestVector3
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试Quaternion
 		/// </summary>
-		public string TestQuaternion;
+		public string TestQuaternion
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试booleanArray
 		/// </summary>
-		public bool[] TestBooleanArray;
+		public bool[] TestBooleanArray
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试byteArray
 		/// </summary>
-		public byte[] TestByteArray;
+		public byte[] TestByteArray
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试sbyteArray
 		/// </summary>
-		public sbyte[] TestSByteArray;
+		public sbyte[] TestSByteArray
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试shortArray
 		/// </summary>
-		public short[] TestShortArray;
+		public short[] TestShortArray
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试ushortArray
 		/// </summary>
-		public ushort[] TestUShortArray;
+		public ushort[] TestUShortArray
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试intArray
 		/// </summary>
-		public int[] TestIntArray;
+		public int[] TestIntArray
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试uintArray
 		/// </summary>
-		public uint[] TestUIntArray;
+		public uint[] TestUIntArray
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试longArray
 		/// </summary>
-		public long[] TestLongArray;
+		public long[] TestLongArray
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试ulongArray
 		/// </summary>
-		public ulong[] TestULongArray;
+		public ulong[] TestULongArray
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试floatArray
 		/// </summary>
-		public float[] TestFloatArray;
+		public float[] TestFloatArray
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试doubleArray
 		/// </summary>
-		public double[] TestDoubleArray;
+		public double[] TestDoubleArray
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试decimalArray
 		/// </summary>
-		public decimal[] TestDecimalArray;
+		public decimal[] TestDecimalArray
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// 测试stringArray
 		/// </summary>
-		public string[] TestStringArray;
+		public string[] TestStringArray
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
         /// Initializes a new instance of the <see cref="TestData"/> class.

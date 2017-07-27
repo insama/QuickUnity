@@ -102,7 +102,6 @@ namespace QuickUnity.Tests.IntegrationTests
 
                 if (buffer != null)
                 {
-                    buffer.Dispose();
                     buffer = null;
                 }
             }

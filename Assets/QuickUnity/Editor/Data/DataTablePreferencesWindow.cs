@@ -57,27 +57,27 @@ namespace QuickUnityEditor.Data
         private static class Styles
         {
             /// <summary>
-            /// The style of field dataTablesStorageLocation.
+            /// The style of property dataTablesStorageLocation.
             /// </summary>
             public static readonly GUIContent DataTablesStorageLocationStyle = Utils.EditorGUIHelper.TextContent("DataTables Storage Location", "Where to store data tables.");
 
             /// <summary>
-            /// The style of field dataRowScriptsStorageLocation.
+            /// The style of property dataRowScriptsStorageLocation.
             /// </summary>
             public static readonly GUIContent DataRowScriptsStorageLocationStyle = Utils.EditorGUIHelper.TextContent("DataTableRow Scripts Storage Location", "Where to store DataTableRow scripts.");
 
             /// <summary>
-            /// The style of field autoGenerateScriptsNamespace.
+            /// The style of property autoGenerateScriptsNamespace.
             /// </summary>
             public static readonly GUIContent AutoGenerateScriptsNamespaceStyle = Utils.EditorGUIHelper.TextContent("Auto Generate Scripts Namespace", "Whether to generate namespace automatically.");
 
             /// <summary>
-            /// The style of field dataTableRowScriptsNamespace.
+            /// The style of property dataTableRowScriptsNamespace.
             /// </summary>
             public static readonly GUIContent DataTableRowScriptsNamespaceStyle = Utils.EditorGUIHelper.TextContent("DataTableRow Scripts Namespace", "The namespace of DataTableRow scripts.");
 
             /// <summary>
-            /// The style of field dataRowsStartRow.
+            /// The style of property dataRowsStartRow.
             /// </summary>
             public static readonly GUIContent DataRowsStartRowStyle = Utils.EditorGUIHelper.TextContent("Data rows Start Row", "The start row of data rows. (Should be > 3)");
         }
@@ -275,7 +275,7 @@ namespace QuickUnityEditor.Data
         /// <param name="newLocation">The new location.</param>
         private void MoveDbFiles(DataTableStorageLocation oldLocation, DataTableStorageLocation newLocation)
         {
-            string oldPath = DataImport.DataTablesLocationMap[oldLocation];
+            string oldPath = DataImport.GetDataTableStoragePath(oldLocation);
 
             if (!Directory.Exists(oldPath))
             {
@@ -287,7 +287,7 @@ namespace QuickUnityEditor.Data
             if (filePaths != null && filePaths.Length > 0)
             {
                 // Check new path.
-                string newPath = DataImport.DataTablesLocationMap[newLocation];
+                string newPath = DataImport.GetDataTableStoragePath(newLocation);
 
                 if (!Directory.Exists(newPath))
                 {

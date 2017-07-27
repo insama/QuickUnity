@@ -29,8 +29,8 @@ namespace QuickUnity.Timers
     /// <summary>
     /// Generates an event after a set interval, with an option to generate recurring events.
     /// </summary>
-    /// <seealso cref="QuickUnity.Events.EventDispatcher"/>
-    /// <seealso cref="QuickUnity.Timers.ITimer"/>
+    /// <seealso cref="Events.EventDispatcher"/>
+    /// <seealso cref="ITimer"/>
     public class Timer : EventDispatcher, ITimer
     {
         /// <summary>
@@ -69,8 +69,7 @@ namespace QuickUnity.Timers
         private bool ignoreTimeScale = true;
 
         /// <summary>
-        /// The value indicating whether the <see cref="ITimer"/> stop when the <see cref="ITimer"/>
-        /// is disabled.
+        /// The value indicating whether the <see cref="ITimer"/> stop when the <see cref="ITimer"/> is disabled.
         /// </summary>
         private bool stopOnDisable = true;
 
@@ -156,13 +155,9 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="ITimer"/> stop when the <see
-        /// cref="ITimer"/> is disabled.
+        /// Gets a value indicating whether the <see cref="ITimer"/> stop when the <see cref="ITimer"/> is disabled.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if the <see cref="ITimer"/> stop whtn the <see cref="ITimer"/> is disabled;
-        /// otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if the <see cref="ITimer"/> stop whtn the <see cref="ITimer"/> is disabled; otherwise, <c>false</c>.</value>
         public bool StopOnDisable
         {
             get { return stopOnDisable; }
@@ -176,13 +171,8 @@ namespace QuickUnity.Timers
         /// </summary>
         /// <param name="delay">The delay of the <see cref="ITimer"/>.</param>
         /// <param name="repeatCount">The repeat count of the <see cref="ITimer"/>.</param>
-        /// <param name="ignoreTimeScale">
-        /// if set to <c>true</c> the <see cref="ITimer"/> will ignore time scale of Unity.
-        /// </param>
-        /// <param name="stopOnDisable">
-        /// if set to <c>true</c> the <see cref="ITimer"/> won't stop when the <see cref="ITimer"/>
-        /// is disabled.
-        /// </param>
+        /// <param name="ignoreTimeScale">if set to <c>true</c> the <see cref="ITimer"/> will ignore time scale of Unity.</param>
+        /// <param name="stopOnDisable">if set to <c>true</c> the <see cref="ITimer"/> won't stop when the <see cref="ITimer"/> is disabled.</param>
         /// <param name="autoStart">if set to <c>true</c> the <see cref="ITimer"/> will start automatically.</param>
         public Timer(float delay, uint repeatCount = 0, bool ignoreTimeScale = true, bool stopOnDisable = true, bool autoStart = true)
         {
@@ -302,8 +292,7 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting
-        /// unmanaged resources.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public virtual void Dispose()
         {

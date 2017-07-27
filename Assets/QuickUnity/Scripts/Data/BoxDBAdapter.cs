@@ -57,29 +57,41 @@ namespace QuickUnity.Data
     public struct BoxDBQueryCondition
     {
         /// <summary>
-        /// The field.
+        /// The name of property.
         /// </summary>
-        public string Field;
+        public string PropertyName
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The value.
         /// </summary>
-        public object Value;
+        public object Value
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The query operator.
         /// </summary>
-        public BoxDBQueryOperator QueryOperator;
+        public BoxDBQueryOperator QueryOperator
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BoxDBQueryCondition"/> struct.
         /// </summary>
-        /// <param name="field">The field.</param>
+        /// <param name="propertyName">The name of property.</param>
         /// <param name="value">The value.</param>
         /// <param name="queryOperator">The query operator.</param>
-        public BoxDBQueryCondition(string field, object value, BoxDBQueryOperator queryOperator = BoxDBQueryOperator.Equal)
+        public BoxDBQueryCondition(string propertyName, object value, BoxDBQueryOperator queryOperator = BoxDBQueryOperator.Equal)
         {
-            Field = field;
+            PropertyName = propertyName;
             Value = value;
             QueryOperator = queryOperator;
         }
@@ -126,27 +138,11 @@ namespace QuickUnity.Data
         private DB dbServer;
 
         /// <summary>
-        /// Gets the database server.
-        /// </summary>
-        /// <value>The database server.</value>
-        public DB DbServer
-        {
-            get { return dbServer; }
-        }
-
-        /// <summary>
         /// The database.
         /// </summary>
         private AutoBox database;
 
-        /// <summary>
-        /// Gets the database.
-        /// </summary>
-        /// <value>The database.</value>
-        public AutoBox Database
-        {
-            get { return database; }
-        }
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BoxDBAdapter"/> class.
@@ -174,12 +170,32 @@ namespace QuickUnity.Data
             dbServer.GetConfig().DBConfig.FileIncSize = 1;
         }
 
+        #endregion Constructors
+
         /// <summary>
         /// Finalizes an instance of the <see cref="BoxDBAdapter"/> class.
         /// </summary>
         ~BoxDBAdapter()
         {
             Dispose(false);
+        }
+
+        /// <summary>
+        /// Gets the database server.
+        /// </summary>
+        /// <value>The database server.</value>
+        public DB DbServer
+        {
+            get { return dbServer; }
+        }
+
+        /// <summary>
+        /// Gets the database.
+        /// </summary>
+        /// <value>The database.</value>
+        public AutoBox Database
+        {
+            get { return database; }
         }
 
         #region Public Functions
@@ -564,7 +580,7 @@ namespace QuickUnity.Data
                 {
                     BoxDBQueryCondition condition = conditions[i];
                     string queryOpString = queryOperators[condition.QueryOperator];
-                    sql += string.Format(" {0}{1}?", condition.Field, queryOpString);
+                    sql += string.Format(" {0}{1}?", condition.PropertyName, queryOpString);
 
                     if (i < length - 1)
                     {
@@ -591,10 +607,7 @@ namespace QuickUnity.Data
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
-        /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
-        /// unmanaged resources.
-        /// </param>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

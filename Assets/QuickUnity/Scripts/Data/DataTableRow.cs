@@ -24,6 +24,7 @@
 
 using CSharpExtensions.Reflection;
 using System.Collections.Generic;
+using System.Text;
 
 namespace QuickUnity.Data
 {
@@ -45,50 +46,18 @@ namespace QuickUnity.Data
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
-            string output = string.Empty;
-            Dictionary<string, object> map = ReflectionUtil.GetObjectFields(this);
+            StringBuilder sb = new StringBuilder();
+            StringBuilder propsSb = new StringBuilder();
+            Dictionary<string, object> map = ReflectionUtil.GetObjectProperties(this);
 
             foreach (KeyValuePair<string, object> kvp in map)
             {
-                output += string.Format("{0}: {1}, ", kvp.Key, kvp.Value);
+                string output = string.Format("{0} = {1}, ", kvp.Key, kvp.Value);
+                propsSb.Append(output);
             }
 
-            return base.ToString() + string.Format("({0})", output.Substring(0, output.Length - 2));
-        }
-    }
-
-    /// <summary>
-    /// The address map of data table.
-    /// </summary>
-    /// <seealso cref="QuickUnity.Data.DataTableRow"/>
-    public class DataTableAddressMap : DataTableRow
-    {
-        /// <summary>
-        /// The primary key.
-        /// </summary>
-        public const string PrimaryKey = "Type";
-
-        /// <summary>
-        /// The type.
-        /// </summary>
-        public string Type;
-
-        /// <summary>
-        /// The local address.
-        /// </summary>
-        public long LocalAddress;
-
-        /// <summary>
-        /// The field name of primary key.
-        /// </summary>
-        public string PrimaryFieldName;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataTableAddressMap"/> class.
-        /// </summary>
-        public DataTableAddressMap()
-            : base()
-        {
+            sb.AppendFormat("{0}({1})", base.ToString(), propsSb.ToString(0, propsSb.Length - 2));
+            return sb.ToString();
         }
     }
 }

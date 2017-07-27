@@ -28,7 +28,7 @@ using UnityEngine;
 namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// Extension methods to the <see cref="System.String"/>.
+    /// Extension methods to the <see cref="string"/>.
     /// </summary>
     public static class StringExtensions
     {

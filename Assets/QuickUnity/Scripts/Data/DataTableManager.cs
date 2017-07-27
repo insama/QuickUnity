@@ -94,7 +94,7 @@ namespace QuickUnity.Data
                 try
                 {
                     string tableName = addressMap.Type;
-                    dbAdapter.EnsureTable<T>(tableName, addressMap.PrimaryFieldName);
+                    dbAdapter.EnsureTable<T>(tableName, addressMap.PrimaryPropertyName);
                     dbAdapter.Open();
                     data = dbAdapter.Select<T>(tableName, primaryValue);
                 }
@@ -133,7 +133,7 @@ namespace QuickUnity.Data
                 try
                 {
                     string tableName = addressMap.Type;
-                    dbAdapter.EnsureTable<T>(tableName, addressMap.PrimaryFieldName);
+                    dbAdapter.EnsureTable<T>(tableName, addressMap.PrimaryPropertyName);
                     dbAdapter.Open();
                     results = dbAdapter.Select<T>(tableName, conditions, multiConditionOperators);
                 }
@@ -166,7 +166,7 @@ namespace QuickUnity.Data
                 try
                 {
                     string tableName = addressMap.Type;
-                    dbAdapter.EnsureTable<T>(tableName, addressMap.PrimaryFieldName);
+                    dbAdapter.EnsureTable<T>(tableName, addressMap.PrimaryPropertyName);
                     dbAdapter.Open();
                     results = dbAdapter.SelectAll<T>(tableName);
                 }
@@ -199,7 +199,7 @@ namespace QuickUnity.Data
                 try
                 {
                     string tableName = addressMap.Type;
-                    dbAdapter.EnsureTable<T>(tableName, addressMap.PrimaryFieldName);
+                    dbAdapter.EnsureTable<T>(tableName, addressMap.PrimaryPropertyName);
                     dbAdapter.Open();
                     count = dbAdapter.SelectCount(tableName);
                 }
@@ -235,7 +235,7 @@ namespace QuickUnity.Data
                 try
                 {
                     string tableName = addressMap.Type;
-                    dbAdapter.EnsureTable<T>(tableName, addressMap.PrimaryFieldName);
+                    dbAdapter.EnsureTable<T>(tableName, addressMap.PrimaryPropertyName);
                     dbAdapter.Open();
                     count = dbAdapter.SelectCount(tableName, conditions, multiConditionOperators);
                 }
@@ -344,10 +344,7 @@ namespace QuickUnity.Data
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
-        /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
-        /// unmanaged resources.
-        /// </param>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

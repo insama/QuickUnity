@@ -95,6 +95,26 @@ namespace QuickUnityEditor
         private bool isAutoSaveEnabled = false;
 
         /// <summary>
+        /// Whether to auto save scenes.
+        /// </summary>
+        private bool isAutoSaveScenesEnabled = true;
+
+        /// <summary>
+        /// Whether to save assets automatically.
+        /// </summary>
+        private bool isAutoSaveAssetsEnabled = true;
+
+        /// <summary>
+        /// The time interval after which to autosave.
+        /// </summary>
+        private uint autoSaveTimeMinutes = 10;
+
+        /// <summary>
+        /// Whether to show confirm dialog when autosave.
+        /// </summary>
+        private bool askWhenSaving = true;
+
+        /// <summary>
         /// Sets a value indicating whether to enable AutoSave feature.
         /// </summary>
         /// <value><c>true</c> if the feature of AutoSave is enabled; otherwise, <c>false</c>.</value>
@@ -120,11 +140,6 @@ namespace QuickUnityEditor
                 }
             }
         }
-
-        /// <summary>
-        /// Whether to auto save scenes.
-        /// </summary>
-        private bool isAutoSaveScenesEnabled = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether it is automatic save scenes enabled.
@@ -154,11 +169,6 @@ namespace QuickUnityEditor
         }
 
         /// <summary>
-        /// Whether to save assets automatically.
-        /// </summary>
-        private bool isAutoSaveAssetsEnabled = true;
-
-        /// <summary>
         /// Gets or sets a value indicating whether it is automatic save assets enabled.
         /// </summary>
         /// <value><c>true</c> if it is automatic save assets enabled; otherwise, <c>false</c>.</value>
@@ -186,11 +196,6 @@ namespace QuickUnityEditor
         }
 
         /// <summary>
-        /// The time interval after which to autosave.
-        /// </summary>
-        private uint autoSaveTimeMinutes = 10;
-
-        /// <summary>
         /// Gets or sets the automatic save time minutes.
         /// </summary>
         /// <value>The automatic save time minutes.</value>
@@ -216,11 +221,6 @@ namespace QuickUnityEditor
                 }
             }
         }
-
-        /// <summary>
-        /// Whether to show confirm dialog when autosave.
-        /// </summary>
-        private bool askWhenSaving = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether [show confirm dialog].

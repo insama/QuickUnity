@@ -24,12 +24,20 @@
 
 using CSharpExtensions.IO;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 
 namespace QuickUnityEditor
 {
+    /// <summary>
+    /// The enum of config file domain.
+    /// </summary>
+    public enum ConfigFileDomain
+    {
+        Editor,
+        Project
+    }
+
     /// <summary>
     /// Main Application class for QuickUnity.
     /// </summary>
@@ -64,15 +72,6 @@ namespace QuickUnityEditor
         /// The extension of meta file.
         /// </summary>
         public const string MetaFileExtension = ".meta";
-
-        /// <summary>
-        /// The enum of config file domain.
-        /// </summary>
-        public enum ConfigFileDomain
-        {
-            Editor,
-            Project
-        }
 
         /// <summary>
         /// The editor configuration file path.

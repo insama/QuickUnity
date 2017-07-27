@@ -38,14 +38,29 @@ namespace QuickUnity.Timers
     {
         #region Event Memebers
 
+        /// <summary>
+        /// Indicates that all <see cref="ITimer"/> in the <see cref="TimerList"/> started. 
+        /// </summary>
         public event TimersStartedEventHandler TimersStarted;
 
+        /// <summary>
+        /// Indicates that all <see cref="ITimer"/> in the <see cref="TimerList"/> paused. 
+        /// </summary>
         public event TimersPausedEventHandler TimersPaused;
 
+        /// <summary>
+        /// Indicates that all <see cref="ITimer"/> in the <see cref="TimerList"/> resumed. 
+        /// </summary>
         public event TimersResumedEventHandler TimersResumed;
 
+        /// <summary>
+        /// Indicates that all <see cref="ITimer"/> in the <see cref="TimerList"/> stopped. 
+        /// </summary>
         public event TimersStoppedEventHandler TimersStopped;
 
+        /// <summary>
+        /// Indicates that all <see cref="ITimer"/> in the <see cref="TimerList"/> reseted. 
+        /// </summary>
         public event TimersResetedEventHandler TimersReseted;
 
         #endregion Event Memebers
@@ -324,6 +339,9 @@ namespace QuickUnity.Timers
 
         #region Private Methods
 
+        /// <summary>
+        /// Dispatches the event of all <see cref="ITimer"/> in this <see cref="TimerList"/> started. 
+        /// </summary>
         private void DispatchTimersStartedEvent()
         {
             if (TimersStarted != null)
@@ -332,6 +350,9 @@ namespace QuickUnity.Timers
             }
         }
 
+        /// <summary>
+        /// Dispatches the event of all <see cref="ITimer"/> in this <see cref="TimerList"/> paused. 
+        /// </summary>
         private void DispatchTimersPausedEvent()
         {
             if (TimersPaused != null)
@@ -340,6 +361,9 @@ namespace QuickUnity.Timers
             }
         }
 
+        /// <summary>
+        /// Dispatches the event of all <see cref="ITimer"/> in this <see cref="TimerList"/> resumed. 
+        /// </summary>
         private void DispatchTimersResumedEvent()
         {
             if (TimersResumed != null)
@@ -348,6 +372,9 @@ namespace QuickUnity.Timers
             }
         }
 
+        /// <summary>
+        /// Dispatches the event of all <see cref="ITimer"/> in this <see cref="TimerList"/> stopped. 
+        /// </summary>
         private void DispatchTimersStoppedEvent()
         {
             if (TimersStopped != null)
@@ -356,6 +383,9 @@ namespace QuickUnity.Timers
             }
         }
 
+        /// <summary>
+        /// Dispatches the event of all <see cref="ITimer"/> in this <see cref="TimerList"/> reseted. 
+        /// </summary>
         private void DispatchTimersResetedEvent()
         {
             if (TimersReseted != null)

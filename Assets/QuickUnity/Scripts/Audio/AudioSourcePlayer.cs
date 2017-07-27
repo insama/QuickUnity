@@ -66,7 +66,7 @@ namespace QuickUnity.Audio
 
         #endregion Messages
 
-        #region Public Functions
+        #region Public Methods
 
         /// <summary>
         /// Play the audio source. 
@@ -139,9 +139,9 @@ namespace QuickUnity.Audio
             }
         }
 
-        #endregion Public Functions
+        #endregion Public Methods
 
-        #region Private Functions
+        #region Private Methods
 
         private IEnumerator ApplyFadeIn(float fadeInDuration = 0.0f, float fadeToVolume = 1.0f, Action completeCallback = null)
         {
@@ -208,6 +208,6 @@ namespace QuickUnity.Audio
             }
         }
 
-        #endregion Private Functions
+        #endregion Private Methods
     }
 }

@@ -75,7 +75,7 @@ namespace QuickUnity.Data
             Dispose(false);
         }
 
-        #region Public Functions
+        #region Public Methods
 
         /// <summary>
         /// Gets the object of data table row.
@@ -261,7 +261,7 @@ namespace QuickUnity.Data
             GC.SuppressFinalize(this);
         }
 
-        #endregion Public Functions
+        #endregion Public Methods
 
         /// <summary>
         /// Initializes.
@@ -344,7 +344,10 @@ namespace QuickUnity.Data
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        /// unmanaged resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

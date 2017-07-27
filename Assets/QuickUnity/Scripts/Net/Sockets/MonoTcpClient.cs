@@ -93,7 +93,7 @@ namespace QuickUnity.Net.Sockets
             eventDispatcher = null;
         }
 
-        #region Public Functions
+        #region Public Methods
 
         /// <summary>
         /// Sets the keepalive. 
@@ -107,7 +107,7 @@ namespace QuickUnity.Net.Sockets
             throw new NotImplementedException();
         }
 
-        #endregion Public Functions
+        #endregion Public Methods
 
         #region IThreadEventDispatcher Interface
 
@@ -178,7 +178,7 @@ namespace QuickUnity.Net.Sockets
 
         #endregion IThreadEventDispatcher Interface
 
-        #region Protected Functions
+        #region Protected Methods
 
         /// <summary>
         /// Initializes this instance. 
@@ -232,6 +232,6 @@ namespace QuickUnity.Net.Sockets
             DispatchEvent(new SocketEvent(SocketEvent.SocketException, this, exception));
         }
 
-        #endregion Protected Functions
+        #endregion Protected Methods
     }
 }

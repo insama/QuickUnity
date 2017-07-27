@@ -27,19 +27,19 @@ using QuickUnity.Timers;
 namespace QuickUnityEditor.Timers
 {
     /// <summary>
-    /// Class EditorTimer.
+    /// Class EditorTimer. 
     /// </summary>
     /// <seealso cref="QuickUnity.Timers.Timer"/>
     internal class EditorTimer : Timer
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EditorTimer"/> class.
+        /// Initializes a new instance of the <see cref="EditorTimer"/> class. 
         /// </summary>
-        /// <param name="delay">The delay of the <see cref="ITimer"/>.</param>
-        /// <param name="repeatCount">The repeat count of the <see cref="ITimer"/>.</param>
-        /// <param name="ignoreTimeScale">if set to <c>true</c> the <see cref="ITimer"/> will ignore time scale of Unity.</param>
-        /// <param name="stopOnDisable">if set to <c>true</c> the <see cref="ITimer"/> won't stop when the <see cref="ITimer"/> is disabled.</param>
-        /// <param name="autoStart">if set to <c>true</c> the <see cref="ITimer"/> will start automatically.</param>
+        /// <param name="delay"> The delay of the <see cref="ITimer"/>. </param>
+        /// <param name="repeatCount"> The repeat count of the <see cref="ITimer"/>. </param>
+        /// <param name="ignoreTimeScale"> if set to <c> true </c> the <see cref="ITimer"/> will ignore time scale of Unity. </param>
+        /// <param name="stopOnDisable"> if set to <c> true </c> the <see cref="ITimer"/> won't stop when the <see cref="ITimer"/> is disabled. </param>
+        /// <param name="autoStart"> if set to <c> true </c> the <see cref="ITimer"/> will start automatically. </param>
         public EditorTimer(float delay, uint repeatCount = 0, bool ignoreTimeScale = true, bool stopOnDisable = true, bool autoStart = true)
             : base(delay, repeatCount, ignoreTimeScale, stopOnDisable, autoStart)
         {
@@ -48,7 +48,7 @@ namespace QuickUnityEditor.Timers
         #region ITimer Interface
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources. 
         /// </summary>
         public override void Dispose()
         {
@@ -57,16 +57,16 @@ namespace QuickUnityEditor.Timers
 
         #endregion ITimer Interface
 
-        #region Protected Functions
+        #region Protected Methods
 
         /// <summary>
-        /// Initializes this instance.
+        /// Initializes this instance. 
         /// </summary>
         protected override void Initialize()
         {
             EditorTimerManager.Instance.Add(this);
         }
 
-        #endregion Protected Functions
+        #endregion Protected Methods
     }
 }

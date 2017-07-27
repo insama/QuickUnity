@@ -87,7 +87,7 @@ namespace QuickUnity.Net.Sockets
             eventDispatcher = null;
         }
 
-        #region Public Functions
+        #region Public Methods
 
         /// <summary>
         /// Sets the keepalive. 
@@ -101,7 +101,7 @@ namespace QuickUnity.Net.Sockets
             throw new NotImplementedException();
         }
 
-        #endregion Public Functions
+        #endregion Public Methods
 
         #region IThreadEventDispatcher Interface
 
@@ -181,7 +181,7 @@ namespace QuickUnity.Net.Sockets
 
         #endregion IThreadEventDispatcher Interface
 
-        #region Protected Functions
+        #region Protected Methods
 
         /// <summary>
         /// Initializes this instance. 
@@ -252,9 +252,9 @@ namespace QuickUnity.Net.Sockets
             return tcpClient;
         }
 
-        #endregion Protected Functions
+        #endregion Protected Methods
 
-        #region Private Functions
+        #region Private Methods
 
         /// <summary>
         /// Called when [TCP client socket connected]. 
@@ -313,6 +313,6 @@ namespace QuickUnity.Net.Sockets
             DispatchEvent(new SocketEvent(SocketEvent.ClientSocketException, tcpClient, ex));
         }
 
-        #endregion Private Functions
+        #endregion Private Methods
     }
 }

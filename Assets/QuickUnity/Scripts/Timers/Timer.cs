@@ -40,56 +40,59 @@ namespace QuickUnity.Timers
 
         #region Event Memebers
 
+        /// <summary>
+        /// Indicates that the <see cref="Timer"/> started. 
+        /// </summary>
         public TimerStartedEventHandler TimerStarted;
 
+        /// <summary>
+        /// Indicates that the <see cref="Timer"/> is ticking. 
+        /// </summary>
         public TimerTickingEventHandler TimerTicking;
 
+        /// <summary>
+        /// Indicates that the <see cref="Timer"/> completed. 
+        /// </summary>
         public TimerCompletedEventHandler TimerCompleted;
 
+        /// <summary>
+        /// Indicates that the <see cref="Timer"/> paused. 
+        /// </summary>
         public TimerPausedEventHandler TimerPaused;
 
+        /// <summary>
+        /// Indicates that the <see cref="Timer"/> resumed. 
+        /// </summary>
         public TimerResumedEventHandler TimerResumed;
 
+        /// <summary>
+        /// Indicates that the <see cref="Timer"/> stopped. 
+        /// </summary>
         public TimerStoppedEventHandler TimerStopped;
 
+        /// <summary>
+        /// Indicates that the <see cref="Timer"/> reseted. 
+        /// </summary>
         public TimerResetedEventHandler TimerReseted;
 
         #endregion Event Memebers
 
-        /// <summary>
-        /// The time of timing. 
-        /// </summary>
+        #region Fields
+
         private float time;
 
-        /// <summary>
-        /// The current count of <see cref="ITimer"/>. 
-        /// </summary>
         private uint currentCount = 0;
 
-        /// <summary>
-        /// The delay time of <see cref="ITimer"/>. 
-        /// </summary>
         private float delay;
 
-        /// <summary>
-        /// The repeat count of <see cref="ITimer"/>. 
-        /// </summary>
         private uint repeatCount;
 
-        /// <summary>
-        /// The state of <see cref="ITimer"/>. 
-        /// </summary>
         private TimerState timerState;
 
-        /// <summary>
-        /// The value indicating whether the <see cref="ITimer"/> ignore time scale of Unity. 
-        /// </summary>
         private bool ignoreTimeScale = true;
-
-        /// <summary>
-        /// The value indicating whether the <see cref="ITimer"/> stop when the <see cref="ITimer"/> is disabled. 
-        /// </summary>
         private bool stopOnDisable = true;
+
+        #endregion Fields
 
         #region ITimer Interface
 
@@ -319,7 +322,7 @@ namespace QuickUnity.Timers
 
         #endregion ITimer Interface
 
-        #region Protected Functions
+        #region Protected Methods
 
         /// <summary>
         /// Initializes this instance. 
@@ -329,10 +332,13 @@ namespace QuickUnity.Timers
             TimerManager.Instance.Add(this);
         }
 
-        #endregion Protected Functions
+        #endregion Protected Methods
 
         #region Private Methods
 
+        /// <summary>
+        /// Dispatches the event of this <see cref="Timer"/> started. 
+        /// </summary>
         private void DispatchTimerStartedEvent()
         {
             if (TimerStarted != null)
@@ -341,6 +347,9 @@ namespace QuickUnity.Timers
             }
         }
 
+        /// <summary>
+        /// Dispatches the event of this <see cref="Timer"/> ticking. 
+        /// </summary>
         private void DispatchTimerTickingEvent()
         {
             if (TimerTicking != null)
@@ -349,6 +358,9 @@ namespace QuickUnity.Timers
             }
         }
 
+        /// <summary>
+        /// Dispatches the event of this <see cref="Timer"/> completed. 
+        /// </summary>
         private void DispatchTimerCompletedEvent()
         {
             if (TimerCompleted != null)
@@ -357,6 +369,9 @@ namespace QuickUnity.Timers
             }
         }
 
+        /// <summary>
+        /// Dispatches the event of this <see cref="Timer"/> paused. 
+        /// </summary>
         private void DispatchTimerPausedEvent()
         {
             if (TimerPaused != null)
@@ -365,6 +380,9 @@ namespace QuickUnity.Timers
             }
         }
 
+        /// <summary>
+        /// Dispatches the event of this <see cref="Timer"/> resumed. 
+        /// </summary>
         private void DispatchTimerResumedEvent()
         {
             if (TimerResumed != null)
@@ -373,6 +391,9 @@ namespace QuickUnity.Timers
             }
         }
 
+        /// <summary>
+        /// Dispatches the event of this <see cref="Timer"/> stopped. 
+        /// </summary>
         private void DispatchTimerStoppedEvent()
         {
             if (TimerStopped != null)
@@ -381,6 +402,9 @@ namespace QuickUnity.Timers
             }
         }
 
+        /// <summary>
+        /// Dispatches the event of this <see cref="Timer"/> reseted. 
+        /// </summary>
         private void DispatchTimerResetedEvent()
         {
             if (TimerReseted != null)

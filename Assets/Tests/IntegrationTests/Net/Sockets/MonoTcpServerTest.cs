@@ -99,17 +99,17 @@ namespace QuickUnity.Tests.IntegrationTests
             }
         }
 
-        private void OnServerStart(CSharpExtensions.Events.Event eventObj)
+        private void OnServerStart(Events.Event eventObj)
         {
             Debug.Log("server started!");
         }
 
-        private void OnServerStop(CSharpExtensions.Events.Event eventObj)
+        private void OnServerStop(Events.Event eventObj)
         {
             Debug.Log("server stop");
         }
 
-        private void OnServerSocketException(CSharpExtensions.Events.Event eventObj)
+        private void OnServerSocketException(Events.Event eventObj)
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
             Exception e = socketEvent.Exception;
@@ -117,7 +117,7 @@ namespace QuickUnity.Tests.IntegrationTests
             Debug.Log(e.StackTrace);
         }
 
-        private void OnClientConnected(CSharpExtensions.Events.Event eventObj)
+        private void OnClientConnected(Events.Event eventObj)
         {
             Debug.Log("client connected!");
             IntegrationTest.Pass();

@@ -26,98 +26,99 @@ using CSharpExtensions.Patterns.Singleton;
 using QuickUnity.Timers;
 using QuickUnityEditor.Attributes;
 using QuickUnityEditor.Timers;
+using System;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
 namespace QuickUnityEditor
 {
     /// <summary>
-    /// Class to implement the feature of AutoSave.
+    /// Class to implement the feature of AutoSave. 
     /// </summary>
     /// <seealso cref="QuickUnity.Patterns.Singleton{QuickUnityEditor.AutoSave}"/>
     [InitializeOnEditorStartup]
     internal class AutoSave : SingletonBase<AutoSave>
     {
         /// <summary>
-        /// Class contains all config keys.
+        /// Class contains all config keys. 
         /// </summary>
         private class ConfigKeys
         {
             /// <summary>
-            /// The key of config parameter "isAutoSaveEnabled".
+            /// The key of config parameter "isAutoSaveEnabled". 
             /// </summary>
             public const string IsAutoSaveEnabledKey = "isAutoSaveEnabled";
 
             /// <summary>
-            /// The key of config parameter "isAutoSaveScenesEnabled".
+            /// The key of config parameter "isAutoSaveScenesEnabled". 
             /// </summary>
             public const string IsAutoSaveScenesEnabledKey = "isAutoSaveScenesEnabled";
 
             /// <summary>
-            /// The key of config parameter "isAutoSaveAssetsEnabled".
+            /// The key of config parameter "isAutoSaveAssetsEnabled". 
             /// </summary>
             public const string IsAutoSaveAssetsEnabledKey = "isAutoSaveAssetsEnabled";
 
             /// <summary>
-            /// The key of config parameter "autoSaveTimeMinutes".
+            /// The key of config parameter "autoSaveTimeMinutes". 
             /// </summary>
             public const string AutoSaveTimeMinutesKey = "autoSaveTimeMinutes";
 
             /// <summary>
-            /// The key of config parameter "askWhenSaving".
+            /// The key of config parameter "askWhenSaving". 
             /// </summary>
             public const string AskWhenSavingKey = "askWhenSaving";
         }
 
         /// <summary>
-        /// The configuration section.
+        /// The configuration section. 
         /// </summary>
         private const string configSection = "AutoSave";
 
         /// <summary>
-        /// Whether initialize is complete.
+        /// Whether initialize is complete. 
         /// </summary>
         private bool initialized = false;
 
         /// <summary>
-        /// The timer of autosave.
+        /// The timer of autosave. 
         /// </summary>
-        private ITimer autosaveTimer;
+        private Timer autosaveTimer;
 
         /// <summary>
-        /// Whether the data is dirty.
+        /// Whether the data is dirty. 
         /// </summary>
         private bool isDirty = false;
 
         /// <summary>
-        /// Whether to enable AutoSave feature.
+        /// Whether to enable AutoSave feature. 
         /// </summary>
         private bool isAutoSaveEnabled = false;
 
         /// <summary>
-        /// Whether to auto save scenes.
+        /// Whether to auto save scenes. 
         /// </summary>
         private bool isAutoSaveScenesEnabled = true;
 
         /// <summary>
-        /// Whether to save assets automatically.
+        /// Whether to save assets automatically. 
         /// </summary>
         private bool isAutoSaveAssetsEnabled = true;
 
         /// <summary>
-        /// The time interval after which to autosave.
+        /// The time interval after which to autosave. 
         /// </summary>
         private uint autoSaveTimeMinutes = 10;
 
         /// <summary>
-        /// Whether to show confirm dialog when autosave.
+        /// Whether to show confirm dialog when autosave. 
         /// </summary>
         private bool askWhenSaving = true;
 
         /// <summary>
-        /// Sets a value indicating whether to enable AutoSave feature.
+        /// Sets a value indicating whether to enable AutoSave feature. 
         /// </summary>
-        /// <value><c>true</c> if the feature of AutoSave is enabled; otherwise, <c>false</c>.</value>
+        /// <value> <c> true </c> if the feature of AutoSave is enabled; otherwise, <c> false </c>. </value>
         public bool IsAutoSaveEnabled
         {
             get
@@ -142,9 +143,9 @@ namespace QuickUnityEditor
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether it is automatic save scenes enabled.
+        /// Gets or sets a value indicating whether it is automatic save scenes enabled. 
         /// </summary>
-        /// <value><c>true</c> if it is automatic save scenes enabled; otherwise, <c>false</c>.</value>
+        /// <value> <c> true </c> if it is automatic save scenes enabled; otherwise, <c> false </c>. </value>
         public bool IsAutoSaveScenesEnabled
         {
             get
@@ -169,9 +170,9 @@ namespace QuickUnityEditor
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether it is automatic save assets enabled.
+        /// Gets or sets a value indicating whether it is automatic save assets enabled. 
         /// </summary>
-        /// <value><c>true</c> if it is automatic save assets enabled; otherwise, <c>false</c>.</value>
+        /// <value> <c> true </c> if it is automatic save assets enabled; otherwise, <c> false </c>. </value>
         public bool IsAutoSaveAssetsEnabled
         {
             get
@@ -196,9 +197,9 @@ namespace QuickUnityEditor
         }
 
         /// <summary>
-        /// Gets or sets the automatic save time minutes.
+        /// Gets or sets the automatic save time minutes. 
         /// </summary>
-        /// <value>The automatic save time minutes.</value>
+        /// <value> The automatic save time minutes. </value>
         public uint AutoSaveTimeMinutes
         {
             get
@@ -223,9 +224,9 @@ namespace QuickUnityEditor
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [show confirm dialog].
+        /// Gets or sets a value indicating whether [show confirm dialog]. 
         /// </summary>
-        /// <value><c>true</c> if [show confirm dialog]; otherwise, <c>false</c>.</value>
+        /// <value> <c> true </c> if [show confirm dialog]; otherwise, <c> false </c>. </value>
         public bool AskWhenSaving
         {
             get
@@ -250,7 +251,7 @@ namespace QuickUnityEditor
         }
 
         /// <summary>
-        /// Initializes static members of the <see cref="AutoSave"/> class.
+        /// Initializes static members of the <see cref="AutoSave"/> class. 
         /// </summary>
         static AutoSave()
         {
@@ -258,7 +259,7 @@ namespace QuickUnityEditor
         }
 
         /// <summary>
-        /// Initializes this instance.
+        /// Initializes this instance. 
         /// </summary>
         public void Initialize()
         {
@@ -278,17 +279,18 @@ namespace QuickUnityEditor
                 if (autosaveTimer == null)
                 {
                     autosaveTimer = new EditorTimer(1, AutoSaveTimeMinutes * 60);
-                    autosaveTimer.AddEventListener<TimerEvent>(TimerEvent.Timer, OnAutosaveTimer);
-                    autosaveTimer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, OnAutosaveTimerComplete);
+                    autosaveTimer.TimerTicking += OnAutosaveTimerTicking;
+                    autosaveTimer.TimerCompleted += OnAutosaveTimerCompleted;
                 }
             }
         }
 
         /// <summary>
-        /// Called when [autosave timer].
+        /// Called when timer is ticking. 
         /// </summary>
-        /// <param name="timerEvent">The timer event.</param>
-        private void OnAutosaveTimer(TimerEvent timerEvent)
+        /// <param name="sender"> The sender. </param>
+        /// <param name="e"> The <see cref="EventArgs"/> instance containing the event data. </param>
+        private void OnAutosaveTimerTicking(object sender, EventArgs e)
         {
             if (isDirty)
             {
@@ -300,10 +302,11 @@ namespace QuickUnityEditor
         }
 
         /// <summary>
-        /// Called when [autosave timer complete].
+        /// Called when timer completed. 
         /// </summary>
-        /// <param name="timerEvent">The timer event.</param>
-        private void OnAutosaveTimerComplete(TimerEvent timerEvent)
+        /// <param name="sender"> The sender. </param>
+        /// <param name="e"> The <see cref="EventArgs"/> instance containing the event data. </param>
+        private void OnAutosaveTimerCompleted(object sender, EventArgs e)
         {
             if (isAutoSaveEnabled && !EditorApplication.isPlaying)
             {
@@ -326,7 +329,7 @@ namespace QuickUnityEditor
         }
 
         /// <summary>
-        /// Save project automatically.
+        /// Save project automatically. 
         /// </summary>
         private void AutoSaveProject()
         {

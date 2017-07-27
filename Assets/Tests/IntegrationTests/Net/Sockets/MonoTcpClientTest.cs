@@ -100,27 +100,27 @@ namespace QuickUnity.Tests.IntegrationTests
             }
         }
 
-        private void OnSocketConnected(CSharpExtensions.Events.Event eventObj)
+        private void OnSocketConnected(Events.Event eventObj)
         {
             Debug.Log("socket is connected");
             IntegrationTest.Pass(gameObject);
         }
 
-        private void OnSocketDisconnected(CSharpExtensions.Events.Event eventObj)
+        private void OnSocketDisconnected(Events.Event eventObj)
         {
             Debug.Log("socket is disconnected");
         }
 
-        private void OnSocketData(CSharpExtensions.Events.Event eventObj)
+        private void OnSocketData(Events.Event eventObj)
         {
         }
 
-        private void OnSocketClosed(CSharpExtensions.Events.Event eventObj)
+        private void OnSocketClosed(Events.Event eventObj)
         {
             Debug.Log("socket is closed");
         }
 
-        private void OnSocketException(CSharpExtensions.Events.Event eventObj)
+        private void OnSocketException(Events.Event eventObj)
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
             Exception e = socketEvent.Exception;

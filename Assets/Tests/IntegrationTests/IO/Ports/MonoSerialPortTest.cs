@@ -1,5 +1,5 @@
-﻿using CSharpExtensions.Events;
-using CSharpExtensions.IO.Ports;
+﻿using CSharpExtensions.IO.Ports;
+using QuickUnity.Events;
 using QuickUnity.IO.Ports;
 using System;
 using System.Collections.Generic;

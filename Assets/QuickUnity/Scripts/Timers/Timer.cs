@@ -22,72 +22,90 @@
  *	SOFTWARE.
  */
 
-using CSharpExtensions.Events;
+using System;
 
 namespace QuickUnity.Timers
 {
     /// <summary>
-    /// Generates an event after a set interval, with an option to generate recurring events.
+    /// Generates an event after a set interval, with an option to generate recurring events. 
     /// </summary>
     /// <seealso cref="Events.EventDispatcher"/>
     /// <seealso cref="ITimer"/>
-    public class Timer : EventDispatcher, ITimer
+    public class Timer : ITimer
     {
         /// <summary>
-        /// The minimum delay time.
+        /// The minimum delay time. 
         /// </summary>
         private const float minDelayTime = 0.02f;
 
+        #region Event Memebers
+
+        public TimerStartedEventHandler TimerStarted;
+
+        public TimerTickingEventHandler TimerTicking;
+
+        public TimerCompletedEventHandler TimerCompleted;
+
+        public TimerPausedEventHandler TimerPaused;
+
+        public TimerResumedEventHandler TimerResumed;
+
+        public TimerStoppedEventHandler TimerStopped;
+
+        public TimerResetedEventHandler TimerReseted;
+
+        #endregion Event Memebers
+
         /// <summary>
-        /// The time of timing.
+        /// The time of timing. 
         /// </summary>
         private float time;
 
         /// <summary>
-        /// The current count of <see cref="ITimer"/>.
+        /// The current count of <see cref="ITimer"/>. 
         /// </summary>
         private uint currentCount = 0;
 
         /// <summary>
-        /// The delay time of <see cref="ITimer"/>.
+        /// The delay time of <see cref="ITimer"/>. 
         /// </summary>
         private float delay;
 
         /// <summary>
-        /// The repeat count of <see cref="ITimer"/>.
+        /// The repeat count of <see cref="ITimer"/>. 
         /// </summary>
         private uint repeatCount;
 
         /// <summary>
-        /// The state of <see cref="ITimer"/>.
+        /// The state of <see cref="ITimer"/>. 
         /// </summary>
         private TimerState timerState;
 
         /// <summary>
-        /// The value indicating whether the <see cref="ITimer"/> ignore time scale of Unity.
+        /// The value indicating whether the <see cref="ITimer"/> ignore time scale of Unity. 
         /// </summary>
         private bool ignoreTimeScale = true;
 
         /// <summary>
-        /// The value indicating whether the <see cref="ITimer"/> stop when the <see cref="ITimer"/> is disabled.
+        /// The value indicating whether the <see cref="ITimer"/> stop when the <see cref="ITimer"/> is disabled. 
         /// </summary>
         private bool stopOnDisable = true;
 
         #region ITimer Interface
 
         /// <summary>
-        /// Gets the current count of <see cref="ITimer"/>.
+        /// Gets the current count of <see cref="ITimer"/>. 
         /// </summary>
-        /// <value>The current count of <see cref="ITimer"/>.</value>
+        /// <value> The current count of <see cref="ITimer"/>. </value>
         public uint CurrentCount
         {
             get { return currentCount; }
         }
 
         /// <summary>
-        /// Gets the delay time of <see cref="ITimer"/>.
+        /// Gets the delay time of <see cref="ITimer"/>. 
         /// </summary>
-        /// <value>The delay timer of <see cref="ITimer"/>.</value>
+        /// <value> The delay timer of <see cref="ITimer"/>. </value>
         public float Delay
         {
             get { return delay; }
@@ -95,9 +113,9 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
-        /// Gets the repeat count of <see cref="ITimer"/>.
+        /// Gets the repeat count of <see cref="ITimer"/>. 
         /// </summary>
-        /// <value>The repeat count of <see cref="ITimer"/>.</value>
+        /// <value> The repeat count of <see cref="ITimer"/>. </value>
         public uint RepeatCount
         {
             get { return repeatCount; }
@@ -105,9 +123,9 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="ITimer"/> is enabled.
+        /// Gets a value indicating whether this <see cref="ITimer"/> is enabled. 
         /// </summary>
-        /// <value><c>true</c> if enabled Tick function will be invoked; otherwise, <c>false</c>.</value>
+        /// <value> <c> true </c> if enabled Tick function will be invoked; otherwise, <c> false </c>. </value>
         public bool Enabled
         {
             set
@@ -136,18 +154,18 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
-        /// Gets the state of the <see cref="ITimer"/>.
+        /// Gets the state of the <see cref="ITimer"/>. 
         /// </summary>
-        /// <value>The state of the <see cref="ITimer"/>.</value>
+        /// <value> The state of the <see cref="ITimer"/>. </value>
         public TimerState TimerState
         {
             get { return timerState; }
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="ITimer"/> ignore time scale of Unity.
+        /// Gets a value indicating whether the <see cref="ITimer"/> ignore time scale of Unity. 
         /// </summary>
-        /// <value><c>true</c> if ignore time scale of Unity; otherwise, <c>false</c>.</value>
+        /// <value> <c> true </c> if ignore time scale of Unity; otherwise, <c> false </c>. </value>
         public bool IgnoreTimeScale
         {
             get { return ignoreTimeScale; }
@@ -155,9 +173,9 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="ITimer"/> stop when the <see cref="ITimer"/> is disabled.
+        /// Gets a value indicating whether the <see cref="ITimer"/> stop when the <see cref="ITimer"/> is disabled. 
         /// </summary>
-        /// <value><c>true</c> if the <see cref="ITimer"/> stop whtn the <see cref="ITimer"/> is disabled; otherwise, <c>false</c>.</value>
+        /// <value> <c> true </c> if the <see cref="ITimer"/> stop whtn the <see cref="ITimer"/> is disabled; otherwise, <c> false </c>. </value>
         public bool StopOnDisable
         {
             get { return stopOnDisable; }
@@ -167,13 +185,13 @@ namespace QuickUnity.Timers
         #endregion ITimer Interface
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Timer"/> class.
+        /// Initializes a new instance of the <see cref="Timer"/> class. 
         /// </summary>
-        /// <param name="delay">The delay of the <see cref="ITimer"/>.</param>
-        /// <param name="repeatCount">The repeat count of the <see cref="ITimer"/>.</param>
-        /// <param name="ignoreTimeScale">if set to <c>true</c> the <see cref="ITimer"/> will ignore time scale of Unity.</param>
-        /// <param name="stopOnDisable">if set to <c>true</c> the <see cref="ITimer"/> won't stop when the <see cref="ITimer"/> is disabled.</param>
-        /// <param name="autoStart">if set to <c>true</c> the <see cref="ITimer"/> will start automatically.</param>
+        /// <param name="delay"> The delay of the <see cref="ITimer"/>. </param>
+        /// <param name="repeatCount"> The repeat count of the <see cref="ITimer"/>. </param>
+        /// <param name="ignoreTimeScale"> if set to <c> true </c> the <see cref="ITimer"/> will ignore time scale of Unity. </param>
+        /// <param name="stopOnDisable"> if set to <c> true </c> the <see cref="ITimer"/> won't stop when the <see cref="ITimer"/> is disabled. </param>
+        /// <param name="autoStart"> if set to <c> true </c> the <see cref="ITimer"/> will start automatically. </param>
         public Timer(float delay, uint repeatCount = 0, bool ignoreTimeScale = true, bool stopOnDisable = true, bool autoStart = true)
         {
             timerState = TimerState.Stop;
@@ -202,55 +220,55 @@ namespace QuickUnity.Timers
         #region ITimer Interface
 
         /// <summary>
-        /// This <see cref="ITimer"/> start timing.
+        /// This <see cref="ITimer"/> start timing. 
         /// </summary>
         public void Start()
         {
             if (timerState != TimerState.Running)
             {
                 timerState = TimerState.Running;
-                DispatchEvent(new TimerEvent(TimerEvent.TimerStart, this));
+                DispatchTimerStartedEvent();
             }
         }
 
         /// <summary>
-        /// This <see cref="ITimer"/> pause timing.
+        /// This <see cref="ITimer"/> pause timing. 
         /// </summary>
         public void Pause()
         {
             if (timerState != TimerState.Pause)
             {
                 timerState = TimerState.Pause;
-                DispatchEvent(new TimerEvent(TimerEvent.TimerPause, this));
+                DispatchTimerPausedEvent();
             }
         }
 
         /// <summary>
-        /// This <see cref="ITimer"/> resume timing.
+        /// This <see cref="ITimer"/> resume timing. 
         /// </summary>
         public void Resume()
         {
             if (timerState == TimerState.Pause)
             {
                 timerState = TimerState.Running;
-                DispatchEvent(new TimerEvent(TimerEvent.TimerResume, this));
+                DispatchTimerResumedEvent();
             }
         }
 
         /// <summary>
-        /// This <see cref="ITimer"/> stop timing.
+        /// This <see cref="ITimer"/> stop timing. 
         /// </summary>
         public void Stop()
         {
             if (timerState != TimerState.Stop)
             {
                 timerState = TimerState.Stop;
-                DispatchEvent(new TimerEvent(TimerEvent.TimerStop, this));
+                DispatchTimerStoppedEvent();
             }
         }
 
         /// <summary>
-        /// This <see cref="ITimer"/> resets timing. Set CurrentCount to 0.
+        /// This <see cref="ITimer"/> resets timing. Set CurrentCount to 0. 
         /// </summary>
         public void Reset()
         {
@@ -259,13 +277,13 @@ namespace QuickUnity.Timers
             currentCount = 0;
             time = 0f;
 
-            DispatchEvent(new TimerEvent(TimerEvent.TimerReset, this));
+            DispatchTimerResetedEvent();
         }
 
         /// <summary>
-        /// This <see cref="ITimer"/> tick.
+        /// This <see cref="ITimer"/> tick. 
         /// </summary>
-        /// <param name="deltaTime">The delta time.</param>
+        /// <param name="deltaTime"> The delta time. </param>
         public void Tick(float deltaTime)
         {
             if (timerState == TimerState.Running)
@@ -276,13 +294,13 @@ namespace QuickUnity.Timers
                 {
                     // Dispatch timer event.
                     currentCount++;
-                    DispatchEvent(new TimerEvent(TimerEvent.Timer, this));
+                    DispatchTimerTickingEvent();
 
                     // Dispatch timer complete event.
                     if (repeatCount != 0 && currentCount >= repeatCount)
                     {
+                        DispatchTimerCompletedEvent();
                         Reset();
-                        DispatchEvent(new TimerEvent(TimerEvent.TimerComplete, this));
                     }
 
                     // Reset delay time.
@@ -292,7 +310,7 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources. 
         /// </summary>
         public virtual void Dispose()
         {
@@ -304,7 +322,7 @@ namespace QuickUnity.Timers
         #region Protected Functions
 
         /// <summary>
-        /// Initializes this instance.
+        /// Initializes this instance. 
         /// </summary>
         protected virtual void Initialize()
         {
@@ -312,5 +330,65 @@ namespace QuickUnity.Timers
         }
 
         #endregion Protected Functions
+
+        #region Private Methods
+
+        private void DispatchTimerStartedEvent()
+        {
+            if (TimerStarted != null)
+            {
+                TimerStarted.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private void DispatchTimerTickingEvent()
+        {
+            if (TimerTicking != null)
+            {
+                TimerTicking.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private void DispatchTimerCompletedEvent()
+        {
+            if (TimerCompleted != null)
+            {
+                TimerCompleted.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private void DispatchTimerPausedEvent()
+        {
+            if (TimerPaused != null)
+            {
+                TimerPaused.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private void DispatchTimerResumedEvent()
+        {
+            if (TimerResumed != null)
+            {
+                TimerResumed.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private void DispatchTimerStoppedEvent()
+        {
+            if (TimerStopped != null)
+            {
+                TimerStopped.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private void DispatchTimerResetedEvent()
+        {
+            if (TimerReseted != null)
+            {
+                TimerReseted.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        #endregion Private Methods
     }
 }

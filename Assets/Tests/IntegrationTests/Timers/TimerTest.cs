@@ -1,29 +1,30 @@
 ﻿using QuickUnity.Timers;
+using System;
 using UnityEngine;
 
 namespace QuickUnity.Tests.IntegrationTests
 {
     /// <summary>
-    /// Integration test of scaled Timer.
+    /// Integration test of scaled Timer. 
     /// </summary>
-    /// <seealso cref="UnityEngine.MonoBehaviour"/>
+    /// <seealso cref="MonoBehaviour"/>
     [IntegrationTest.DynamicTest("TimerTests")]
     [IntegrationTest.SucceedWithAssertions]
     public class TimerTest : MonoBehaviour
     {
         /// <summary>
-        /// The test timer.
+        /// The test timer. 
         /// </summary>
-        private ITimer testTimer;
+        private Timer testTimer;
 
         /// <summary>
-        /// Start is called just before any of the Update methods is called the first time.
+        /// Start is called just before any of the Update methods is called the first time. 
         /// </summary>
         private void Start()
         {
             testTimer = new Timer(1.0f, 3, true, true, false);
-            testTimer.AddEventListener<TimerEvent>(TimerEvent.Timer, OnTimer);
-            testTimer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, OnTimerComplete);
+            testTimer.TimerTicking += OnTimerTicking;
+            testTimer.TimerCompleted += OnTimerCompleted;
             testTimer.Start();
         }
 
@@ -31,20 +32,20 @@ namespace QuickUnity.Tests.IntegrationTests
         {
             if (testTimer != null)
             {
-                testTimer.RemoveEventListener<TimerEvent>(TimerEvent.Timer, OnTimer);
-                testTimer.RemoveEventListener<TimerEvent>(TimerEvent.TimerComplete, OnTimerComplete);
+                testTimer.TimerTicking -= OnTimerTicking;
+                testTimer.TimerCompleted -= OnTimerCompleted;
                 testTimer.Dispose();
                 testTimer = null;
             }
         }
 
-        private void OnTimer(TimerEvent timerEvent)
+        private void OnTimerTicking(object sender, EventArgs e)
         {
-            ITimer timer = timerEvent.TimerObject;
+            ITimer timer = (ITimer)sender;
             Debug.Log(timer.CurrentCount);
         }
 
-        private void OnTimerComplete(TimerEvent timerEvent)
+        private void OnTimerCompleted(object sender, EventArgs e)
         {
             IntegrationTest.Pass(gameObject);
         }

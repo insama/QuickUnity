@@ -26,14 +26,13 @@ using CSharpExtensions.IO.Ports;
 using System.IO.Ports;
 using System;
 using QuickUnity.Events;
-using CSharpExtensions.Events;
 using System.Threading;
 using System.Collections.Generic;
 
 namespace QuickUnity.IO.Ports
 {
     /// <summary>
-    /// <see cref="SerialPort"/> is class for serial port communication in Mono environment.
+    /// <see cref="SerialPort"/> is class for serial port communication in Mono environment. 
     /// </summary>
     /// <seealso cref="SerialPortBase"/>
     /// <seealso cref="IThreadEventDispatcher"/>
@@ -55,15 +54,15 @@ namespace QuickUnity.IO.Ports
         private int receviedDataInterval;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MonoSerialPort"/> class using the specified
-        /// port name, baud rate, parity bit, data bits, and stop bit.
+        /// Initializes a new instance of the <see cref="MonoSerialPort"/> class using the specified port name, baud rate, parity bit, data bits, and
+        /// stop bit.
         /// </summary>
-        /// <param name="portName">The port to use (for example, COM1).</param>
-        /// <param name="baudRate">The baud rate.</param>
-        /// <param name="parity">One of the <see cref="Parity"/> values.</param>
-        /// <param name="dataBits">The data bits value.</param>
-        /// <param name="stopBits">One of the <see cref="StopBits"/> values.</param>
-        /// <exception cref="IOException">The specified port could not be found or opened.</exception>
+        /// <param name="portName"> The port to use (for example, COM1). </param>
+        /// <param name="baudRate"> The baud rate. </param>
+        /// <param name="parity"> One of the <see cref="Parity"/> values. </param>
+        /// <param name="dataBits"> The data bits value. </param>
+        /// <param name="stopBits"> One of the <see cref="StopBits"/> values. </param>
+        /// <exception cref="IOException"> The specified port could not be found or opened. </exception>
         public MonoSerialPort(string portName, int baudRate = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One)
             : base(portName, baudRate, parity, dataBits, stopBits)
         {
@@ -71,7 +70,7 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="MonoSerialPort"/> class.
+        /// Finalizes an instance of the <see cref="MonoSerialPort"/> class. 
         /// </summary>
         ~MonoSerialPort()
         {
@@ -79,9 +78,9 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Gets or sets the time interval of received data.
+        /// Gets or sets the time interval of received data. 
         /// </summary>
-        /// <value>The time interval of received data.</value>
+        /// <value> The time interval of received data. </value>
         public int ReceviedDataInterval
         {
             get { return receviedDataInterval; }
@@ -97,7 +96,7 @@ namespace QuickUnity.IO.Ports
         #region IThreadEventDispatcher Interface
 
         /// <summary>
-        /// Update is called every frame.
+        /// Update is called every frame. 
         /// </summary>
         public void Update()
         {
@@ -108,11 +107,10 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Registers an event listener object with an EventDispatcher object so that the listener
-        /// receives notification of an event.
+        /// Registers an event listener object with an EventDispatcher object so that the listener receives notification of an event. 
         /// </summary>
-        /// <param name="eventType">The type of event.</param>
-        /// <param name="listener">The listener function that processes the event.</param>
+        /// <param name="eventType"> The type of event. </param>
+        /// <param name="listener"> The listener function that processes the event. </param>
         public void AddEventListener(string eventType, Action<Event> listener)
         {
             if (eventDispatcher != null)
@@ -122,9 +120,9 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Dispatches the event.
+        /// Dispatches the event. 
         /// </summary>
-        /// <param name="eventObject">The event object.</param>
+        /// <param name="eventObject"> The event object. </param>
         public void DispatchEvent(Event eventObject)
         {
             if (eventDispatcher != null)
@@ -134,14 +132,11 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Checks whether the EventDispatcher object has any listeners registered for a specific
-        /// type of event.
+        /// Checks whether the EventDispatcher object has any listeners registered for a specific type of event. 
         /// </summary>
-        /// <param name="eventType">The type of event.</param>
-        /// <param name="listener">The listener function that processes the event.</param>
-        /// <returns>
-        /// A value of <c>true</c> if a listener of the specified type is registered; <c>false</c> otherwise.
-        /// </returns>
+        /// <param name="eventType"> The type of event. </param>
+        /// <param name="listener"> The listener function that processes the event. </param>
+        /// <returns> A value of <c> true </c> if a listener of the specified type is registered; <c> false </c> otherwise. </returns>
         public bool HasEventListener(string eventType, Action<Event> listener)
         {
             if (eventDispatcher != null)
@@ -153,10 +148,10 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Removes a listener from the EventDispatcher object.
+        /// Removes a listener from the EventDispatcher object. 
         /// </summary>
-        /// <param name="eventType">The type of event.</param>
-        /// <param name="listener">The listener object to remove.</param>
+        /// <param name="eventType"> The type of event. </param>
+        /// <param name="listener"> The listener object to remove. </param>
         public void RemoveEventListener(string eventType, Action<Event> listener)
         {
             if (eventDispatcher != null)
@@ -180,8 +175,7 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Closes the port connection, sets the <see cref="IsOpen"/> property to false, and disposes
-        /// of the internal <see cref="System.IO.Stream"/> object.
+        /// Closes the port connection, sets the <see cref="IsOpen"/> property to false, and disposes of the internal <see cref="System.IO.Stream"/> object. 
         /// </summary>
         public override void Close()
         {
@@ -201,7 +195,7 @@ namespace QuickUnity.IO.Ports
         #region Protected Methods
 
         /// <summary>
-        /// Initializes this instance.
+        /// Initializes this instance. 
         /// </summary>
         protected override void Initialize()
         {
@@ -210,7 +204,7 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Dispatches the event of serial port open.
+        /// Dispatches the event of serial port open. 
         /// </summary>
         protected override void DispatchSerialPortOpenEvent()
         {
@@ -218,25 +212,25 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Dispatches the event of serial port received data.
+        /// Dispatches the event of serial port received data. 
         /// </summary>
-        /// <param name="packet">The <see cref="ISerialPortPacket"/> unpacked.</param>
+        /// <param name="packet"> The <see cref="ISerialPortPacket"/> unpacked. </param>
         protected override void DispatchSeriaPortDataReceivedEvent(ISerialPortPacket packet)
         {
             DispatchEvent(new SerialPortEvent(SerialPortEvent.SerialPortDataReceived, this, packet));
         }
 
         /// <summary>
-        /// Dispatches the event of the <see cref="Exception"/> caught.
+        /// Dispatches the event of the <see cref="Exception"/> caught. 
         /// </summary>
-        /// <param name="exception">The <see cref="Exception"/> caught.</param>
+        /// <param name="exception"> The <see cref="Exception"/> caught. </param>
         protected override void DispatchSerialPortExceptionEvent(Exception exception)
         {
             DispatchEvent(new SerialPortEvent(SerialPortEvent.SerialPortException, this, exception));
         }
 
         /// <summary>
-        /// Dispatches the event of serial port closed.
+        /// Dispatches the event of serial port closed. 
         /// </summary>
         protected override void DispatchSerialPortClosedEvent()
         {
@@ -244,13 +238,9 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Releases the unmanaged resources used by the <see cref="MonoSerialPort"/> and optionally
-        /// releases the managed resources.
+        /// Releases the unmanaged resources used by the <see cref="MonoSerialPort"/> and optionally releases the managed resources. 
         /// </summary>
-        /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
-        /// unmanaged resources.
-        /// </param>
+        /// <param name="disposing"> <c> true </c> to release both managed and unmanaged resources; <c> false </c> to release only unmanaged resources. </param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -280,7 +270,7 @@ namespace QuickUnity.IO.Ports
         #region Private Methods
 
         /// <summary>
-        /// Begins to receive data from serial port.
+        /// Begins to receive data from serial port. 
         /// </summary>
         private void BeginReceive()
         {
@@ -296,7 +286,7 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Receives the data from serial port.
+        /// Receives the data from serial port. 
         /// </summary>
         private void ReceiveData()
         {
@@ -339,7 +329,7 @@ namespace QuickUnity.IO.Ports
         }
 
         /// <summary>
-        /// Unpacks the data received from serial port.
+        /// Unpacks the data received from serial port. 
         /// </summary>
         private void UnpackData()
         {

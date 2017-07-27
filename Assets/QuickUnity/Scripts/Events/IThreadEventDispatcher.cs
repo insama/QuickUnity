@@ -22,7 +22,6 @@
  *	SOFTWARE.
  */
 
-using CSharpExtensions.Events;
 using System;
 
 namespace QuickUnity.Events
@@ -34,36 +33,36 @@ namespace QuickUnity.Events
     public interface IThreadEventDispatcher
     {
         /// <summary>
-        /// Update is called every frame.
+        /// Update is called every frame. 
         /// </summary>
         void Update();
 
         /// <summary>
-        /// Registers an event listener object with an EventDispatcher object so that the listener receives notification of an event.
+        /// Registers an event listener object with an EventDispatcher object so that the listener receives notification of an event. 
         /// </summary>
-        /// <param name="eventType">The type of event.</param>
-        /// <param name="listener">The listener function that processes the event.</param>
+        /// <param name="eventType"> The type of event. </param>
+        /// <param name="listener"> The listener function that processes the event. </param>
         void AddEventListener(string eventType, Action<Event> listener);
 
         /// <summary>
-        /// Dispatches the event.
+        /// Dispatches the event. 
         /// </summary>
-        /// <param name="eventObject">The event object.</param>
+        /// <param name="eventObject"> The event object. </param>
         void DispatchEvent(Event eventObject);
 
         /// <summary>
-        /// Checks whether the EventDispatcher object has any listeners registered for a specific type of event.
+        /// Checks whether the EventDispatcher object has any listeners registered for a specific type of event. 
         /// </summary>
-        /// <param name="eventType">The type of event.</param>
-        /// <param name="listener">The listener function that processes the event.</param>
-        /// <returns>A value of <c>true</c> if a listener of the specified type is registered; <c>false</c> otherwise.</returns>
+        /// <param name="eventType"> The type of event. </param>
+        /// <param name="listener"> The listener function that processes the event. </param>
+        /// <returns> A value of <c> true </c> if a listener of the specified type is registered; <c> false </c> otherwise. </returns>
         bool HasEventListener(string eventType, Action<Event> listener);
 
         /// <summary>
-        /// Removes a listener from the EventDispatcher object.
+        /// Removes a listener from the EventDispatcher object. 
         /// </summary>
-        /// <param name="eventType">The type of event.</param>
-        /// <param name="listener">The listener object to remove.</param>
+        /// <param name="eventType"> The type of event. </param>
+        /// <param name="listener"> The listener object to remove. </param>
         void RemoveEventListener(string eventType, Action<Event> listener);
     }
 }

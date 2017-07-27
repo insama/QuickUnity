@@ -22,29 +22,17 @@
  *	SOFTWARE.
  */
 
-using CSharpExtensions.Events;
+using System;
 
-namespace QuickUnity.Audio
+namespace QuickUnity.Timers
 {
-    /// <summary>
-    /// The AudioSourceEvent class represents event objects that are specific to the AudioSource object.
-    /// </summary>
-    /// <seealso cref="QuickUnity.Events.Event"/>
-    public class AudioSourceEvent : Event
-    {
-        /// <summary>
-        /// Dispatched when a AudioSource play complete.
-        /// </summary>
-        public const string PlayComplete = "PlayComplete";
+    public delegate void TimersStartedEventHandler(object sender, EventArgs e);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AudioSourceEvent"/> class.
-        /// </summary>
-        /// <param name="eventType">The type of event.</param>
-        /// <param name="context">The context object.</param>
-        public AudioSourceEvent(string eventType, object context = null)
-            : base(eventType, context)
-        {
-        }
-    }
+    public delegate void TimersPausedEventHandler(object sender, EventArgs e);
+
+    public delegate void TimersResumedEventHandler(object sender, EventArgs e);
+
+    public delegate void TimersStoppedEventHandler(object sender, EventArgs e);
+
+    public delegate void TimersResetedEventHandler(object sender, EventArgs e);
 }

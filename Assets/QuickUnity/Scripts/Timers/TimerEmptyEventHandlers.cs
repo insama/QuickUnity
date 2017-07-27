@@ -26,16 +26,17 @@ using System;
 
 namespace QuickUnity.Timers
 {
-    /// <summary>
-    /// Defines methods to manipulate timer list. 
-    /// </summary>
-    /// <seealso cref="ITimerCollection"/>
-    public interface ITimerList : ITimerCollection
-    {
-        /// <summary>
-        /// Performs the specified action on each <see cref="ITimer"/> element of the <see cref="ITimerCollection"/>. 
-        /// </summary>
-        /// <param name="action"> The <see cref="Action{ITimer}"/> delegate to perform on each <see cref="ITimer"/> element of the <see cref="ITimerCollection"/>. </param>
-        void ForEach(Action<ITimer> action);
-    }
+    public delegate void TimerStartedEventHandler(object sender, EventArgs e);
+
+    public delegate void TimerTickingEventHandler(object sender, EventArgs e);
+
+    public delegate void TimerCompletedEventHandler(object sender, EventArgs e);
+
+    public delegate void TimerPausedEventHandler(object sender, EventArgs e);
+
+    public delegate void TimerResumedEventHandler(object sender, EventArgs e);
+
+    public delegate void TimerStoppedEventHandler(object sender, EventArgs e);
+
+    public delegate void TimerResetedEventHandler(object sender, EventArgs e);
 }

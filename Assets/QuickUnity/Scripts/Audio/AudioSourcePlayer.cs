@@ -6,35 +6,35 @@ using UnityEngine.Events;
 namespace QuickUnity.Audio
 {
     /// <summary>
-    /// The <see cref="UnityEvent"/> presents
+    /// The <see cref="UnityEvent"/> presents 
     /// </summary>
-    /// <typeparam name="AudioSourcePlayer">The <see cref="AudioSourcePlayer"/> component.</typeparam>
-    /// <typeparam name="AudioSource">The <see cref="AudioSource"/> compoent.</typeparam>
+    /// <typeparam name="AudioSourcePlayer"> The <see cref="AudioSourcePlayer"/> component. </typeparam>
+    /// <typeparam name="AudioSource"> The <see cref="AudioSource"/> compoent. </typeparam>
     /// <seealso cref="UnityEvent"/>
     [Serializable]
     public class AudioSourcePlayeCompleteEvent : UnityEvent<AudioSourcePlayer, AudioSource> { }
 
     /// <summary>
-    /// Player for AudioSource component.
+    /// Player for AudioSource component. 
     /// </summary>
     /// <seealso cref="MonoBehaviour"/>
     [RequireComponent(typeof(AudioSource))]
     public class AudioSourcePlayer : MonoBehaviour
     {
         /// <summary>
-        /// The event of audio play completed.
+        /// The event of audio play completed. 
         /// </summary>
         public AudioSourcePlayeCompleteEvent AudioPlayCompleted;
 
         /// <summary>
-        /// The AudioSource component.
+        /// The AudioSource component. 
         /// </summary>
         private AudioSource audioSource;
 
         /// <summary>
-        /// Gets the AudioSource component.
+        /// Gets the AudioSource component. 
         /// </summary>
-        /// <value>The AudioSource component.</value>
+        /// <value> The AudioSource component. </value>
         public AudioSource AudioSource
         {
             get
@@ -51,7 +51,7 @@ namespace QuickUnity.Audio
         #region Messages
 
         /// <summary>
-        /// Awakes this instance.
+        /// Awakes this instance. 
         /// </summary>
         private void Awake()
         {
@@ -69,7 +69,7 @@ namespace QuickUnity.Audio
         #region Public Methods
 
         /// <summary>
-        /// Play the audio source.
+        /// Play the audio source. 
         /// </summary>
         public void PlayAudio()
         {
@@ -80,9 +80,9 @@ namespace QuickUnity.Audio
         }
 
         /// <summary>
-        /// Plays the audio by setting audio clip.
+        /// Plays the audio by setting audio clip. 
         /// </summary>
-        /// <param name="clip">The audio clip.</param>
+        /// <param name="clip"> The audio clip. </param>
         public void PlayAudio(AudioClip clip)
         {
             if (AudioSource && clip)
@@ -93,14 +93,14 @@ namespace QuickUnity.Audio
         }
 
         /// <summary>
-        /// This can be used in place of "PlayAudio" when it is desired to fade in the sound over time.
+        /// This can be used in place of "PlayAudio" when it is desired to fade in the sound over time. 
         /// </summary>
-        /// <param name="duration">The duration.</param>
-        /// <param name="fromVolume">The volume start from.</param>
-        /// <param name="toVolume">The volume to fade to.</param>
-        /// <param name="startPosition">The start position.</param>
-        /// <param name="completeCallback">The complete callback function.</param>
-        /// <exception cref="NullReferenceException"><c>AudioSource</c> is <c>null</c> or <c>AudioSource.clip</c> is <c>null</c>.</exception>
+        /// <param name="duration"> The duration. </param>
+        /// <param name="fromVolume"> The volume start from. </param>
+        /// <param name="toVolume"> The volume to fade to. </param>
+        /// <param name="startPosition"> The start position. </param>
+        /// <param name="completeCallback"> The complete callback function. </param>
+        /// <exception cref="NullReferenceException"> <c> AudioSource </c> is <c> null </c> or <c> AudioSource.clip </c> is <c> null </c>. </exception>
         public void FadeIn(float duration = 0f, float fromVolume = 0f, float toVolume = 1f, float startPosition = 0f, Action completeCallback = null)
         {
             if (!AudioSource || !AudioSource.clip)
@@ -123,16 +123,16 @@ namespace QuickUnity.Audio
         }
 
         /// <summary>
-        /// This can be used in place of "PlayAudio" when it is desired to fade in the sound over time.
+        /// This can be used in place of "PlayAudio" when it is desired to fade in the sound over time. 
         /// </summary>
-        /// <param name="clip">The clip.</param>
-        /// <param name="duration">The duration.</param>
-        /// <param name="fromVolume">The volume start from.</param>
-        /// <param name="toVolume">The volume to fade to.</param>
-        /// <param name="startPosition">The start position.</param>
-        /// <param name="completeCallback">The complete callback function.</param>
-        /// <exception cref="ArgumentNullException"><c>clip</c> is <c>null</c>.</exception>
-        /// <exception cref="NullReferenceException"><c>AudioSource</c> is <c>null</c>.</exception>
+        /// <param name="clip"> The clip. </param>
+        /// <param name="duration"> The duration. </param>
+        /// <param name="fromVolume"> The volume start from. </param>
+        /// <param name="toVolume"> The volume to fade to. </param>
+        /// <param name="startPosition"> The start position. </param>
+        /// <param name="completeCallback"> The complete callback function. </param>
+        /// <exception cref="ArgumentNullException"> <c> clip </c> is <c> null </c>. </exception>
+        /// <exception cref="NullReferenceException"> <c> AudioSource </c> is <c> null </c>. </exception>
         public void FadeIn(AudioClip clip, float duration = 0f, float fromVolume = 0f, float toVolume = 1f, float startPosition = 0f, Action completeCallback = null)
         {
             if (!clip)
@@ -145,26 +145,16 @@ namespace QuickUnity.Audio
                 throw new NullReferenceException("AudioSource is null.");
             }
 
-            AudioSource.volume = fromVolume;
-            AudioSource.time = startPosition;
-            PlayAudio(clip);
-
-            if (duration <= 0.0f)
-            {
-                AudioSource.volume = toVolume;
-            }
-            else
-            {
-                StartCoroutine(ApplyFadeIn(duration, toVolume, completeCallback));
-            }
+            AudioSource.clip = clip;
+            FadeIn(duration, fromVolume, toVolume, startPosition, completeCallback);
         }
 
         /// <summary>
-        /// This is used in place of "stop" when it is desired to fade the volume of the sound before stopping.
+        /// This is used in place of "stop" when it is desired to fade the volume of the sound before stopping. 
         /// </summary>
-        /// <param name="duration">Duration of the fade out.</param>
-        /// <param name="toVolume">The fade to volume.</param>
-        /// <param name="completeCallback">The complete callback function.</param>
+        /// <param name="duration"> Duration of the fade out. </param>
+        /// <param name="toVolume"> The fade to volume. </param>
+        /// <param name="completeCallback"> The complete callback function. </param>
         public void FadeOut(float duration = 0.0f, float toVolume = 0.0f, Action completeCallback = null)
         {
             if (AudioSource && AudioSource.clip)
@@ -206,12 +196,12 @@ namespace QuickUnity.Audio
         }
 
         /// <summary>
-        /// Applies the fade out effect.
+        /// Applies the fade out effect. 
         /// </summary>
-        /// <param name="fadeOutDuration">Duration of the fade out.</param>
-        /// <param name="fadeVolume">The fade volume.</param>
-        /// <param name="completeCallback">The complete callback function.</param>
-        /// <returns>The enumerator of this coroutine.</returns>
+        /// <param name="fadeOutDuration"> Duration of the fade out. </param>
+        /// <param name="fadeVolume"> The fade volume. </param>
+        /// <param name="completeCallback"> The complete callback function. </param>
+        /// <returns> The enumerator of this coroutine. </returns>
         private IEnumerator ApplyFadeOut(float fadeOutDuration = 0.0f, float fadeToVolume = 0.0f, Action completeCallback = null)
         {
             if (AudioSource)
@@ -235,9 +225,9 @@ namespace QuickUnity.Audio
         }
 
         /// <summary>
-        /// Play audio.
+        /// Play audio. 
         /// </summary>
-        /// <returns>The enumerator of this coroutine.</returns>
+        /// <returns> The enumerator of this coroutine. </returns>
         private IEnumerator DoPlayAudio()
         {
             AudioSource.Play();

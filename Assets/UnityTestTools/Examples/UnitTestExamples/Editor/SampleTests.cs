@@ -70,12 +70,16 @@ namespace UnityTest
         {
         }
 
+#if !UNITY_5_6_OR_NEWER
+
         [Test]
         [ExpectedException(typeof(ArgumentException), ExpectedMessage = "expected message")]
         public void ExpectedExceptionTest()
         {
             throw new ArgumentException("expected message");
         }
+
+#endif
 
         [Datapoint]
         public double zero = 0;

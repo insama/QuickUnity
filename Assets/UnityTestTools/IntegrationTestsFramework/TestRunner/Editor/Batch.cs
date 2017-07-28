@@ -12,11 +12,11 @@ namespace UnityTest
 {
     public static partial class Batch
     {
-        const string k_ResultFilePathParam = "-resultFilePath=";
+        private const string k_ResultFilePathParam = "-resultFilePath=";
         private const string k_TestScenesParam = "-testscenes=";
         private const string k_OtherBuildScenesParam = "-includeBuildScenes=";
-        const string k_TargetPlatformParam = "-targetPlatform=";
-        const string k_ResultFileDirParam = "-resultsFileDirectory=";
+        private const string k_TargetPlatformParam = "-targetPlatform=";
+        private const string k_ResultFileDirParam = "-resultsFileDirectory=";
 
         public static int returnCodeTestsOk = 0;
         public static int returnCodeTestsFailed = 2;
@@ -25,7 +25,7 @@ namespace UnityTest
         public static void RunIntegrationTests()
         {
             var targetPlatform = GetTargetPlatform();
-            var otherBuildScenes = GetSceneListFromParam (k_OtherBuildScenesParam);
+            var otherBuildScenes = GetSceneListFromParam(k_OtherBuildScenesParam);
 
             var testScenes = GetSceneListFromParam(k_TestScenesParam);
             if (testScenes.Count == 0)
@@ -33,22 +33,21 @@ namespace UnityTest
 
             RunIntegrationTests(targetPlatform, testScenes, otherBuildScenes);
         }
-        
-        public static void RunIntegrationTests(BuildTarget ? targetPlatform)
+
+        public static void RunIntegrationTests(BuildTarget? targetPlatform)
         {
             var sceneList = FindTestScenesInProject();
             RunIntegrationTests(targetPlatform, sceneList, new List<string>());
         }
-
 
         public static void RunIntegrationTests(BuildTarget? targetPlatform, List<string> testScenes, List<string> otherBuildScenes)
         {
             if (targetPlatform.HasValue)
                 BuildAndRun(targetPlatform.Value, testScenes, otherBuildScenes);
             else
-                RunInEditor(testScenes,  otherBuildScenes);
+                RunInEditor(testScenes, otherBuildScenes);
         }
-        
+
         private static void BuildAndRun(BuildTarget target, List<string> testScenes, List<string> otherBuildScenes)
         {
             var resultFilePath = GetParameterArgument(k_ResultFileDirParam);
@@ -72,7 +71,12 @@ namespace UnityTest
             {
                 config.sendResultsOverNetwork = false;
                 Debug.Log("You can't use WebPlayer as active platform for running integration tests. Switching to Standalone");
+
+#if UNITY_5_6_OR_NEWER
+                EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows);
+#else
                 EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.StandaloneWindows);
+#endif
             }
 
             PlatformRunner.BuildAndRunInPlayer(config);
@@ -89,15 +93,15 @@ namespace UnityTest
                 EditorApplication.Exit(returnCodeRunError);
                 return;
             }
-             
+
             string previousScenesXml = "";
             var serializer = new System.Xml.Serialization.XmlSerializer(typeof(EditorBuildSettingsScene[]));
-            using(StringWriter textWriter = new StringWriter())
+            using (StringWriter textWriter = new StringWriter())
             {
                 serializer.Serialize(textWriter, EditorBuildSettings.scenes);
                 previousScenesXml = textWriter.ToString();
             }
-                
+
             EditorBuildSettings.scenes = (testScenes.Concat(otherBuildScenes).ToList()).Select(s => new EditorBuildSettingsScene(s, true)).ToArray();
             EditorSceneManager.OpenScene(testScenes.First());
             GuiHelper.SetConsoleErrorPause(false);
@@ -109,12 +113,12 @@ namespace UnityTest
                 port = PlatformRunnerConfiguration.TryToGetFreePort(),
                 runInEditor = true
             };
-                    
+
             var settings = new PlayerSettingConfigurator(true);
             settings.AddConfigurationFile(TestRunnerConfigurator.integrationTestsNetwork, string.Join("\n", config.GetConnectionIPs()));
-            settings.AddConfigurationFile(TestRunnerConfigurator.testScenesToRun, string.Join ("\n", testScenes.ToArray()));
+            settings.AddConfigurationFile(TestRunnerConfigurator.testScenesToRun, string.Join("\n", testScenes.ToArray()));
             settings.AddConfigurationFile(TestRunnerConfigurator.previousScenes, previousScenesXml);
-         
+
             NetworkResultsReceiver.StartReceiver(config);
 
             EditorApplication.isPlaying = true;
@@ -132,18 +136,18 @@ namespace UnityTest
             return null;
         }
 
-        static void CheckActiveBuildTarget()
+        private static void CheckActiveBuildTarget()
         {
             var notSupportedPlatforms = new[] { "MetroPlayer", "WebPlayer", "WebPlayerStreamed" };
             if (notSupportedPlatforms.Contains(EditorUserBuildSettings.activeBuildTarget.ToString()))
             {
                 Debug.Log("activeBuildTarget can not be  "
-                    + EditorUserBuildSettings.activeBuildTarget + 
+                    + EditorUserBuildSettings.activeBuildTarget +
                     " use buildTarget parameter to open Unity.");
             }
         }
 
-        private static BuildTarget ? GetTargetPlatform()
+        private static BuildTarget? GetTargetPlatform()
         {
             string platformString = null;
             BuildTarget buildTarget;

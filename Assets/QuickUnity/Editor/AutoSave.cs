@@ -342,7 +342,7 @@ namespace QuickUnityEditor
             if (isAutoSaveAssetsEnabled)
             {
                 // Save assets.
-                EditorApplication.SaveAssets();
+                AssetDatabase.SaveAssets();
             }
 
             autosaveTimer.Start();

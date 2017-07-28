@@ -33,15 +33,10 @@ namespace QuickUnity.Patterns.Singleton
     /// <seealso cref="MonoBehaviour"/>
     public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
     {
-        /// <summary>
-        /// The singleton instance.
-        /// </summary>
         private static T instance = null;
 
-        /// <summary>
-        /// A value indicating whether this <see cref="MonoBehaviourSingleton{T}"/> instance is instantiated.
-        /// </summary>
         private static bool instantiated = false;
+        private static bool destroyed = false;
 
         /// <summary>
         /// Gets or sets the singleton instance.
@@ -51,6 +46,12 @@ namespace QuickUnity.Patterns.Singleton
         {
             get
             {
+                if (destroyed)
+                {
+                    Debug.LogWarningFormat("SingletonMonoBehaviour<{0}> already destroyed. Return null.", typeof(T));
+                    return null;
+                }
+
                 if (!instantiated || instance == null)
                 {
                     T[] foundObjects = FindObjectsOfType<T>();
@@ -107,6 +108,14 @@ namespace QuickUnity.Patterns.Singleton
             {
                 Instance = FindObjectOfType<T>();
             }
+        }
+
+        /// <summary>
+        /// Called when script receive message Destroy.
+        /// </summary>
+        protected virtual void OnDestroy()
+        {
+            destroyed = true;
         }
 
         #endregion Messages

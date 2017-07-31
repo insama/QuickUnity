@@ -74,7 +74,7 @@ namespace QuickUnity.Tests.IntegrationTests
             client.AddEventListener(SocketEvent.SocketDisconnected, OnSocketDisconnected);
             client.AddEventListener(SocketEvent.SocketDataReceived, OnSocketData);
             client.AddEventListener(SocketEvent.SocketClosed, OnSocketClosed);
-            client.AddEventListener(SocketEvent.SocketException, OnSocketException);
+            client.AddEventListener(SocketEvent.SocketExceptionCaught, OnSocketException);
             client.BeginConnect("127.0.0.1", 10000, true);
         }
 
@@ -94,7 +94,7 @@ namespace QuickUnity.Tests.IntegrationTests
                 client.RemoveEventListener(SocketEvent.SocketDisconnected, OnSocketDisconnected);
                 client.RemoveEventListener(SocketEvent.SocketDataReceived, OnSocketData);
                 client.RemoveEventListener(SocketEvent.SocketClosed, OnSocketClosed);
-                client.RemoveEventListener(SocketEvent.SocketException, OnSocketException);
+                client.RemoveEventListener(SocketEvent.SocketExceptionCaught, OnSocketException);
                 client.Close();
                 client = null;
             }

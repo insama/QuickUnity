@@ -73,7 +73,7 @@ namespace QuickUnity.Tests.IntegrationTests
             server.SocketPacketHandler = new TestPacketHandler();
             server.AddEventListener(SocketEvent.ServerStart, OnServerStart);
             server.AddEventListener(SocketEvent.ServerStop, OnServerStop);
-            server.AddEventListener(SocketEvent.ServerSocketException, OnServerSocketException);
+            server.AddEventListener(SocketEvent.ServerSocketExceptionCaught, OnServerSocketException);
             server.AddEventListener(SocketEvent.ClientConnected, OnClientConnected);
             server.Start();
         }
@@ -93,7 +93,7 @@ namespace QuickUnity.Tests.IntegrationTests
                 server.Stop();
                 server.RemoveEventListener(SocketEvent.ServerStart, OnServerStart);
                 server.RemoveEventListener(SocketEvent.ServerStop, OnServerStop);
-                server.RemoveEventListener(SocketEvent.ServerSocketException, OnServerSocketException);
+                server.RemoveEventListener(SocketEvent.ServerSocketExceptionCaught, OnServerSocketException);
                 server.RemoveEventListener(SocketEvent.ClientConnected, OnClientConnected);
                 server = null;
             }

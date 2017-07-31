@@ -25,48 +25,43 @@
 namespace QuickUnity.Events
 {
     /// <summary>
-    /// The Event class is used as the base class for the creation of Event objects, which are passed as parameters to event listeners when an event occurs. 
+    /// The Event class is used as the base class for the creation of Event objects, which are passed as parameters to event listeners when an event occurs.
     /// </summary>
     public class Event
     {
         /// <summary>
-        /// The type of event. 
+        /// The type of event.
         /// </summary>
         private string eventType;
 
         /// <summary>
-        /// The type of event. 
+        /// The type of event.
         /// </summary>
-        /// <value> The type of event. </value>
+        /// <value>The type of event.</value>
         public string EventType
         {
             get { return eventType; }
         }
 
         /// <summary>
-        /// The context object. 
+        /// Gets or sets the context object.
         /// </summary>
-        private object context;
-
-        /// <summary>
-        /// Gets or sets the context object. 
-        /// </summary>
-        /// <value> The context object. </value>
+        /// <value>The context object.</value>
         public object Context
         {
-            get { return context; }
-            set { context = value; }
+            get;
+            set;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Event"/> class. 
+        /// Initializes a new instance of the <see cref="Event"/> class.
         /// </summary>
-        /// <param name="eventType"> The type of event. </param>
-        /// <param name="context"> The context object. </param>
+        /// <param name="eventType">The type of event.</param>
+        /// <param name="context">The context object.</param>
         public Event(string eventType, object context = null)
         {
             this.eventType = eventType;
-            this.context = context;
+            Context = context;
         }
     }
 }

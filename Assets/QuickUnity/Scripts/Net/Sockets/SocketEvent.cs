@@ -38,69 +38,69 @@ namespace QuickUnity.Net.Sockets
         #region Event Constants
 
         /// <summary>
-        /// Occurs when socket connected. 
+        /// Occurs when socket connected.
         /// </summary>
         public const string SocketConnected = "SocketConnected";
 
         /// <summary>
-        /// Occurs when socket disconnected. 
+        /// Occurs when socket disconnected.
         /// </summary>
         public const string SocketDisconnected = "SocketDisconnected";
 
         /// <summary>
-        /// Occurs when socket received data. 
+        /// Occurs when socket received data.
         /// </summary>
         public const string SocketDataReceived = "SocketDataReceived";
 
         /// <summary>
-        /// Occurs when socket closed. 
+        /// Occurs when socket closed.
         /// </summary>
         public const string SocketClosed = "SocketClosed";
 
         /// <summary>
-        /// Occurs when caught an <see cref="System.Exception"/>. 
+        /// Occurs when caught an <see cref="System.Exception"/>.
         /// </summary>
-        public const string SocketException = "SocketException";
+        public const string SocketExceptionCaught = "SocketExceptionCaught";
 
         /// <summary>
-        /// Occurs when socket server start. 
+        /// Occurs when socket server start.
         /// </summary>
         public const string ServerStart = "SserverStart";
 
         /// <summary>
-        /// Occurs when socket server stop. 
+        /// Occurs when socket server stop.
         /// </summary>
         public const string ServerStop = "ServerStop";
 
         /// <summary>
-        /// Occurs when TCP server caught an <see cref="System.Exception"/>. 
+        /// Occurs when TCP server caught an <see cref="System.Exception"/>.
         /// </summary>
-        public const string ServerSocketException = "ServerSocketException";
+        public const string ServerSocketExceptionCaught = "ServerSocketExceptionCaught";
 
         /// <summary>
-        /// Occurs when socket client connected. 
+        /// Occurs when socket client connected.
         /// </summary>
         public const string ClientConnected = "ClientConnected";
 
         /// <summary>
-        /// Occurs when socket client disconnected. 
+        /// Occurs when socket client disconnected.
         /// </summary>
         public const string ClientDisconnected = "clientDisconnected";
 
         /// <summary>
-        /// Occurs when socket client received data. 
+        /// Occurs when socket client received data.
         /// </summary>
         public const string ClientData = "ClientDataReceived";
 
         /// <summary>
-        /// Occurs when socket client closed. 
+        /// Occurs when socket client closed.
         /// </summary>
         public const string ClientClosed = "ClientClosed";
 
         /// <summary>
-        /// Occurs when socket client caught an <see cref="System.Exception"/>. 
+        /// Occurs when socket client caught an <see cref="System.Exception"/>.
         /// </summary>
-        public const string ClientSocketException = "ClientSocketException";
+        public const string ClientSocketExceptionCaught = "ClientSocketExceptionCaught";
 
         #endregion Event Constants
 
@@ -111,11 +111,11 @@ namespace QuickUnity.Net.Sockets
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and <see cref="MonoTcpClient"/> instance. 
+        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and <see cref="MonoTcpClient"/> instance.
         /// </summary>
-        /// <param name="eventType"> The type of the event. </param>
-        /// <param name="client"> The instance of <see cref="MonoTcpClient"/>. </param>
-        /// <param name="packet"> The <see cref="ISocketPacket"/> unpacked. </param>
+        /// <param name="eventType">The type of the event.</param>
+        /// <param name="client">The instance of <see cref="MonoTcpClient"/>.</param>
+        /// <param name="packet">The <see cref="ISocketPacket"/> unpacked.</param>
         public SocketEvent(string eventType, MonoTcpClient client, ISocketPacket packet = null)
             : base(eventType, client)
         {
@@ -123,11 +123,11 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and <see cref="MonoTcpClient"/> instance. 
+        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and <see cref="MonoTcpClient"/> instance.
         /// </summary>
-        /// <param name="eventType"> The type of the event. </param>
-        /// <param name="client"> The instance of <see cref="MonoTcpClient"/>. </param>
-        /// <param name="exception"> The <see cref="System.Exception"/> caught. </param>
+        /// <param name="eventType">The type of the event.</param>
+        /// <param name="client">The instance of <see cref="MonoTcpClient"/>.</param>
+        /// <param name="exception">The <see cref="System.Exception"/> caught.</param>
         public SocketEvent(string eventType, MonoTcpClient client, Exception exception)
             : base(eventType, client)
         {
@@ -135,21 +135,21 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and <see cref="MonoTcpServer"/> instance. 
+        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and <see cref="MonoTcpServer"/> instance.
         /// </summary>
-        /// <param name="eventType"> The type of the event. </param>
-        /// <param name="server"> The instance of <see cref="MonoTcpServer"/>. </param>
+        /// <param name="eventType">The type of the event.</param>
+        /// <param name="server">The instance of <see cref="MonoTcpServer"/>.</param>
         public SocketEvent(string eventType, MonoTcpServer server)
             : base(eventType, server)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and <see cref="MonoTcpClient"/> instance. 
+        /// Initializes a new instance of the <see cref="SocketEvent"/> class with event type and <see cref="MonoTcpClient"/> instance.
         /// </summary>
-        /// <param name="eventType"> The type of the event. </param>
-        /// <param name="server"> The instance of <see cref="MonoTcpServer"/>. </param>
-        /// <param name="exception"> The <see cref="System.Exception"/> caught. </param>
+        /// <param name="eventType">The type of the event.</param>
+        /// <param name="server">The instance of <see cref="MonoTcpServer"/>.</param>
+        /// <param name="exception">The <see cref="System.Exception"/> caught.</param>
         public SocketEvent(string eventType, MonoTcpServer server, Exception exception)
             : base(eventType, server)
         {
@@ -159,36 +159,36 @@ namespace QuickUnity.Net.Sockets
         #endregion Constructors
 
         /// <summary>
-        /// Gets an instance of <see cref="MonoTcpClient"/>. 
+        /// Gets an instance of <see cref="MonoTcpClient"/>.
         /// </summary>
-        /// <value> An instance of <see cref="MonoTcpClient"/> </value>
+        /// <value>An instance of <see cref="MonoTcpClient"/></value>
         public MonoTcpClient TcpClient
         {
             get { return (MonoTcpClient)Context; }
         }
 
         /// <summary>
-        /// Gets an instance of <see cref="MonoTcpServer"/>. 
+        /// Gets an instance of <see cref="MonoTcpServer"/>.
         /// </summary>
-        /// <value> An instance of <see cref="MonoTcpServer"/> </value>
+        /// <value>An instance of <see cref="MonoTcpServer"/></value>
         public MonoTcpServer TcpServer
         {
             get { return (MonoTcpServer)Context; }
         }
 
         /// <summary>
-        /// Gets the <see cref="ISocketPacket"/> received from server. 
+        /// Gets the <see cref="ISocketPacket"/> received from server.
         /// </summary>
-        /// <value> The <see cref="ISocketPacket"/> received from server. </value>
+        /// <value>The <see cref="ISocketPacket"/> received from server.</value>
         public ISocketPacket SocketPacket
         {
             get { return socketPacket; }
         }
 
         /// <summary>
-        /// Gets the <see cref="System.Exception"/> caught. 
+        /// Gets the <see cref="System.Exception"/> caught.
         /// </summary>
-        /// <value> The <see cref="System.Exception"/> caught. </value>
+        /// <value>The <see cref="System.Exception"/> caught.</value>
         public Exception Exception
         {
             get { return exception; }

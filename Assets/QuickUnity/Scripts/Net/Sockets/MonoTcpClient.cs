@@ -31,7 +31,7 @@ using System.Net;
 namespace QuickUnity.Net.Sockets
 {
     /// <summary>
-    /// Provides client connections, data send and data receive for TCP network services for Mono. 
+    /// Provides client connections, data send and data receive for TCP network services for Mono.
     /// </summary>
     /// <seealso cref="TcpClientBase"/>
     /// <seealso cref="IThreadEventDispatcher"/>
@@ -86,7 +86,7 @@ namespace QuickUnity.Net.Sockets
         #endregion Constructors
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="MonoTcpClient"/> class. 
+        /// Finalizes an instance of the <see cref="MonoTcpClient"/> class.
         /// </summary>
         ~MonoTcpClient()
         {
@@ -96,12 +96,12 @@ namespace QuickUnity.Net.Sockets
         #region Public Methods
 
         /// <summary>
-        /// Sets the keepalive. 
+        /// Sets the keepalive.
         /// </summary>
-        /// <param name="modeOn"> if set to <c> true </c> [keepalive of TCP mode on]. </param>
-        /// <param name="keepaliveTime"> The keepalive time in milliseconds. </param>
-        /// <param name="keepaliveInterval"> The keepalive interval in milliseconds. </param>
-        /// <exception cref="NotImplementedException"> The <see cref="Socket.IOControl"/> didn't implement in Mono environment. </exception>
+        /// <param name="modeOn">if set to <c>true</c> [keepalive of TCP mode on].</param>
+        /// <param name="keepaliveTime">The keepalive time in milliseconds.</param>
+        /// <param name="keepaliveInterval">The keepalive interval in milliseconds.</param>
+        /// <exception cref="NotImplementedException">The <see cref="Socket.IOControl"/> didn't implement in Mono environment.</exception>
         public override void SetKeepalive(bool modeOn = true, int keepaliveTime = 5000, int keepaliveInterval = 75)
         {
             throw new NotImplementedException();
@@ -112,7 +112,7 @@ namespace QuickUnity.Net.Sockets
         #region IThreadEventDispatcher Interface
 
         /// <summary>
-        /// Update is called every frame. 
+        /// Update is called every frame.
         /// </summary>
         public void Update()
         {
@@ -123,10 +123,10 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Registers an event listener object with an EventDispatcher object so that the listener receives notification of an event. 
+        /// Registers an event listener object with an EventDispatcher object so that the listener receives notification of an event.
         /// </summary>
-        /// <param name="eventType"> The type of event. </param>
-        /// <param name="listener"> The listener function that processes the event. </param>
+        /// <param name="eventType">The type of event.</param>
+        /// <param name="listener">The listener function that processes the event.</param>
         public void AddEventListener(string eventType, Action<Event> listener)
         {
             if (eventDispatcher != null)
@@ -136,9 +136,9 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Dispatches the event. 
+        /// Dispatches the event.
         /// </summary>
-        /// <param name="eventObject"> The event object. </param>
+        /// <param name="eventObject">The event object.</param>
         public void DispatchEvent(Event eventObject)
         {
             if (eventDispatcher != null)
@@ -148,11 +148,11 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Checks whether the EventDispatcher object has any listeners registered for a specific type of event. 
+        /// Checks whether the EventDispatcher object has any listeners registered for a specific type of event.
         /// </summary>
-        /// <param name="eventType"> The type of event. </param>
-        /// <param name="listener"> The listener function that processes the event. </param>
-        /// <returns> A value of <c> true </c> if a listener of the specified type is registered; <c> false </c> otherwise. </returns>
+        /// <param name="eventType">The type of event.</param>
+        /// <param name="listener">The listener function that processes the event.</param>
+        /// <returns>A value of <c>true</c> if a listener of the specified type is registered; <c>false</c> otherwise.</returns>
         public bool HasEventListener(string eventType, Action<Event> listener)
         {
             if (eventDispatcher != null)
@@ -164,10 +164,10 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Removes a listener from the EventDispatcher object. 
+        /// Removes a listener from the EventDispatcher object.
         /// </summary>
-        /// <param name="eventType"> The type of event. </param>
-        /// <param name="listener"> The listener object to remove. </param>
+        /// <param name="eventType">The type of event.</param>
+        /// <param name="listener">The listener object to remove.</param>
         public void RemoveEventListener(string eventType, Action<Event> listener)
         {
             if (eventDispatcher != null)
@@ -181,7 +181,7 @@ namespace QuickUnity.Net.Sockets
         #region Protected Methods
 
         /// <summary>
-        /// Initializes this instance. 
+        /// Initializes this instance.
         /// </summary>
         protected override void Initialize()
         {
@@ -191,7 +191,7 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Dispatches the event of socket connected. 
+        /// Dispatches the event of socket connected.
         /// </summary>
         protected override void DispatchSocketConnectedEvent()
         {
@@ -199,7 +199,7 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Dispatches the event of socket disconnected. 
+        /// Dispatches the event of socket disconnected.
         /// </summary>
         protected override void DispatchSocketDisconnecedEvent()
         {
@@ -207,16 +207,16 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Dispatches the event of socket receiving data. 
+        /// Dispatches the event of socket receiving data.
         /// </summary>
-        /// <param name="packet"> The <see cref="ISocketPacket"/> unpacked. </param>
+        /// <param name="packet">The <see cref="ISocketPacket"/> unpacked.</param>
         protected override void DispatchSocketDataReceivedEvent(ISocketPacket packet)
         {
             DispatchEvent(new SocketEvent(SocketEvent.SocketDataReceived, this, packet));
         }
 
         /// <summary>
-        /// Dispatches the event of socket closed . 
+        /// Dispatches the event of socket closed .
         /// </summary>
         protected override void DispatchSocketClosedEvent()
         {
@@ -224,12 +224,12 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Dispatches the event of exception caught. 
+        /// Dispatches the event of exception caught.
         /// </summary>
-        /// <param name="exception"> The <see cref="Exception"/> caught. </param>
-        protected override void DispatchSocketExceptionEvent(Exception exception)
+        /// <param name="exception">The <see cref="Exception"/> caught.</param>
+        protected override void DispatchSocketExceptionCaughtEvent(Exception exception)
         {
-            DispatchEvent(new SocketEvent(SocketEvent.SocketException, this, exception));
+            DispatchEvent(new SocketEvent(SocketEvent.SocketExceptionCaught, this, exception));
         }
 
         #endregion Protected Methods

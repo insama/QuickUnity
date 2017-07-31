@@ -115,7 +115,7 @@ namespace QuickUnity.Tests.IntegrationTests
             serialPort.PacketHandler = new TestSerialPortPacketHandler();
             serialPort.AddEventListener(SerialPortEvent.SerialPortOpen, OnSerialPortOpen);
             serialPort.AddEventListener(SerialPortEvent.SerialPortDataReceived, OnSerialDataReceived);
-            serialPort.AddEventListener(SerialPortEvent.SerialPortException, OnSerialPortException);
+            serialPort.AddEventListener(SerialPortEvent.SerialPortExceptionCaught, OnSerialPortException);
             serialPort.AddEventListener(SerialPortEvent.SerialPortClosed, OnSerialPortClosed);
             serialPort.Open();
         }
@@ -136,7 +136,7 @@ namespace QuickUnity.Tests.IntegrationTests
                 UnityEngine.Debug.Log("close serial port");
                 serialPort.RemoveEventListener(SerialPortEvent.SerialPortOpen, OnSerialPortOpen);
                 serialPort.RemoveEventListener(SerialPortEvent.SerialPortDataReceived, OnSerialDataReceived);
-                serialPort.RemoveEventListener(SerialPortEvent.SerialPortException, OnSerialPortException);
+                serialPort.RemoveEventListener(SerialPortEvent.SerialPortExceptionCaught, OnSerialPortException);
                 serialPort.RemoveEventListener(SerialPortEvent.SerialPortClosed, OnSerialPortClosed);
                 serialPort = null;
             }

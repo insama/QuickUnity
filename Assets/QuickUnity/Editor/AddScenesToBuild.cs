@@ -28,8 +28,15 @@ using UnityEngine;
 
 namespace QuickUnityEditor
 {
+    /// <summary>
+    /// The <see cref="AddScenesToBuild"/> provides menu item to add selected scene assets to build setting.
+    /// </summary>
     internal static class AddScenesToBuild
     {
+        /// <summary>
+        /// Validates that one of selected items is scene asset.
+        /// </summary>
+        /// <returns><c>true</c> if one of selected items is scene asset, <c>false</c> otherwise.</returns>
         [MenuItem("Assets/Add Scenes To Build", true)]
         public static bool ValidateScenes()
         {
@@ -37,12 +44,14 @@ namespace QuickUnityEditor
 
             if (objects.Length > 0)
             {
+                List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
+
                 for (int i = 0, length = objects.Length; i < length; i++)
                 {
                     Object obj = objects[i];
                     string path = AssetDatabase.GetAssetOrScenePath(obj);
 
-                    if (Utils.EditorUtil.IsSceneAsset(path))
+                    if (Utils.EditorUtil.IsSceneAsset(path) && !scenes.Exists(item => item.path == path))
                     {
                         return true;
                     }
@@ -52,15 +61,18 @@ namespace QuickUnityEditor
             return false;
         }
 
-        [MenuItem("Assets/Add Scenes To Build", false, 500)]
-        public static void AddBuildScenes()
+        /// <summary>
+        /// Adds the scenes to build.
+        /// </summary>
+        [MenuItem("Assets/Add Selected Scenes to Build", false, 500)]
+        public static void AddScenes()
         {
-            List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
-
             Object[] objects = Selection.objects;
 
             if (objects.Length > 0)
             {
+                List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
+
                 for (int i = 0, length = objects.Length; i < length; i++)
                 {
                     Object obj = objects[i];
@@ -77,9 +89,9 @@ namespace QuickUnityEditor
                         }
                     }
                 }
-            }
 
-            EditorBuildSettings.scenes = scenes.ToArray();
+                EditorBuildSettings.scenes = scenes.ToArray();
+            }
         }
     }
 }

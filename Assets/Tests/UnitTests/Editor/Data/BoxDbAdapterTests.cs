@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using QuickUnity.Core.Miscs;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -145,7 +144,7 @@ namespace QuickUnity.Data
         {
             BoxDBAdapter db = GetBoxDBAdapter();
             BoxDBAdapterTestVO vo = db.Select<BoxDBAdapterTestVO>(tableName, 1);
-            DebugLogger.Log(vo.ToString());
+            Debug.Log(vo.ToString());
             db.Dispose();
             Assert.IsNotNull(vo);
         }
@@ -161,7 +160,7 @@ namespace QuickUnity.Data
 
             foreach (BoxDBAdapterTestVO vo in list)
             {
-                DebugLogger.Log(vo.ToString());
+                Debug.Log(vo.ToString());
             }
 
             db.Dispose();

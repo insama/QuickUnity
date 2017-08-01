@@ -23,14 +23,15 @@
  */
 
 using iBoxDB.LocalServer;
-using QuickUnity.Core.Miscs;
+using QuickUnity.Diagnostics;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace QuickUnity.Data
 {
     /// <summary>
-    /// The operator enumeration of iBoxDB database. 
+    /// The operator enumeration of iBoxDB database.
     /// </summary>
     public enum BoxDBQueryOperator
     {
@@ -43,7 +44,7 @@ namespace QuickUnity.Data
     }
 
     /// <summary>
-    /// The multi-condition operator of iBoxDB database. 
+    /// The multi-condition operator of iBoxDB database.
     /// </summary>
     public enum BoxDBMultiConditionOperator
     {
@@ -52,12 +53,12 @@ namespace QuickUnity.Data
     }
 
     /// <summary>
-    /// The query condition for iBoxDB database. 
+    /// The query condition for iBoxDB database.
     /// </summary>
     public struct BoxDBQueryCondition
     {
         /// <summary>
-        /// The name of property. 
+        /// The name of property.
         /// </summary>
         public string PropertyName
         {
@@ -66,7 +67,7 @@ namespace QuickUnity.Data
         }
 
         /// <summary>
-        /// The value. 
+        /// The value.
         /// </summary>
         public object Value
         {
@@ -75,7 +76,7 @@ namespace QuickUnity.Data
         }
 
         /// <summary>
-        /// The query operator. 
+        /// The query operator.
         /// </summary>
         public BoxDBQueryOperator QueryOperator
         {
@@ -84,11 +85,11 @@ namespace QuickUnity.Data
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BoxDBQueryCondition"/> struct. 
+        /// Initializes a new instance of the <see cref="BoxDBQueryCondition"/> struct.
         /// </summary>
-        /// <param name="propertyName"> The name of property. </param>
-        /// <param name="value"> The value. </param>
-        /// <param name="queryOperator"> The query operator. </param>
+        /// <param name="propertyName">The name of property.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="queryOperator">The query operator.</param>
         public BoxDBQueryCondition(string propertyName, object value, BoxDBQueryOperator queryOperator = BoxDBQueryOperator.Equal)
         {
             PropertyName = propertyName;
@@ -98,18 +99,18 @@ namespace QuickUnity.Data
     }
 
     /// <summary>
-    /// The database adapter for iBoxDB. 
+    /// The database adapter for iBoxDB.
     /// </summary>
     /// <seealso cref="System.IDisposable"/>
     public class BoxDBAdapter : IDisposable
     {
         /// <summary>
-        /// The default multi condition operator. 
+        /// The default multi condition operator.
         /// </summary>
         private const BoxDBMultiConditionOperator defaultMultiConditionOperator = BoxDBMultiConditionOperator.And;
 
         /// <summary>
-        /// The query operator map. 
+        /// The query operator map.
         /// </summary>
         private static readonly Dictionary<BoxDBQueryOperator, string> queryOperators =
             new Dictionary<BoxDBQueryOperator, string>()
@@ -123,7 +124,7 @@ namespace QuickUnity.Data
         };
 
         /// <summary>
-        /// The multi-condition operator map. 
+        /// The multi-condition operator map.
         /// </summary>
         private static readonly Dictionary<BoxDBMultiConditionOperator, string> multiConditionOperators =
             new Dictionary<BoxDBMultiConditionOperator, string>()
@@ -133,22 +134,22 @@ namespace QuickUnity.Data
         };
 
         /// <summary>
-        /// The database server. 
+        /// The database server.
         /// </summary>
         private DB dbServer;
 
         /// <summary>
-        /// The database. 
+        /// The database.
         /// </summary>
         private AutoBox database;
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BoxDBAdapter"/> class. 
+        /// Initializes a new instance of the <see cref="BoxDBAdapter"/> class.
         /// </summary>
-        /// <param name="dbPath"> The database path. </param>
-        /// <param name="bin"> The binary data of database file. </param>
+        /// <param name="dbPath">The database path.</param>
+        /// <param name="bin">The binary data of database file.</param>
         public BoxDBAdapter(string dbPath, byte[] bin)
         {
             DB.Root(dbPath);
@@ -158,10 +159,10 @@ namespace QuickUnity.Data
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BoxDBAdapter"/> class. 
+        /// Initializes a new instance of the <see cref="BoxDBAdapter"/> class.
         /// </summary>
-        /// <param name="dbPath"> The database path. </param>
-        /// <param name="dbDestAddr"> The database destnation address. </param>
+        /// <param name="dbPath">The database path.</param>
+        /// <param name="dbDestAddr">The database destnation address.</param>
         public BoxDBAdapter(string dbPath, long dbDestAddr = 1)
         {
             DB.Root(dbPath);
@@ -173,7 +174,7 @@ namespace QuickUnity.Data
         #endregion Constructors
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="BoxDBAdapter"/> class. 
+        /// Finalizes an instance of the <see cref="BoxDBAdapter"/> class.
         /// </summary>
         ~BoxDBAdapter()
         {
@@ -181,18 +182,18 @@ namespace QuickUnity.Data
         }
 
         /// <summary>
-        /// Gets the database server. 
+        /// Gets the database server.
         /// </summary>
-        /// <value> The database server. </value>
+        /// <value>The database server.</value>
         public DB DbServer
         {
             get { return dbServer; }
         }
 
         /// <summary>
-        /// Gets the database. 
+        /// Gets the database.
         /// </summary>
-        /// <value> The database. </value>
+        /// <value>The database.</value>
         public AutoBox Database
         {
             get { return database; }
@@ -201,12 +202,12 @@ namespace QuickUnity.Data
         #region Public Methods
 
         /// <summary>
-        /// Ensures the table. 
+        /// Ensures the table.
         /// </summary>
-        /// <typeparam name="T"> The type definition of data in table. </typeparam>
-        /// <param name="tableName"> Name of the table. </param>
-        /// <param name="names"> The names. </param>
-        /// <returns> The config of database. </returns>
+        /// <typeparam name="T">The type definition of data in table.</typeparam>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="names">The names.</param>
+        /// <returns>The config of database.</returns>
         public DatabaseConfig.Config EnsureTable<T>(string tableName, params string[] names) where T : class
         {
             try
@@ -218,14 +219,14 @@ namespace QuickUnity.Data
             }
             catch (Exception exception)
             {
-                DebugLogger.LogException(exception);
+                Debug.LogException(exception);
             }
 
             return null;
         }
 
         /// <summary>
-        /// Opens the database connection. 
+        /// Opens the database connection.
         /// </summary>
         public void Open()
         {
@@ -237,17 +238,17 @@ namespace QuickUnity.Data
                 }
                 catch (Exception exception)
                 {
-                    DebugLogger.LogException(exception);
+                    Debug.LogException(exception);
                 }
             }
         }
 
         /// <summary>
-        /// Makes the new identifier. 
+        /// Makes the new identifier.
         /// </summary>
-        /// <param name="name"> The name. </param>
-        /// <param name="step"> The step. </param>
-        /// <returns> The new identifier. </returns>
+        /// <param name="name">The name.</param>
+        /// <param name="step">The step.</param>
+        /// <returns>The new identifier.</returns>
         public long MakeNewId(byte name = 0, long step = 1)
         {
             if (database != null)
@@ -259,10 +260,10 @@ namespace QuickUnity.Data
         }
 
         /// <summary>
-        /// Get the item count of the table. 
+        /// Get the item count of the table.
         /// </summary>
-        /// <param name="tableName"> Name of the table. </param>
-        /// <returns> The item count of the table. </returns>
+        /// <param name="tableName">Name of the table.</param>
+        /// <returns>The item count of the table.</returns>
         public long SelectCount(string tableName)
         {
             try
@@ -274,19 +275,19 @@ namespace QuickUnity.Data
             }
             catch (Exception exception)
             {
-                DebugLogger.LogException(exception);
+                Debug.LogException(exception);
             }
 
             return 0;
         }
 
         /// <summary>
-        /// Get the item count by multi-condition. 
+        /// Get the item count by multi-condition.
         /// </summary>
-        /// <param name="tableName"> Name of the table. </param>
-        /// <param name="conditions"> The conditions. </param>
-        /// <param name="multiConditionOperators"> The multi condition operators. </param>
-        /// <returns> The item count. </returns>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="conditions">The conditions.</param>
+        /// <param name="multiConditionOperators">The multi condition operators.</param>
+        /// <returns>The item count.</returns>
         public long SelectCount(string tableName, List<BoxDBQueryCondition> conditions,
             List<BoxDBMultiConditionOperator> multiConditionOperators = null)
         {
@@ -305,19 +306,19 @@ namespace QuickUnity.Data
             }
             catch (Exception exception)
             {
-                DebugLogger.LogException(exception);
+                Debug.LogException(exception);
             }
 
             return 0;
         }
 
         /// <summary>
-        /// Retrieve data by primary key value. 
+        /// Retrieve data by primary key value.
         /// </summary>
-        /// <typeparam name="T"> The type of data return. </typeparam>
-        /// <param name="tableName"> Name of the table. </param>
-        /// <param name="primaryKeyValue"> The primary key value. </param>
-        /// <returns> The data return. </returns>
+        /// <typeparam name="T">The type of data return.</typeparam>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="primaryKeyValue">The primary key value.</param>
+        /// <returns>The data return.</returns>
         public T Select<T>(string tableName, object primaryKeyValue) where T : class, new()
         {
             try
@@ -329,20 +330,20 @@ namespace QuickUnity.Data
             }
             catch (Exception exception)
             {
-                DebugLogger.LogException(exception);
+                Debug.LogException(exception);
             }
 
             return default(T);
         }
 
         /// <summary>
-        /// Retrieve the data items by some conditions. 
+        /// Retrieve the data items by some conditions.
         /// </summary>
-        /// <typeparam name="T"> The tyoe of data return. </typeparam>
-        /// <param name="tableName"> Name of the table. </param>
-        /// <param name="conditions"> The query conditions. </param>
-        /// <param name="multiConditionOperators"> The multi-condition operators. </param>
-        /// <returns> The data items. </returns>
+        /// <typeparam name="T">The tyoe of data return.</typeparam>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="conditions">The query conditions.</param>
+        /// <param name="multiConditionOperators">The multi-condition operators.</param>
+        /// <returns>The data items.</returns>
         public List<T> Select<T>(string tableName, List<BoxDBQueryCondition> conditions,
             List<BoxDBMultiConditionOperator> multiConditionOperators = null) where T : class, new()
         {
@@ -362,18 +363,18 @@ namespace QuickUnity.Data
             }
             catch (Exception exception)
             {
-                DebugLogger.LogException(exception);
+                Debug.LogException(exception);
             }
 
             return null;
         }
 
         /// <summary>
-        /// Retrieve all data items of the table. 
+        /// Retrieve all data items of the table.
         /// </summary>
-        /// <typeparam name="T"> The tyoe of data return. </typeparam>
-        /// <param name="tableName"> Name of the table. </param>
-        /// <returns> All data items of the table. </returns>
+        /// <typeparam name="T">The tyoe of data return.</typeparam>
+        /// <param name="tableName">Name of the table.</param>
+        /// <returns>All data items of the table.</returns>
         public List<T> SelectAll<T>(string tableName) where T : class, new()
         {
             try
@@ -392,19 +393,19 @@ namespace QuickUnity.Data
             }
             catch (Exception exception)
             {
-                DebugLogger.LogException(exception);
+                Debug.LogException(exception);
             }
 
             return null;
         }
 
         /// <summary>
-        /// Inserts data. 
+        /// Inserts data.
         /// </summary>
-        /// <typeparam name="T"> The type definition of data. </typeparam>
-        /// <param name="tableName"> Name of the table. </param>
-        /// <param name="values"> The list of data. </param>
-        /// <returns> <c> true </c> if insert data success, <c> false </c> otherwise. </returns>
+        /// <typeparam name="T">The type definition of data.</typeparam>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="values">The list of data.</param>
+        /// <returns><c>true</c> if insert data success, <c>false</c> otherwise.</returns>
         public bool Insert<T>(string tableName, params T[] values) where T : class
         {
             try
@@ -427,26 +428,26 @@ namespace QuickUnity.Data
                         }
                         else
                         {
-                            DebugLogger.LogError(result.GetErrorMsg(box));
+                            Debug.LogError(result.GetErrorMsg(box));
                         }
                     }
                 }
             }
             catch (Exception exception)
             {
-                DebugLogger.LogException(exception);
+                Debug.LogException(exception);
             }
 
             return false;
         }
 
         /// <summary>
-        /// Updates data. 
+        /// Updates data.
         /// </summary>
-        /// <typeparam name="T"> The type definition of data. </typeparam>
-        /// <param name="tableName"> Name of the table. </param>
-        /// <param name="values"> The list of data. </param>
-        /// <returns> <c> true </c> if update the list of data success, <c> false </c> otherwise. </returns>
+        /// <typeparam name="T">The type definition of data.</typeparam>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="values">The list of data.</param>
+        /// <returns><c>true</c> if update the list of data success, <c>false</c> otherwise.</returns>
         public bool Update<T>(string tableName, params T[] values) where T : class
         {
             try
@@ -469,25 +470,25 @@ namespace QuickUnity.Data
                         }
                         else
                         {
-                            DebugLogger.LogError(result.GetErrorMsg(box));
+                            Debug.LogError(result.GetErrorMsg(box));
                         }
                     }
                 }
             }
             catch (Exception exception)
             {
-                DebugLogger.LogException(exception);
+                Debug.LogException(exception);
             }
 
             return false;
         }
 
         /// <summary>
-        /// Deletes data by the given primary key value. 
+        /// Deletes data by the given primary key value.
         /// </summary>
-        /// <param name="tableName"> Name of the table. </param>
-        /// <param name="primaryKeyValues"> The primary key values. </param>
-        /// <returns> <c> true </c> if delete data success, <c> false </c> otherwise. </returns>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="primaryKeyValues">The primary key values.</param>
+        /// <returns><c>true</c> if delete data success, <c>false</c> otherwise.</returns>
         public bool Delete(string tableName, params object[] primaryKeyValues)
         {
             try
@@ -510,21 +511,21 @@ namespace QuickUnity.Data
                         }
                         else
                         {
-                            DebugLogger.LogError(result.GetErrorMsg(box));
+                            Debug.LogError(result.GetErrorMsg(box));
                         }
                     }
                 }
             }
             catch (Exception exception)
             {
-                DebugLogger.LogException(exception);
+                Debug.LogException(exception);
             }
 
             return false;
         }
 
         /// <summary>
-        /// Closes the connection to the database. 
+        /// Closes the connection to the database.
         /// </summary>
         public void Close()
         {
@@ -539,13 +540,13 @@ namespace QuickUnity.Data
                 }
                 catch (Exception exception)
                 {
-                    DebugLogger.LogException(exception);
+                    Debug.LogException(exception);
                 }
             }
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources. 
+        /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         public void Dispose()
         {
@@ -558,13 +559,13 @@ namespace QuickUnity.Data
         #region Protected Methods
 
         /// <summary>
-        /// Generates the multi-condition query SQL statement. 
+        /// Generates the multi-condition query SQL statement.
         /// </summary>
-        /// <param name="values"> The values need to query. </param>
-        /// <param name="tableName"> Name of the table. </param>
-        /// <param name="conditions"> The conditions. </param>
-        /// <param name="multiConditionOperators"> The multi condition operators. </param>
-        /// <returns> The SQL statement. </returns>
+        /// <param name="values">The values need to query.</param>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="conditions">The conditions.</param>
+        /// <param name="multiConditionOperators">The multi condition operators.</param>
+        /// <returns>The SQL statement.</returns>
         protected string GenerateMultiConditionQuerySQL(out object[] values, string tableName,
             List<BoxDBQueryCondition> conditions = null, List<BoxDBMultiConditionOperator> multiConditionOperators = null)
         {
@@ -605,9 +606,9 @@ namespace QuickUnity.Data
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources. 
+        /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
-        /// <param name="disposing"> <c> true </c> to release both managed and unmanaged resources; <c> false </c> to release only unmanaged resources. </param>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

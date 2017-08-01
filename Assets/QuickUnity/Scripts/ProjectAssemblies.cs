@@ -22,9 +22,9 @@
  *	SOFTWARE.
  */
 
-using QuickUnity.Core.Miscs;
 using System;
 using System.Reflection;
+using UnityEngine;
 
 namespace QuickUnity
 {
@@ -88,7 +88,7 @@ namespace QuickUnity
                             }
                             catch (Exception exception)
                             {
-                                DebugLogger.LogException(exception);
+                                Debug.LogException(exception);
                             }
 
                             if (result != null)

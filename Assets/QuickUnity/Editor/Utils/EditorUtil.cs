@@ -23,7 +23,6 @@
  */
 
 using CSharpExtensions.Collections.Generic;
-using QuickUnity.Core.Miscs;
 using QuickUnity.Utils;
 using System;
 using System.Collections.Generic;
@@ -300,7 +299,7 @@ namespace QuickUnityEditor.Utils
                 }
                 catch (Exception exception)
                 {
-                    DebugLogger.LogException(exception);
+                    Debug.LogException(exception);
                 }
             }
         }

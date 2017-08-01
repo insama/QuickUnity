@@ -27,7 +27,7 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 
-namespace QuickUnity.Core.Miscs
+namespace QuickUnity.Diagnostics
 {
     /// <summary>
     /// Class containing methods to output log message while developing a game.

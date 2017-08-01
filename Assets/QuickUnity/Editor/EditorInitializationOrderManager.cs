@@ -23,13 +23,13 @@
  */
 
 using CSharpExtensions.Reflection;
-using QuickUnity.Core.Miscs;
 using QuickUnityEditor.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using UnityEditor;
+using UnityEngine;
 
 namespace QuickUnityEditor
 {
@@ -50,10 +50,7 @@ namespace QuickUnityEditor
             /// </summary>
             /// <param name="x">The first object to compare.</param>
             /// <param name="y">The second object to compare.</param>
-            /// <returns>
-            /// A signed integer that indicates the relative values of x and y, as shown in the
-            /// following table.
-            /// </returns>
+            /// <returns>A signed integer that indicates the relative values of x and y, as shown in the following table.</returns>
             public int Compare(Type x, Type y)
             {
                 InitializeOnEditorStartupAttribute[] xAttrs = x.GetCustomAttributes(typeof(InitializeOnEditorStartupAttribute), false) as InitializeOnEditorStartupAttribute[];
@@ -123,7 +120,7 @@ namespace QuickUnityEditor
                 }
                 catch (TypeInitializationException ex)
                 {
-                    DebugLogger.LogException(ex.InnerException);
+                    Debug.LogException(ex.InnerException);
                 }
             });
         }

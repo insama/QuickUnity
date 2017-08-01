@@ -25,7 +25,6 @@
 using CSharpExtensions;
 using CSharpExtensions.IO;
 using QuickUnity;
-using QuickUnity.Core.Miscs;
 using QuickUnity.Data;
 using System;
 using System.IO;
@@ -331,7 +330,7 @@ namespace QuickUnityEditor.Data
                     }
                     catch (Exception exception)
                     {
-                        DebugLogger.LogException(exception);
+                        Debug.LogException(exception);
                     }
                 }
             }
@@ -344,7 +343,7 @@ namespace QuickUnityEditor.Data
             }
             catch (Exception exception)
             {
-                DebugLogger.LogException(exception);
+                Debug.LogException(exception);
             }
         }
     }

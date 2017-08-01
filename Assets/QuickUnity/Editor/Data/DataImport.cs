@@ -26,7 +26,6 @@ using CSharpExtensions.IO;
 using CSharpExtensions.Reflection;
 using Excel;
 using QuickUnity;
-using QuickUnity.Core.Miscs;
 using QuickUnity.Data;
 using QuickUnity.Utils;
 using QuickUnityEditor.Attributes;
@@ -532,7 +531,7 @@ namespace QuickUnityEditor.Data
                 }
                 catch (Exception exception)
                 {
-                    DebugLogger.LogException(exception);
+                    Debug.LogException(exception);
                 }
                 finally
                 {
@@ -573,7 +572,7 @@ namespace QuickUnityEditor.Data
                 }
                 else
                 {
-                    DebugLogger.LogErrorFormat(null, "Can not find the Type: {0}", classFullName);
+                    Debug.LogErrorFormat(null, "Can not find the Type: {0}", classFullName);
                 }
             });
 
@@ -788,7 +787,7 @@ namespace QuickUnityEditor.Data
                     }
                     catch (Exception exception)
                     {
-                        DebugLogger.LogException(exception);
+                        Debug.LogException(exception);
                     }
                     finally
                     {
@@ -836,7 +835,7 @@ namespace QuickUnityEditor.Data
                     }
                     catch (Exception exception)
                     {
-                        DebugLogger.LogException(exception);
+                        Debug.LogException(exception);
                     }
                 }
             }
@@ -935,7 +934,7 @@ namespace QuickUnityEditor.Data
                         }
                         catch (Exception exception)
                         {
-                            DebugLogger.LogException(exception);
+                            Debug.LogException(exception);
                         }
                     }
                 }

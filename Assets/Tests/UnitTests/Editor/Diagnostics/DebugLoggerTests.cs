@@ -1,8 +1,7 @@
 ﻿using NUnit.Framework;
-using QuickUnity.Core.Miscs;
 using System;
 
-namespace QuickUnity.Core.Miscs
+namespace QuickUnity.Diagnostics
 {
     /// <summary>
     /// Unit test cases for class DebugLogger.

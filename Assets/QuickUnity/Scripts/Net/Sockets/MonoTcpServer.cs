@@ -309,7 +309,7 @@ namespace QuickUnity.Net.Sockets
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
             MonoTcpClient tcpClient = socketEvent.TcpClient;
-            Exception ex = socketEvent.Exception;
+            Exception ex = socketEvent.ExceptionCaught;
             DispatchEvent(new SocketEvent(SocketEvent.ClientSocketExceptionCaught, tcpClient, ex));
         }
 

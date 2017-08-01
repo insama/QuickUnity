@@ -34,10 +34,6 @@ namespace QuickUnity.IO.Ports
 
         #endregion Event Constants
 
-        private ISerialPortPacket serialPortPacket;
-
-        private Exception exception;
-
         #region Constructors
 
         /// <summary>
@@ -50,7 +46,7 @@ namespace QuickUnity.IO.Ports
         public SerialPortEvent(string eventType, MonoSerialPort serialPort, ISerialPortPacket packet = null)
             : base(eventType, serialPort)
         {
-            serialPortPacket = packet;
+            SerialPortPacket = packet;
         }
 
         /// <summary>
@@ -63,7 +59,7 @@ namespace QuickUnity.IO.Ports
         public SerialPortEvent(string eventType, MonoSerialPort serialPort, Exception exception)
             : base(eventType, serialPort)
         {
-            this.exception = exception;
+            ExceptionCaught = exception;
         }
 
         #endregion Constructors
@@ -74,16 +70,18 @@ namespace QuickUnity.IO.Ports
         /// <value>The <see cref="ISerialPortPacket"/> unpacked.</value>
         public ISerialPortPacket SerialPortPacket
         {
-            get { return serialPortPacket; }
+            get;
+            private set;
         }
 
         /// <summary>
         /// Gets the <see cref="System.Exception"/> caught.
         /// </summary>
         /// <value>The <see cref="System.Exception"/> caught.</value>
-        public Exception Exception
+        public Exception ExceptionCaught
         {
-            get { return exception; }
+            get;
+            private set;
         }
     }
 }

@@ -158,7 +158,7 @@ namespace QuickUnity.Tests.IntegrationTests
         private void OnSerialPortException(Event e)
         {
             SerialPortEvent serialEvent = (SerialPortEvent)e;
-            UnityEngine.Debug.LogException(serialEvent.Exception);
+            UnityEngine.Debug.LogException(serialEvent.ExceptionCaught);
         }
 
         private void OnSerialPortClosed(Event e)

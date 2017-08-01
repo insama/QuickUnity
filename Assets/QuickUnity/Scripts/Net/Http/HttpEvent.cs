@@ -43,40 +43,31 @@ namespace QuickUnity.Net.Http
 
         #endregion Event Constants
 
-        private HttpStatusCode code;
-
-        private long bytesRead;
-        private long totalLength;
-
-        private HttpResponse response;
-
-        private Exception exceptionCaught;
-
         #region Constructors
 
         public HttpEvent(string eventType, HttpStatusCode code)
             : base(eventType)
         {
-            this.code = code;
+            HttpStatusCode = code;
         }
 
         public HttpEvent(string eventType, long bytesRead, long totalLength)
             : base(eventType)
         {
-            this.bytesRead = bytesRead;
-            this.totalLength = totalLength;
+            BytesRead = bytesRead;
+            TotalLength = totalLength;
         }
 
         public HttpEvent(string eventType, HttpResponse response)
             : base(eventType)
         {
-            this.response = response;
+            Response = response;
         }
 
         public HttpEvent(string eventType, Exception exceptionCaught)
             : base(eventType)
         {
-            this.exceptionCaught = exceptionCaught;
+            ExceptionCaught = exceptionCaught;
         }
 
         #endregion Constructors
@@ -85,27 +76,32 @@ namespace QuickUnity.Net.Http
 
         public HttpStatusCode HttpStatusCode
         {
-            get { return code; }
+            get;
+            private set;
         }
 
         public long BytesRead
         {
-            get { return bytesRead; }
+            get;
+            private set;
         }
 
         public long TotalLength
         {
-            get { return totalLength; }
+            get;
+            private set;
         }
 
         public HttpResponse Response
         {
-            get { return response; }
+            get;
+            private set;
         }
 
         public Exception ExceptionCaught
         {
-            get { return exceptionCaught; }
+            get;
+            private set;
         }
 
         #endregion Properties

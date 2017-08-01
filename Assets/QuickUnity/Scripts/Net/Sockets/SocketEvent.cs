@@ -104,10 +104,6 @@ namespace QuickUnity.Net.Sockets
 
         #endregion Event Constants
 
-        private ISocketPacket socketPacket;
-
-        private Exception exception;
-
         #region Constructors
 
         /// <summary>
@@ -119,7 +115,7 @@ namespace QuickUnity.Net.Sockets
         public SocketEvent(string eventType, MonoTcpClient client, ISocketPacket packet = null)
             : base(eventType, client)
         {
-            socketPacket = packet;
+            SocketPacket = packet;
         }
 
         /// <summary>
@@ -131,7 +127,7 @@ namespace QuickUnity.Net.Sockets
         public SocketEvent(string eventType, MonoTcpClient client, Exception exception)
             : base(eventType, client)
         {
-            this.exception = exception;
+            ExceptionCaught = exception;
         }
 
         /// <summary>
@@ -153,7 +149,7 @@ namespace QuickUnity.Net.Sockets
         public SocketEvent(string eventType, MonoTcpServer server, Exception exception)
             : base(eventType, server)
         {
-            this.exception = exception;
+            ExceptionCaught = exception;
         }
 
         #endregion Constructors
@@ -182,16 +178,18 @@ namespace QuickUnity.Net.Sockets
         /// <value>The <see cref="ISocketPacket"/> received from server.</value>
         public ISocketPacket SocketPacket
         {
-            get { return socketPacket; }
+            get;
+            private set;
         }
 
         /// <summary>
         /// Gets the <see cref="System.Exception"/> caught.
         /// </summary>
         /// <value>The <see cref="System.Exception"/> caught.</value>
-        public Exception Exception
+        public Exception ExceptionCaught
         {
-            get { return exception; }
+            get;
+            private set;
         }
     }
 }

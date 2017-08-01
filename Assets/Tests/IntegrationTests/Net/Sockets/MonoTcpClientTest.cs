@@ -123,7 +123,7 @@ namespace QuickUnity.Tests.IntegrationTests
         private void OnSocketException(Events.Event eventObj)
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
-            Exception e = socketEvent.Exception;
+            Exception e = socketEvent.ExceptionCaught;
             Debug.Log(e.Message);
             Debug.Log(e.StackTrace);
         }

@@ -44,6 +44,34 @@ namespace QuickUnityEditor.Utils
         private const string scriptableObjectAssetExtension = ".asset";
 
         /// <summary>
+        /// The extension of Scene asset.
+        /// </summary>
+        private const string sceneAssetExtension = ".unity";
+
+        /// <summary>
+        /// Determines whether the asset by the path is a scene asset.
+        /// </summary>
+        /// <param name="path">The path of the asset.</param>
+        /// <returns><c>true</c> if it is a scene asset; otherwise, <c>false</c>.</returns>
+        /// <exception cref="ArgumentNullException"><c>path</c> is <c>null</c>.</exception>
+        public static bool IsSceneAsset(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new ArgumentNullException("path");
+            }
+
+            string ext = Path.GetExtension(path);
+
+            if (ext.Equals(sceneAssetExtension))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Loads the asset of ScriptableObject.
         /// </summary>
         /// <typeparam name="T">The Type definition of ScriptableObject.</typeparam>
@@ -218,9 +246,7 @@ namespace QuickUnityEditor.Utils
         /// Get the references.
         /// </summary>
         /// <param name="targetAssetPathList">The target asset path list.</param>
-        /// <returns>
-        /// Dictionary&lt;System.String, System.String[]&gt; The dictionary of asset references.
-        /// </returns>
+        /// <returns>Dictionary&lt;System.String, System.String[]&gt; The dictionary of asset references.</returns>
         public static Dictionary<string, List<string>> GetReferences(List<string> targetAssetPathList)
         {
             string[] allAssetGuids = AssetDatabase.FindAssets("");

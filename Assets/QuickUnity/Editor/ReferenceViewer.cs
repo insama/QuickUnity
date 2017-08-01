@@ -92,7 +92,6 @@ namespace QuickUnityEditor
             {
                 string guid = guids[i];
                 string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-                Debug.Log(assetPath);
                 string[] paths = Utils.EditorUtil.GetObjectAssets(assetPath);
 
                 if (paths != null)

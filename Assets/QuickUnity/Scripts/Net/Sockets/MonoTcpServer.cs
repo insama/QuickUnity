@@ -215,7 +215,7 @@ namespace QuickUnity.Net.Sockets
         /// <param name="exception">The <see cref="Exception"/> from server error.</param>
         protected override void DispathServerSocketExceptionCaughtEvent(Exception exception)
         {
-            eventDispatcher.DispatchEvent(new SocketEvent(SocketEvent.ServerSocketExceptionCaught, this, exception));
+            eventDispatcher.DispatchEvent(new SocketEvent(SocketEvent.ServerExceptionCaught, this, exception));
         }
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace QuickUnity.Net.Sockets
             SocketEvent socketEvent = (SocketEvent)eventObj;
             MonoTcpClient tcpClient = socketEvent.TcpClient;
             ISocketPacket socketPacket = socketEvent.SocketPacket;
-            DispatchEvent(new SocketEvent(SocketEvent.ClientData, tcpClient, socketPacket));
+            DispatchEvent(new SocketEvent(SocketEvent.ClientDataReceived, tcpClient, socketPacket));
         }
 
         /// <summary>
@@ -310,7 +310,7 @@ namespace QuickUnity.Net.Sockets
             SocketEvent socketEvent = (SocketEvent)eventObj;
             MonoTcpClient tcpClient = socketEvent.TcpClient;
             Exception ex = socketEvent.ExceptionCaught;
-            DispatchEvent(new SocketEvent(SocketEvent.ClientSocketExceptionCaught, tcpClient, ex));
+            DispatchEvent(new SocketEvent(SocketEvent.ClientExceptionCaught, tcpClient, ex));
         }
 
         #endregion Private Methods

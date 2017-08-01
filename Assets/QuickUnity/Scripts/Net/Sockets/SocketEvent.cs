@@ -58,7 +58,7 @@ namespace QuickUnity.Net.Sockets
         public const string SocketClosed = "SocketClosed";
 
         /// <summary>
-        /// Occurs when caught an <see cref="System.Exception"/>.
+        /// Occurs when caught an <see cref="Exception"/>.
         /// </summary>
         public const string SocketExceptionCaught = "SocketExceptionCaught";
 
@@ -73,9 +73,9 @@ namespace QuickUnity.Net.Sockets
         public const string ServerStop = "ServerStop";
 
         /// <summary>
-        /// Occurs when TCP server caught an <see cref="System.Exception"/>.
+        /// Occurs when TCP server caught an <see cref="Exception"/>.
         /// </summary>
-        public const string ServerSocketExceptionCaught = "ServerSocketExceptionCaught";
+        public const string ServerExceptionCaught = "ServerExceptionCaught";
 
         /// <summary>
         /// Occurs when socket client connected.
@@ -90,7 +90,7 @@ namespace QuickUnity.Net.Sockets
         /// <summary>
         /// Occurs when socket client received data.
         /// </summary>
-        public const string ClientData = "ClientDataReceived";
+        public const string ClientDataReceived = "ClientDataReceived";
 
         /// <summary>
         /// Occurs when socket client closed.
@@ -98,9 +98,9 @@ namespace QuickUnity.Net.Sockets
         public const string ClientClosed = "ClientClosed";
 
         /// <summary>
-        /// Occurs when socket client caught an <see cref="System.Exception"/>.
+        /// Occurs when socket client caught an <see cref="Exception"/>.
         /// </summary>
-        public const string ClientSocketExceptionCaught = "ClientSocketExceptionCaught";
+        public const string ClientExceptionCaught = "ClientExceptionCaught";
 
         #endregion Event Constants
 
@@ -123,7 +123,7 @@ namespace QuickUnity.Net.Sockets
         /// </summary>
         /// <param name="eventType">The type of the event.</param>
         /// <param name="client">The instance of <see cref="MonoTcpClient"/>.</param>
-        /// <param name="exception">The <see cref="System.Exception"/> caught.</param>
+        /// <param name="exception">The <see cref="Exception"/> caught.</param>
         public SocketEvent(string eventType, MonoTcpClient client, Exception exception)
             : base(eventType, client)
         {
@@ -145,7 +145,7 @@ namespace QuickUnity.Net.Sockets
         /// </summary>
         /// <param name="eventType">The type of the event.</param>
         /// <param name="server">The instance of <see cref="MonoTcpServer"/>.</param>
-        /// <param name="exception">The <see cref="System.Exception"/> caught.</param>
+        /// <param name="exception">The <see cref="Exception"/> caught.</param>
         public SocketEvent(string eventType, MonoTcpServer server, Exception exception)
             : base(eventType, server)
         {
@@ -183,9 +183,9 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Gets the <see cref="System.Exception"/> caught.
+        /// Gets the <see cref="Exception"/> caught.
         /// </summary>
-        /// <value>The <see cref="System.Exception"/> caught.</value>
+        /// <value>The <see cref="Exception"/> caught.</value>
         public Exception ExceptionCaught
         {
             get;

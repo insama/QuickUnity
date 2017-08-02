@@ -1,4 +1,28 @@
-﻿using UnityEngine;
+﻿/*
+ *	The MIT License (MIT)
+ *
+ *	Copyright (c) 2017 Jerry Lee
+ *
+ *	Permission is hereby granted, free of charge, to any person obtaining a copy
+ *	of this software and associated documentation files (the "Software"), to deal
+ *	in the Software without restriction, including without limitation the rights
+ *	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *	copies of the Software, and to permit persons to whom the Software is
+ *	furnished to do so, subject to the following conditions:
+ *
+ *	The above copyright notice and this permission notice shall be included in all
+ *	copies or substantial portions of the Software.
+ *
+ *	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *	SOFTWARE.
+ */
+
+using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 using CSharpExtensions.Collections;
@@ -70,11 +94,11 @@ namespace QuickUnityEditor
         }
 
         /// <summary>
-        /// Validates the prefabs in scene whether has component of <see cref="PrefabLightmapData"/>.
+        /// Validates the prefab lightmaps baking.
         /// </summary>
-        /// <returns><c>true</c> if a prefab in scene has component of <see cref="PrefabLightmapData"/>, <c>false</c> otherwise.</returns>
-        [MenuItem("GameObject/Bake Lightmaps for Prefabs in Open Scenes", true)]
-        public static bool ValidatePrefabsInScenes()
+        /// <returns><c>true</c> if got <see cref="PrefabLightmapData"/> component in open scenes, <c>false</c> otherwise.</returns>
+        [MenuItem("GameObject/Bake Prefab Lightmaps", true)]
+        public static bool ValidatePrefabLightmapsBaking()
         {
             PrefabLightmapData[] prefabs = Object.FindObjectsOfType<PrefabLightmapData>();
 
@@ -87,10 +111,10 @@ namespace QuickUnityEditor
         }
 
         /// <summary>
-        /// Bakes lightmaps for the prefabs in scene.
+        /// Bakes the prefab lightmaps.
         /// </summary>
-        [MenuItem("GameObject/Bake Lightmaps for Prefabs in Open Scenes", false, 500)]
-        public static void BakePrefabsInScenes()
+        [MenuItem("GameObject/Bake Prefab Lightmaps", false, 100)]
+        public static void BakePrefabLightmaps()
         {
             if (Lightmapping.giWorkflowMode != Lightmapping.GIWorkflowMode.OnDemand)
             {
@@ -103,54 +127,69 @@ namespace QuickUnityEditor
 
             PrefabLightmapData[] prefabs = Object.FindObjectsOfType<PrefabLightmapData>();
 
-            foreach (PrefabLightmapData item in prefabs)
+            if (prefabs.Length > 0)
             {
-                GameObject gameObject = item.gameObject;
-                List<PrefabLightmapData.RendererInfo> rendererInfos = new List<PrefabLightmapData.RendererInfo>();
-                List<Texture2D> lightmaps = new List<Texture2D>();
-                GenerateLightmapInfo(gameObject, rendererInfos, lightmaps);
-
-                item.RendererInfos = rendererInfos.ToArray();
-                item.Lightmaps = lightmaps.ToArray();
-
-                GameObject targetPrefab = PrefabUtility.GetPrefabParent(gameObject) as GameObject;
-
-                if (targetPrefab)
+                for (int i = 0, length = prefabs.Length; i < length; i++)
                 {
-                    PrefabUtility.ReplacePrefab(gameObject, targetPrefab);
+                    PrefabLightmapData data = prefabs[i];
+                    GameObject gameObject = data.gameObject;
+                    List<LightmapRendererInfo> rendererInfos = new List<LightmapRendererInfo>();
+                    List<Texture2D> lightmapColors = new List<Texture2D>();
+                    List<Texture2D> lightmapDirs = new List<Texture2D>();
+                    List<Texture2D> shadowMasks = new List<Texture2D>();
+
+                    GenerateLightmapInfo(gameObject, rendererInfos, lightmapColors, lightmapDirs, shadowMasks);
+
+                    data.RendererInfos = rendererInfos.ToArray();
+                    data.LightmapColors = lightmapColors.ToArray();
+                    data.LightmapDirs = lightmapDirs.ToArray();
+                    data.ShadowMasks = shadowMasks.ToArray();
+
+                    GameObject targetPrefab = PrefabUtility.GetPrefabParent(gameObject) as GameObject;
+
+                    if (targetPrefab != null)
+                    {
+                        PrefabUtility.ReplacePrefab(gameObject, targetPrefab);
+                    }
                 }
             }
         }
 
         /// <summary>
-        /// Generates the lightmap information for the GameObject.
+        /// Generates the lightmap information.
         /// </summary>
-        /// <param name="root">The root of the <see cref="GameObject"/>.</param>
-        /// <param name="rendererInfos">The <see cref="List{PrefabLightmapData.RendererInfo}"/> to store lightmap renderer infomation.</param>
-        /// <param name="lightmaps">The <see cref="List{Texture2D}"/> to store lightmap textures.</param>
-        private static void GenerateLightmapInfo(GameObject root, List<PrefabLightmapData.RendererInfo> rendererInfos, List<Texture2D> lightmaps)
+        /// <param name="gameObject">The <see cref="GameObject"/>.</param>
+        /// <param name="rendererInfos">The <see cref="List{LightmapRendererInfo}"/> to store renderer information.</param>
+        /// <param name="lightmapColors">The <see cref="List{Texture2D}"/> to store <see cref="LightmapData.lightmapColor"/>.</param>
+        /// <param name="lightmapDirs">The <see cref="List{Texture2D}"/> to store <see cref="LightmapData.lightmapDir"/>.</param>
+        /// <param name="shadowMasks">The <see cref="List{Texture2D}"/> to store <see cref="LightmapData.shadowMask"/>.</param>
+        private static void GenerateLightmapInfo(GameObject gameObject, List<LightmapRendererInfo> rendererInfos, List<Texture2D> lightmapColors,
+            List<Texture2D> lightmapDirs, List<Texture2D> shadowMasks)
         {
-            MeshRenderer[] renderers = root.GetComponentsInChildren<MeshRenderer>();
+            MeshRenderer[] renderers = gameObject.GetComponentsInChildren<MeshRenderer>();
 
             foreach (MeshRenderer renderer in renderers)
             {
-                if (renderer.lightmapIndex != -1)
+                LightmapRendererInfo info = new LightmapRendererInfo();
+                info.Renderer = renderer;
+                info.LightmapScaleOffset = renderer.lightmapScaleOffset;
+
+                LightmapData data = LightmapSettings.lightmaps[renderer.lightmapIndex];
+                Texture2D lightmapColor = data.lightmapColor;
+                Texture2D lightmapDir = data.lightmapDir;
+                Texture2D shadowMask = data.shadowMask;
+
+                info.LightmapIndex = lightmapColors.IndexOf(lightmapColor);
+
+                if (info.LightmapIndex == -1)
                 {
-                    PrefabLightmapData.RendererInfo info = new PrefabLightmapData.RendererInfo();
-                    info.Renderer = renderer;
-                    info.LightmapOffsetScale = renderer.lightmapScaleOffset;
-
-                    Texture2D lightmap = LightmapSettings.lightmaps[renderer.lightmapIndex].lightmapColor;
-                    info.LightmapIndex = lightmaps.IndexOf(lightmap);
-
-                    if (info.LightmapIndex == -1)
-                    {
-                        info.LightmapIndex = lightmaps.Count;
-                        lightmaps.Add(lightmap);
-                    }
-
-                    rendererInfos.Add(info);
+                    info.LightmapIndex = lightmapColors.Count;
+                    lightmapColors.Add(lightmapColor);
+                    lightmapDirs.Add(lightmapDir);
+                    shadowMasks.Add(shadowMask);
                 }
+
+                rendererInfos.Add(info);
             }
         }
     }

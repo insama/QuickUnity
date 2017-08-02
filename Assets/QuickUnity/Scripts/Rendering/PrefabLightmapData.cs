@@ -28,74 +28,98 @@ using UnityEngine;
 namespace QuickUnity.Rendering
 {
     /// <summary>
+    /// The <see cref="LightmapRendererInfo"/> store data information about lightmap.
+    /// </summary>
+    [Serializable]
+    public struct LightmapRendererInfo
+    {
+        [SerializeField]
+        private Renderer renderer;
+
+        public Renderer Renderer
+        {
+            get { return renderer; }
+            set { renderer = value; }
+        }
+
+        [SerializeField]
+        private int lightmapIndex;
+
+        public int LightmapIndex
+        {
+            get { return lightmapIndex; }
+            set { lightmapIndex = value; }
+        }
+
+        [SerializeField]
+        private Vector4 lightmapScaleOffset;
+
+        public Vector4 LightmapScaleOffset
+        {
+            get { return lightmapScaleOffset; }
+            set { lightmapScaleOffset = value; }
+        }
+    }
+
+    /// <summary>
     /// The class <see cref="PrefabLightmapData"/> provides lightmap data of prefab storing and reverting.
     /// </summary>
     /// <seealso cref="MonoBehaviour"/>
     [DisallowMultipleComponent, ExecuteInEditMode]
     public class PrefabLightmapData : MonoBehaviour
     {
-        [Serializable]
-        public struct RendererInfo
-        {
-            [SerializeField]
-            private Renderer renderer;
-
-            public Renderer Renderer
-            {
-                get { return renderer; }
-                set { renderer = value; }
-            }
-
-            [SerializeField]
-            private int lightmapIndex;
-
-            public int LightmapIndex
-            {
-                get { return lightmapIndex; }
-                set { lightmapIndex = value; }
-            }
-
-            [SerializeField]
-            private Vector4 lightmapOffsetScale;
-
-            public Vector4 LightmapOffsetScale
-            {
-                get { return lightmapOffsetScale; }
-                set { lightmapOffsetScale = value; }
-            }
-        }
+        [SerializeField]
+        private LightmapRendererInfo[] rendererInfos;
 
         [SerializeField]
-        private RendererInfo[] rendererInfos;
+        private Texture2D[] lightmapColors;
 
         [SerializeField]
-        private Texture2D[] lightmaps;
+        private Texture2D[] lightmapDirs;
 
-        /// <summary>
-        /// Sets the renderer informations.
-        /// </summary>
-        /// <value>The renderer informations.</value>
-        public RendererInfo[] RendererInfos
+        [SerializeField]
+        private Texture2D[] shadowMasks;
+
+        #region Properties
+
+#if UNITY_EDITOR
+
+        public LightmapRendererInfo[] RendererInfos
         {
             set { rendererInfos = value; }
         }
 
-        /// <summary>
-        /// Sets the lightmaps.
-        /// </summary>
-        /// <value>The lightmaps.</value>
-        public Texture2D[] Lightmaps
+        public Texture2D[] LightmapColors
         {
-            set { lightmaps = value; }
+            set { lightmapColors = value; }
         }
 
-        private static void ApplyStaticLightmap(RendererInfo[] infos, int lightmapOffsetIndex)
+        public Texture2D[] LightmapDirs
+        {
+            set { lightmapDirs = value; }
+        }
+
+        public Texture2D[] ShadowMasks
+        {
+            set { shadowMasks = value; }
+        }
+
+#endif
+
+        #endregion Properties
+
+        /// <summary>
+        /// Applies the static lightmap for this prefab.
+        /// </summary>
+        /// <param name="infos">The <see cref="Array"/> of <see cref="LightmapRendererInfo"/> stored lightmap renderer informations.</param>
+        /// <param name="lightmapOffsetIndex">Index of the lightmap offset.</param>
+        private static void ApplyStaticLightmap(LightmapRendererInfo[] infos, int lightmapOffsetIndex)
         {
             for (int i = 0, length = infos.Length; i < length; i++)
             {
-                RendererInfo info = infos[i];
+                LightmapRendererInfo info = infos[i];
                 info.Renderer.lightmapIndex = info.LightmapIndex + lightmapOffsetIndex;
-                info.Renderer.lightmapScaleOffset = info.LightmapOffsetScale;
+                info.Renderer.lightmapScaleOffset = info.LightmapScaleOffset;
             }
         }
 
@@ -112,32 +136,34 @@ namespace QuickUnity.Rendering
             }
 
             LightmapData[] lightmaps = LightmapSettings.lightmaps;
-            LightmapData[] combinedLightmaps = new LightmapData[lightmaps.Length + this.lightmaps.Length];
+            LightmapData[] combinedLightmaps = new LightmapData[lightmaps.Length + lightmapColors.Length];
             lightmaps.CopyTo(combinedLightmaps, 0);
 
-            for (int i = 0, length = this.lightmaps.Length; i < length; i++)
+            LightmapData[] storedLightmaps = new LightmapData[lightmapColors.Length];
+
+            for (int i = 0, length = lightmapColors.Length; i < length; i++)
             {
-                combinedLightmaps[i + lightmaps.Length] = new LightmapData();
-                combinedLightmaps[i + lightmaps.Length].lightmapColor = this.lightmaps[i];
+                LightmapData data = new LightmapData();
+                data.lightmapColor = lightmapColors[i];
+                data.lightmapDir = lightmapDirs[i];
+                data.shadowMask = shadowMasks[i];
+                storedLightmaps[i] = data;
             }
+
+            storedLightmaps.CopyTo(combinedLightmaps, lightmaps.Length);
+
+            //for (int i = 0, length = lightmapColors.Length; i < length; i++)
+            //{
+            //    combinedLightmaps[i + length] = new LightmapData();
+            //    combinedLightmaps[i + length].lightmapColor = lightmapColors[i];
+            //    combinedLightmaps[i + length].lightmapDir = lightmapDirs[i];
+            //    combinedLightmaps[i + length].shadowMask = shadowMasks[i];
+            //}
 
             ApplyStaticLightmap(rendererInfos, lightmaps.Length);
             LightmapSettings.lightmaps = combinedLightmaps;
         }
 
         #endregion Messages
-
-        [ContextMenu("Test")]
-        private void Test()
-        {
-            if (Application.isPlaying)
-            {
-                Debug.Log("runtime");
-            }
-            else
-            {
-                Debug.Log("editor");
-            }
-        }
     }
 }

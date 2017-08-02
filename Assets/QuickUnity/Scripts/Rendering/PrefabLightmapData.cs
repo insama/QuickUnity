@@ -123,17 +123,23 @@ namespace QuickUnity.Rendering
             }
         }
 
-        #region Messages
-
-        /// <summary>
-        /// Called when the script instance is being loaded.
-        /// </summary>
-        private void Awake()
+        public static void ApplyStaticLightmap(PrefabLightmapData instance)
         {
+            if (!instance)
+            {
+                throw new ArgumentNullException("instance");
+            }
+
+            LightmapRendererInfo[] rendererInfos = instance.rendererInfos;
+
             if (rendererInfos == null || rendererInfos.Length == 0)
             {
                 return;
             }
+
+            Texture2D[] lightmapColors = instance.lightmapColors;
+            Texture2D[] lightmapDirs = instance.lightmapDirs;
+            Texture2D[] shadowMasks = instance.shadowMasks;
 
             LightmapData[] lightmaps = LightmapSettings.lightmaps;
             LightmapData[] combinedLightmaps = new LightmapData[lightmaps.Length + lightmapColors.Length];
@@ -152,16 +158,42 @@ namespace QuickUnity.Rendering
 
             storedLightmaps.CopyTo(combinedLightmaps, lightmaps.Length);
 
-            //for (int i = 0, length = lightmapColors.Length; i < length; i++)
-            //{
-            //    combinedLightmaps[i + length] = new LightmapData();
-            //    combinedLightmaps[i + length].lightmapColor = lightmapColors[i];
-            //    combinedLightmaps[i + length].lightmapDir = lightmapDirs[i];
-            //    combinedLightmaps[i + length].shadowMask = shadowMasks[i];
-            //}
-
             ApplyStaticLightmap(rendererInfos, lightmaps.Length);
             LightmapSettings.lightmaps = combinedLightmaps;
+        }
+
+        #region Messages
+
+        /// <summary>
+        /// Called when the script instance is being loaded.
+        /// </summary>
+        private void Awake()
+        {
+            ApplyStaticLightmap(this);
+            //if (rendererInfos == null || rendererInfos.Length == 0)
+            //{
+            //    return;
+            //}
+
+            //LightmapData[] lightmaps = LightmapSettings.lightmaps;
+            //LightmapData[] combinedLightmaps = new LightmapData[lightmaps.Length + lightmapColors.Length];
+            //lightmaps.CopyTo(combinedLightmaps, 0);
+
+            //LightmapData[] storedLightmaps = new LightmapData[lightmapColors.Length];
+
+            //for (int i = 0, length = lightmapColors.Length; i < length; i++)
+            //{
+            //    LightmapData data = new LightmapData();
+            //    data.lightmapColor = lightmapColors[i];
+            //    data.lightmapDir = lightmapDirs[i];
+            //    data.shadowMask = shadowMasks[i];
+            //    storedLightmaps[i] = data;
+            //}
+
+            //storedLightmaps.CopyTo(combinedLightmaps, lightmaps.Length);
+
+            //ApplyStaticLightmap(rendererInfos, lightmaps.Length);
+            //LightmapSettings.lightmaps = combinedLightmaps;
         }
 
         #endregion Messages

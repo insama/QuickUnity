@@ -104,7 +104,15 @@ namespace QuickUnityEditor
 
             if (prefabs.Length > 0)
             {
-                return true;
+                foreach (PrefabLightmapData item in prefabs)
+                {
+                    GameObject root = PrefabUtility.GetPrefabParent(item.gameObject) as GameObject;
+
+                    if (root != null)
+                    {
+                        return true;
+                    }
+                }
             }
 
             return false;
@@ -112,6 +120,8 @@ namespace QuickUnityEditor
 
         /// <summary>
         /// Bakes the prefab lightmaps.
+        /// Note: Before building, you need to setup Shader stripping under the menu "Edit -&gt; Project Settings -&gt; Graphics", Set "Lightmap Modes"
+        ///       to "Manual' and uncheck "Realtime Non-Directional" and "Realtime Directional".
         /// </summary>
         [MenuItem("GameObject/Bake Prefab Lightmaps", false, 100)]
         public static void BakePrefabLightmaps()
@@ -122,10 +132,11 @@ namespace QuickUnityEditor
                 return;
             }
 
+            PrefabLightmapData[] prefabs = Object.FindObjectsOfType<PrefabLightmapData>();
+            MakeSureRendererGameObjectIsLightmapStatic(prefabs);
+
             // Bake lightmap for scene.
             Lightmapping.Bake();
-
-            PrefabLightmapData[] prefabs = Object.FindObjectsOfType<PrefabLightmapData>();
 
             if (prefabs.Length > 0)
             {
@@ -150,6 +161,33 @@ namespace QuickUnityEditor
                     if (targetPrefab != null)
                     {
                         PrefabUtility.ReplacePrefab(gameObject, targetPrefab);
+                    }
+
+                    PrefabLightmapData.ApplyStaticLightmap(data);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Make sure the <see cref="GameObject"/> of renderer is lightmap static.
+        /// </summary>
+        /// <param name="prefabs">The <see cref="Array"/> of <see cref="PrefabLightmapData"/>.</param>
+        private static void MakeSureRendererGameObjectIsLightmapStatic(PrefabLightmapData[] prefabs)
+        {
+            if (prefabs.Length > 0)
+            {
+                foreach (PrefabLightmapData lightmap in prefabs)
+                {
+                    MeshRenderer[] renderers = lightmap.gameObject.GetComponentsInChildren<MeshRenderer>();
+
+                    foreach (MeshRenderer renderer in renderers)
+                    {
+                        GameObject gameObject = renderer.gameObject;
+
+                        if (!GameObjectUtility.AreStaticEditorFlagsSet(gameObject, StaticEditorFlags.LightmapStatic))
+                        {
+                            GameObjectUtility.SetStaticEditorFlags(gameObject, StaticEditorFlags.LightmapStatic);
+                        }
                     }
                 }
             }

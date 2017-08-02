@@ -31,27 +31,37 @@ namespace QuickUnity.Rendering
     /// The class <see cref="PrefabLightmapData"/> provides lightmap data of prefab storing and reverting.
     /// </summary>
     /// <seealso cref="MonoBehaviour"/>
+    [DisallowMultipleComponent, ExecuteInEditMode]
     public class PrefabLightmapData : MonoBehaviour
     {
         [Serializable]
-        private struct RendererInfo
+        public struct RendererInfo
         {
+            [SerializeField]
+            private Renderer renderer;
+
             public Renderer Renderer
             {
-                get;
-                set;
+                get { return renderer; }
+                set { renderer = value; }
             }
+
+            [SerializeField]
+            private int lightmapIndex;
 
             public int LightmapIndex
             {
-                get;
-                set;
+                get { return lightmapIndex; }
+                set { lightmapIndex = value; }
             }
+
+            [SerializeField]
+            private Vector4 lightmapOffsetScale;
 
             public Vector4 LightmapOffsetScale
             {
-                get;
-                set;
+                get { return lightmapOffsetScale; }
+                set { lightmapOffsetScale = value; }
             }
         }
 
@@ -60,5 +70,74 @@ namespace QuickUnity.Rendering
 
         [SerializeField]
         private Texture2D[] lightmaps;
+
+        /// <summary>
+        /// Sets the renderer informations.
+        /// </summary>
+        /// <value>The renderer informations.</value>
+        public RendererInfo[] RendererInfos
+        {
+            set { rendererInfos = value; }
+        }
+
+        /// <summary>
+        /// Sets the lightmaps.
+        /// </summary>
+        /// <value>The lightmaps.</value>
+        public Texture2D[] Lightmaps
+        {
+            set { lightmaps = value; }
+        }
+
+        private static void ApplyStaticLightmap(RendererInfo[] infos, int lightmapOffsetIndex)
+        {
+            for (int i = 0, length = infos.Length; i < length; i++)
+            {
+                RendererInfo info = infos[i];
+                info.Renderer.lightmapIndex = info.LightmapIndex + lightmapOffsetIndex;
+                info.Renderer.lightmapScaleOffset = info.LightmapOffsetScale;
+            }
+        }
+
+        #region Messages
+
+        /// <summary>
+        /// Called when the script instance is being loaded.
+        /// </summary>
+        private void Awake()
+        {
+            if (rendererInfos == null || rendererInfos.Length == 0)
+            {
+                return;
+            }
+
+            LightmapData[] lightmaps = LightmapSettings.lightmaps;
+            LightmapData[] combinedLightmaps = new LightmapData[lightmaps.Length + this.lightmaps.Length];
+            lightmaps.CopyTo(combinedLightmaps, 0);
+
+            for (int i = 0, length = this.lightmaps.Length; i < length; i++)
+            {
+                combinedLightmaps[i + lightmaps.Length] = new LightmapData();
+                combinedLightmaps[i + lightmaps.Length].lightmapColor = this.lightmaps[i];
+            }
+
+            ApplyStaticLightmap(rendererInfos, lightmaps.Length);
+            LightmapSettings.lightmaps = combinedLightmaps;
+        }
+
+        #endregion Messages
+
+        [ContextMenu("Test")]
+        private void Test()
+        {
+            if (Application.isPlaying)
+            {
+                Debug.Log("runtime");
+            }
+            else
+            {
+                Debug.Log("editor");
+            }
+        }
     }
 }

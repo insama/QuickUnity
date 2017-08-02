@@ -22,12 +22,13 @@ GameObject:
   - component: {fileID: 33208926402798038}
   - component: {fileID: 136988646216203766}
   - component: {fileID: 23369949644326388}
+  - component: {fileID: 114897722652875510}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4174530151068712
 Transform:
@@ -52,7 +53,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
+  m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
@@ -81,6 +82,23 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1331748665258158}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114897722652875510
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1331748665258158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7df70edee8b7b34f85a8385d2fe3ce6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rendererInfos:
+  - renderer: {fileID: 23369949644326388}
+    lightmapIndex: 0
+    lightmapOffsetScale: {x: 0.8712996, y: 0.8712996, z: -0.0037994056, w: -0.0022655365}
+  lightmaps:
+  - {fileID: 2800000, guid: ac56c5edc0b379d40836d7e5e3f7ecd1, type: 3}
 --- !u!136 &136988646216203766
 CapsuleCollider:
   m_ObjectHideFlags: 1

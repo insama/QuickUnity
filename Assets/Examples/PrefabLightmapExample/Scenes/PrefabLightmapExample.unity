@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.3069223, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -52,7 +52,7 @@ LightmapSettings:
     m_TemporalCoherenceThreshold: 1
     m_EnvironmentLightingMode: 0
     m_EnableBakedLightmaps: 1
-    m_EnableRealtimeLightmaps: 1
+    m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
     serializedVersion: 8
     m_Resolution: 2
@@ -71,7 +71,7 @@ LightmapSettings:
     m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
-    m_MixedBakeMode: 3
+    m_MixedBakeMode: 0
     m_BakeBackend: 1
     m_PVRSampling: 1
     m_PVRDirectSampleCount: 32
@@ -86,8 +86,9 @@ LightmapSettings:
     m_PVRFilteringAtrousColorSigma: 1
     m_PVRFilteringAtrousNormalSigma: 1
     m_PVRFilteringAtrousPositionSigma: 1
-  m_LightingDataAsset: {fileID: 0}
-  m_ShadowMaskMode: 2
+  m_LightingDataAsset: {fileID: 112000002, guid: 1ce2da863d87bc0449cba66c9caae0dc,
+    type: 2}
+  m_ShadowMaskMode: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -108,6 +109,58 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &354857633
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 114897722652875510, guid: 387b9bcb924593b4993f6417df0a4971,
+        type: 2}
+      propertyPath: lightmaps.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114897722652875510, guid: 387b9bcb924593b4993f6417df0a4971,
+        type: 2}
+      propertyPath: rendererInfos.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &579247149
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,7 +275,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 0.18356977, g: 0.1544118, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -262,63 +315,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1001 &1608489525
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4174530151068712, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 387b9bcb924593b4993f6417df0a4971, type: 2}
-  m_IsPrefabParent: 0
---- !u!1 &1608489526 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1331748665258158, guid: 387b9bcb924593b4993f6417df0a4971,
-    type: 2}
-  m_PrefabInternal: {fileID: 1608489525}
---- !u!114 &1608489527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1608489526}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7df70edee8b7b34f85a8385d2fe3ce6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rendererInfos: []
-  lightmaps: []

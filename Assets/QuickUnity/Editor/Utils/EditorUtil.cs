@@ -35,7 +35,7 @@ namespace QuickUnityEditor.Utils
     /// <summary>
     /// Provides constants and static methods to help to do stuffs about editor.
     /// </summary>
-    public static class EditorUtil
+    public sealed class EditorUtil
     {
         /// <summary>
         /// The extension of ScriptableObject asset.

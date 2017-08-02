@@ -27,6 +27,8 @@ using UnityEditor;
 using System.Collections.Generic;
 using CSharpExtensions.Collections;
 using QuickUnity.Rendering;
+using UnityEngine.SceneManagement;
+using UnityEditor.SceneManagement;
 
 namespace QuickUnityEditor
 {
@@ -39,7 +41,8 @@ namespace QuickUnityEditor
         /// Validates that one of selected items is scene asset.
         /// </summary>
         /// <returns><c>true</c> if one of selected items is scene asset, <c>false</c> otherwise.</returns>
-        [MenuItem("Assets/Bake Selected Scenes", true)]
+        [MenuItem("Assets/Bake Lightmaps for Selected Scenes", true)]
+        [MenuItem("Assets/Bake Prefab Lightmaps In Selcted Scenes", true)]
         public static bool ValidateSelectedScenes()
         {
             Object[] objects = Selection.objects;
@@ -86,11 +89,61 @@ namespace QuickUnityEditor
 
             if (toBakedScenes.Count == 0)
             {
-                Debug.LogWarning("No scene to be baked!");
+                EditorUtility.DisplayDialog("Warning", "No scene to be baked!", "Ok");
                 return;
             }
 
-            Lightmapping.BakeMultipleScenes(toBakedScenes.ToArray());
+            for (int i = 0, length = toBakedScenes.Count; i < length; i++)
+            {
+                string scenePath = toBakedScenes[i];
+                Scene scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
+                EditorUtility.DisplayProgressBar("Baking...", string.Format("Baking the scene {0}... {1}/{2}", scene.name, i + 1, length), (float)(i + 1) / length);
+                Lightmapping.Bake();
+                EditorSceneManager.SaveScene(scene);
+            }
+
+            EditorUtility.ClearProgressBar();
+        }
+
+        /// <summary>
+        /// Bakes the prefab lightmaps in selected scenes.
+        /// </summary>
+        [MenuItem("Assets/Bake Prefab Lightmaps In Selected Scenes", false, 500)]
+        public static void BakePrefabLightmapsInSelectedScenes()
+        {
+            List<string> scenePaths = new List<string>();
+            Object[] objects = Selection.objects;
+
+            if (objects.Length > 0)
+            {
+                for (int i = 0, length = objects.Length; i < length; i++)
+                {
+                    Object obj = objects[i];
+                    string path = AssetDatabase.GetAssetOrScenePath(obj);
+
+                    if (Utils.EditorUtil.IsSceneAsset(path))
+                    {
+                        scenePaths.AddUnique(path);
+                    }
+                }
+            }
+
+            if (scenePaths.Count == 0)
+            {
+                EditorUtility.DisplayDialog("Warning", "No scene to be check!", "Ok");
+                return;
+            }
+
+            for (int i = 0, length = scenePaths.Count; i < length; i++)
+            {
+                string scenePath = scenePaths[i];
+                Scene scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
+                EditorUtility.DisplayProgressBar("Baking...", string.Format("Baking the scene {0}... {1}/{2}", scene.name, i + 1, length), (float)(i + 1) / length);
+                BakePrefabLightmaps();
+                EditorSceneManager.SaveScene(scene);
+            }
+
+            EditorUtility.ClearProgressBar();
         }
 
         /// <summary>
@@ -128,7 +181,7 @@ namespace QuickUnityEditor
         {
             if (Lightmapping.giWorkflowMode != Lightmapping.GIWorkflowMode.OnDemand)
             {
-                EditorUtility.DisplayDialog("Error", "ExtractLightmapData requires that you have baked you lightmaps and Auto mode is disabled.", "Ok");
+                Debug.LogError("ExtractLightmapData requires that you have baked you lightmaps and Auto mode is disabled.");
                 return;
             }
 
@@ -156,13 +209,10 @@ namespace QuickUnityEditor
                     data.LightmapDirs = lightmapDirs.ToArray();
                     data.ShadowMasks = shadowMasks.ToArray();
 
-                    GameObject targetPrefab = PrefabUtility.GetPrefabParent(gameObject) as GameObject;
+                    // Save prefab.
+                    PrefabUtil.SavePrefab(gameObject, ReplacePrefabOptions.ConnectToPrefab);
 
-                    if (targetPrefab != null)
-                    {
-                        PrefabUtility.ReplacePrefab(gameObject, targetPrefab);
-                    }
-
+                    // Apply lightmap.
                     PrefabLightmapData.ApplyStaticLightmap(data);
                 }
             }

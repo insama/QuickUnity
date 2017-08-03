@@ -3,7 +3,7 @@
 namespace QuickUnity.Tests.IntegrationTests
 {
     [Flags]
-    public enum TestEnum
+    internal enum TestEnum
     {
         TestA = 0x01,
         TestB = 0x02,

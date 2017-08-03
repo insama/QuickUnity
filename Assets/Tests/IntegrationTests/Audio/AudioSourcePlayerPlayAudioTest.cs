@@ -1,4 +1,5 @@
 ﻿using QuickUnity.Audio;
+using System;
 using UnityEngine;
 
 namespace QuickUnity.Tests.IntegrationTests
@@ -6,7 +7,7 @@ namespace QuickUnity.Tests.IntegrationTests
     [IntegrationTest.DynamicTest("AudioSourcePlayerTests")]
     [IntegrationTest.SucceedWithAssertions]
     [IntegrationTest.Timeout(10)]
-    public class AudioSourcePlayerPlayAudioTest : MonoBehaviour
+    internal class AudioSourcePlayerPlayAudioTest : MonoBehaviour
     {
         private AudioSourcePlayer audioPlayer;
 
@@ -34,7 +35,7 @@ namespace QuickUnity.Tests.IntegrationTests
             }
         }
 
-        private void OnAudioPlayCompleted(AudioSourcePlayer audioPlayer, AudioSource audioSource)
+        private void OnAudioPlayCompleted(AudioSourcePlayer audioPlayer, EventArgs e)
         {
             IntegrationTest.Pass(gameObject);
         }

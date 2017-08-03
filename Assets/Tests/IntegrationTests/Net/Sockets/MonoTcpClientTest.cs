@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace QuickUnity.Tests.IntegrationTests
 {
-    [IntegrationTest.DynamicTest("MonoTcpClientTest")]
+    [IntegrationTest.DynamicTest("MonoTcpClientTests")]
     [IntegrationTest.SucceedWithAssertions]
     [IntegrationTest.Timeout(10)]
     internal class MonoTcpClientTest : MonoBehaviour
@@ -74,7 +74,7 @@ namespace QuickUnity.Tests.IntegrationTests
             client.AddEventListener(SocketEvent.SocketDisconnected, OnSocketDisconnected);
             client.AddEventListener(SocketEvent.SocketDataReceived, OnSocketData);
             client.AddEventListener(SocketEvent.SocketClosed, OnSocketClosed);
-            client.AddEventListener(SocketEvent.SocketExceptionCaught, OnSocketException);
+            client.AddEventListener(SocketEvent.ExceptionCaught, OnSocketExceptionCaught);
             client.BeginConnect("127.0.0.1", 10000, true);
         }
 
@@ -94,7 +94,7 @@ namespace QuickUnity.Tests.IntegrationTests
                 client.RemoveEventListener(SocketEvent.SocketDisconnected, OnSocketDisconnected);
                 client.RemoveEventListener(SocketEvent.SocketDataReceived, OnSocketData);
                 client.RemoveEventListener(SocketEvent.SocketClosed, OnSocketClosed);
-                client.RemoveEventListener(SocketEvent.SocketExceptionCaught, OnSocketException);
+                client.RemoveEventListener(SocketEvent.ExceptionCaught, OnSocketExceptionCaught);
                 client.Close();
                 client = null;
             }
@@ -120,10 +120,10 @@ namespace QuickUnity.Tests.IntegrationTests
             Debug.Log("socket is closed");
         }
 
-        private void OnSocketException(Events.Event eventObj)
+        private void OnSocketExceptionCaught(Events.Event eventObj)
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
-            Exception e = socketEvent.ExceptionCaught;
+            Exception e = socketEvent.Exception;
             Debug.Log(e.Message);
             Debug.Log(e.StackTrace);
         }

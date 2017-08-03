@@ -25,59 +25,49 @@
 using CSharpExtensions.Net.Http;
 using QuickUnity.Events;
 using System;
-using System.Net;
 
 namespace QuickUnity.Net.Http
 {
-    public class HttpEvent : Event
+    public class MonoHttpEvent : Event
     {
         #region Event Constants
 
-        public const string HttpStatusCodeReceived = "HttpStatusCodeReceived";
+        public const string DownloadInProgress = "DownloadInProgress";
 
-        public const string HttpDownloadInProgress = "HttpDownloadInProgress";
+        public const string DownloadCompleted = "DownloadCompleted";
 
-        public const string HttpDownloadCompleted = "HttpDownloadCompleted";
-
-        public const string HttpExceptionCaught = "HttpExceptionCaught";
+        public const string ExceptionCaught = "ExceptionCaught";
 
         #endregion Event Constants
 
         #region Constructors
 
-        public HttpEvent(string eventType, HttpStatusCode code)
-            : base(eventType)
-        {
-            HttpStatusCode = code;
-        }
-
-        public HttpEvent(string eventType, long bytesRead, long totalLength)
-            : base(eventType)
+        public MonoHttpEvent(string eventType, MonoHttpClient httpClient, long bytesRead, long totalLength)
+            : base(eventType, httpClient)
         {
             BytesRead = bytesRead;
             TotalLength = totalLength;
         }
 
-        public HttpEvent(string eventType, HttpResponse response)
-            : base(eventType)
+        public MonoHttpEvent(string eventType, MonoHttpClient httpClient, HttpResponse response)
+            : base(eventType, httpClient)
         {
             Response = response;
         }
 
-        public HttpEvent(string eventType, Exception exceptionCaught)
-            : base(eventType)
+        public MonoHttpEvent(string eventType, MonoHttpClient httpClient, Exception exceptionCaught)
+            : base(eventType, httpClient)
         {
-            ExceptionCaught = exceptionCaught;
+            Exception = exceptionCaught;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public HttpStatusCode HttpStatusCode
+        public MonoHttpClient HttpClient
         {
-            get;
-            private set;
+            get { return (MonoHttpClient)Context; }
         }
 
         public long BytesRead
@@ -98,7 +88,7 @@ namespace QuickUnity.Net.Http
             private set;
         }
 
-        public Exception ExceptionCaught
+        public Exception Exception
         {
             get;
             private set;

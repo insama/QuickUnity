@@ -1,109 +1,104 @@
 ﻿/*
- *  The MIT License (MIT)
+ *	The MIT License (MIT)
  *
- *  Copyright (c) 2017 Jerry Lee
+ *	Copyright (c) 2017 Jerry Lee
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ *	Permission is hereby granted, free of charge, to any person obtaining a copy
+ *	of this software and associated documentation files (the "Software"), to deal
+ *	in the Software without restriction, including without limitation the rights
+ *	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *	copies of the Software, and to permit persons to whom the Software is
+ *	furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
+ *	The above copyright notice and this permission notice shall be included in all
+ *	copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
+ *	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *	SOFTWARE.
  */
 
+using System;
+using System.Net;
 using CSharpExtensions.Net.Http;
 using QuickUnity.Events;
 
 namespace QuickUnity.Net.Http
 {
-    public partial class MonoHttpClient : ThreadEventDispatcher, IMonoHttpClient
+    /// <summary>
+    /// Provides a class for sending HTTP requests and receiving HTTP responses from a resource identified by a URI for Mono environment in Unity engine.
+    /// </summary>
+    /// <seealso cref="HttpClientBase"/>
+    /// <seealso cref="IThreadEventDispatcher"/>
+    public class MonoHttpClient : HttpClientBase, IThreadEventDispatcher
     {
-        private IMonoHttpClient httpClient;
+        private IThreadEventDispatcher eventDispatcher;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MonoHttpClient"/> class.
-        /// </summary>
-        public MonoHttpClient(bool useUnityHttpClient = true)
+        public MonoHttpClient()
             : base()
         {
-            if (useUnityHttpClient)
-            {
-                httpClient = new UnityHttpClient();
-            }
-            else
-            {
-                httpClient = new CSharpHttpClient();
-            }
-
-            httpClient.AddEventListener(HttpEvent.HttpStatusCodeReceived, OnHttpClientEventReceived);
-            httpClient.AddEventListener(HttpEvent.HttpDownloadInProgress, OnHttpClientEventReceived);
-            httpClient.AddEventListener(HttpEvent.HttpDownloadCompleted, OnHttpClientEventReceived);
-            httpClient.AddEventListener(HttpEvent.HttpExceptionCaught, OnHttpClientEventReceived);
-        }
-
-        /// <summary>
-        /// Finalizes an instance of the <see cref="MonoHttpClient"/> class.
-        /// </summary>
-        ~MonoHttpClient()
-        {
-            if (httpClient != null)
-            {
-                httpClient.RemoveEventListener(HttpEvent.HttpStatusCodeReceived, OnHttpClientEventReceived);
-                httpClient.RemoveEventListener(HttpEvent.HttpDownloadInProgress, OnHttpClientEventReceived);
-                httpClient.RemoveEventListener(HttpEvent.HttpDownloadCompleted, OnHttpClientEventReceived);
-                httpClient.RemoveEventListener(HttpEvent.HttpExceptionCaught, OnHttpClientEventReceived);
-            }
+            eventDispatcher = new ThreadEventDispatcher();
         }
 
         #region Public Methods
 
-        /// <summary>
-        /// Update is called every frame.
-        /// </summary>
-        public override void Update()
+        #region IThreadEventDispatcher Interface
+
+        public void Update()
         {
-            httpClient.Update();
-            base.Update();
+            eventDispatcher.Update();
         }
 
-        /// <summary>
-        /// Sends the <see cref="HttpRequest"/>.
-        /// </summary>
-        /// <param name="request">The <see cref="HttpRequest"/> instance.</param>
-        public void SendRequest(HttpRequest request)
+        public void AddEventListener(string eventType, Action<Event> listener)
         {
-            httpClient.SendRequest(request);
+            eventDispatcher.AddEventListener(eventType, listener);
         }
 
-        /// <summary>
-        /// Aborts the progress of HTTP request.
-        /// </summary>
-        public void Abort()
+        public void DispatchEvent(Event eventObject)
         {
-            httpClient.Abort();
+            eventDispatcher.DispatchEvent(eventObject);
         }
+
+        public bool HasEventListener(string eventType, Action<Event> listener)
+        {
+            return eventDispatcher.HasEventListener(eventType, listener);
+        }
+
+        public void RemoveEventListener(string eventType, Action<Event> listener)
+        {
+            eventDispatcher.RemoveEventListener(eventType, listener);
+        }
+
+        #endregion IThreadEventDispatcher Interface
 
         #endregion Public Methods
 
-        #region Private Methods
+        #region Protected Methods
 
-        private void OnHttpClientEventReceived(Event e)
+        protected override void DispatchDownloadInProgressEvent(long loaded, long totalLength)
         {
-            e.Context = this;
-            DispatchEvent(e);
+            DispatchEvent(new MonoHttpEvent(MonoHttpEvent.DownloadInProgress, this, loaded, totalLength));
         }
 
-        #endregion Private Methods
+        protected override void DispatchDownloadCompletedEvent(HttpResponse response)
+        {
+            DispatchEvent(new MonoHttpEvent(MonoHttpEvent.DownloadCompleted, this, response));
+        }
+
+        protected override void DispatchResponseDataReceivedEvent(byte[] bytes)
+        {
+            // Prevents raising the event HttpResponseDataReceived.
+        }
+
+        protected override void DispatchExceptionCaughtEvent(Exception ex)
+        {
+            DispatchEvent(new MonoHttpEvent(MonoHttpEvent.ExceptionCaught, this, ex));
+        }
+
+        #endregion Protected Methods
     }
 }

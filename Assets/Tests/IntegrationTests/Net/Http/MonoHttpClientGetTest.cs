@@ -1,57 +1,43 @@
 ﻿using CSharpExtensions.Net.Http;
 using QuickUnity.Net.Http;
-using System.IO;
 using UnityEngine;
 
 namespace QuickUnity.Tests.IntegrationTests
 {
-    [IntegrationTest.DynamicTest("MonoHttpClientTest")]
+    [IntegrationTest.DynamicTest("MonoHttpClientTests")]
     [IntegrationTest.SucceedWithAssertions]
     [IntegrationTest.Timeout(10)]
-    public class MonoHttpClientGetTest : MonoBehaviour
+    internal class MonoHttpClientGetTest : MonoBehaviour
     {
         private MonoHttpClient client;
-
-        private FileStream fs;
-
-        private void Awake()
-        {
-            fs = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "test.mp4"), FileMode.Create);
-        }
 
         // Use this for initialization
         private void Start()
         {
-            client = new MonoHttpClient(false);
-            client.AddEventListener(HttpEvent.HttpStatusCodeReceived, (Events.Event e) =>
-            {
-                HttpEvent httpEvent = (HttpEvent)e;
-                Debug.LogFormat("HTTP Status Code: {0}", httpEvent.HttpStatusCode);
-            });
+            client = new MonoHttpClient();
 
-            client.AddEventListener(HttpEvent.HttpDownloadInProgress, (Events.Event e) =>
+            client.AddEventListener(MonoHttpEvent.DownloadInProgress, (Events.Event e) =>
             {
-                HttpEvent httpEvent = (HttpEvent)e;
+                MonoHttpEvent httpEvent = (MonoHttpEvent)e;
                 float progress = (float)httpEvent.BytesRead / httpEvent.TotalLength;
                 Debug.LogFormat("HTTP Download Progress: {0}", progress);
             });
 
-            client.AddEventListener(HttpEvent.HttpDownloadCompleted, (Events.Event e) =>
+            client.AddEventListener(MonoHttpEvent.DownloadCompleted, (Events.Event e) =>
             {
-                HttpEvent httpEvent = (HttpEvent)e;
-                byte[] responseData = httpEvent.Response.ResponseData;
-                fs.Write(responseData, 0, responseData.Length);
-                OnDisable();
-                Debug.LogWarning("File Download Completed");
+                MonoHttpEvent httpEvent = (MonoHttpEvent)e;
+                string text = httpEvent.Response.Text;
+                Debug.LogWarningFormat("File Download Completed: {0}", text);
+                IntegrationTest.Pass();
             });
 
-            client.AddEventListener(HttpEvent.HttpExceptionCaught, (Events.Event e) =>
+            client.AddEventListener(MonoHttpEvent.ExceptionCaught, (Events.Event e) =>
             {
-                HttpEvent httpEvent = (HttpEvent)e;
-                Debug.LogException(httpEvent.ExceptionCaught);
+                MonoHttpEvent httpEvent = (MonoHttpEvent)e;
+                Debug.LogException(httpEvent.Exception);
             });
 
-            HttpRequest req = new HttpRequest("http://192.168.0.3/010-000053.mp4-muxed.mp4");
+            HttpRequest req = new HttpRequest("http://www.baidu.com/");
             client.SendRequest(req);
         }
 
@@ -61,15 +47,6 @@ namespace QuickUnity.Tests.IntegrationTests
             if (client != null)
             {
                 client.Update();
-            }
-        }
-
-        private void OnDisable()
-        {
-            if (fs != null)
-            {
-                fs.Close();
-                fs = null;
             }
         }
     }

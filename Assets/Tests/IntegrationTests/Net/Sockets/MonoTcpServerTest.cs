@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace QuickUnity.Tests.IntegrationTests
 {
-    [IntegrationTest.DynamicTest("MonoTcpServerTest")]
+    [IntegrationTest.DynamicTest("MonoTcpServerTests")]
     [IntegrationTest.SucceedWithAssertions]
     [IntegrationTest.Timeout(10)]
     internal class MonoTcpServerTest : MonoBehaviour
@@ -73,7 +73,7 @@ namespace QuickUnity.Tests.IntegrationTests
             server.SocketPacketHandler = new TestPacketHandler();
             server.AddEventListener(SocketEvent.ServerStart, OnServerStart);
             server.AddEventListener(SocketEvent.ServerStop, OnServerStop);
-            server.AddEventListener(SocketEvent.ServerExceptionCaught, OnServerSocketException);
+            server.AddEventListener(SocketEvent.ServerExceptionCaught, OnServerExceptionCaught);
             server.AddEventListener(SocketEvent.ClientConnected, OnClientConnected);
             server.Start();
         }
@@ -93,7 +93,7 @@ namespace QuickUnity.Tests.IntegrationTests
                 server.Stop();
                 server.RemoveEventListener(SocketEvent.ServerStart, OnServerStart);
                 server.RemoveEventListener(SocketEvent.ServerStop, OnServerStop);
-                server.RemoveEventListener(SocketEvent.ServerExceptionCaught, OnServerSocketException);
+                server.RemoveEventListener(SocketEvent.ServerExceptionCaught, OnServerExceptionCaught);
                 server.RemoveEventListener(SocketEvent.ClientConnected, OnClientConnected);
                 server = null;
             }
@@ -109,10 +109,10 @@ namespace QuickUnity.Tests.IntegrationTests
             Debug.Log("server stop");
         }
 
-        private void OnServerSocketException(Events.Event eventObj)
+        private void OnServerExceptionCaught(Events.Event eventObj)
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
-            Exception e = socketEvent.ExceptionCaught;
+            Exception e = socketEvent.Exception;
             Debug.Log(e.Message);
             Debug.Log(e.StackTrace);
         }

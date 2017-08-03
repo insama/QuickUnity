@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace QuickUnity.Tests.IntegrationTests
 {
-    public class PropertyAttributeTestCase : MonoBehaviour
+    internal class PropertyAttributeTestCase : MonoBehaviour
     {
         [SerializeField]
         [ReadOnlyField]

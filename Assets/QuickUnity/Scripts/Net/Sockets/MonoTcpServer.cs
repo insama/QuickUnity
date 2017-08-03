@@ -213,7 +213,7 @@ namespace QuickUnity.Net.Sockets
         /// Dispatches the event of server error.
         /// </summary>
         /// <param name="exception">The <see cref="Exception"/> from server error.</param>
-        protected override void DispathServerSocketExceptionCaughtEvent(Exception exception)
+        protected override void DispathServerExceptionCaughtEvent(Exception exception)
         {
             eventDispatcher.DispatchEvent(new SocketEvent(SocketEvent.ServerExceptionCaught, this, exception));
         }
@@ -231,7 +231,7 @@ namespace QuickUnity.Net.Sockets
                 tcpClient.RemoveEventListener(SocketEvent.SocketDisconnected, OnClientSocketDisconnected);
                 tcpClient.RemoveEventListener(SocketEvent.SocketDataReceived, OnClientSocketDataReceived);
                 tcpClient.RemoveEventListener(SocketEvent.SocketClosed, OnClientSocketClosed);
-                tcpClient.RemoveEventListener(SocketEvent.SocketExceptionCaught, OnClientSocketException);
+                tcpClient.RemoveEventListener(SocketEvent.ExceptionCaught, OnClientSocketException);
             }
         }
 
@@ -248,7 +248,7 @@ namespace QuickUnity.Net.Sockets
             tcpClient.AddEventListener(SocketEvent.SocketDisconnected, OnClientSocketDisconnected);
             tcpClient.AddEventListener(SocketEvent.SocketDataReceived, OnClientSocketDataReceived);
             tcpClient.AddEventListener(SocketEvent.SocketClosed, OnClientSocketClosed);
-            tcpClient.AddEventListener(SocketEvent.SocketExceptionCaught, OnClientSocketException);
+            tcpClient.AddEventListener(SocketEvent.ExceptionCaught, OnClientSocketException);
             return tcpClient;
         }
 
@@ -309,7 +309,7 @@ namespace QuickUnity.Net.Sockets
         {
             SocketEvent socketEvent = (SocketEvent)eventObj;
             MonoTcpClient tcpClient = socketEvent.TcpClient;
-            Exception ex = socketEvent.ExceptionCaught;
+            Exception ex = socketEvent.Exception;
             DispatchEvent(new SocketEvent(SocketEvent.ClientExceptionCaught, tcpClient, ex));
         }
 

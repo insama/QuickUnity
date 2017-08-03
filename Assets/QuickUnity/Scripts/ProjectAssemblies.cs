@@ -34,30 +34,16 @@ namespace QuickUnity
     public sealed class ProjectAssemblies
     {
         /// <summary>
-        /// The project assembly.
-        /// </summary>
-        public const string CSharpAssembly = "Assembly-CSharp";
-
-        /// <summary>
-        /// The project editor assembly.
-        /// </summary>
-        public const string CSharpEditorAssembly = "Assembly-CSharp-Editor";
-
-        /// <summary>
-        /// The unity editor assembly.
-        /// </summary>
-        public const string UnityEditorAssembly = "UnityEditor";
-
-        /// <summary>
         /// The assembly names.
         /// </summary>
-        public static readonly string[] AssemblyNames = new string[]
+        public static readonly string[] assemblyNames = new string[]
         {
-        CSharpAssembly,
+            "Assembly-CSharp",
+            "UnityEngine",
 
 #if UNITY_EDITOR
-        CSharpEditorAssembly,
-        UnityEditorAssembly
+            "Assembly-CSharp-Editor",
+            "UnityEditor"
 #endif
         };
 
@@ -76,9 +62,9 @@ namespace QuickUnity
 
                 if (result == null)
                 {
-                    for (int i = 0, length = AssemblyNames.Length; i < length; ++i)
+                    for (int i = 0, length = assemblyNames.Length; i < length; ++i)
                     {
-                        string assemblyName = AssemblyNames[i];
+                        string assemblyName = assemblyNames[i];
 
                         if (!string.IsNullOrEmpty(assemblyName))
                         {

@@ -50,6 +50,24 @@ namespace QuickUnity.Utils
         }
 
         /// <summary>
+        /// Creates the class instance.
+        /// </summary>
+        /// <typeparam name="T">The type definition of the instance returned.</typeparam>
+        /// <param name="typeFullName">Full name of the type.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>The instance of type.</returns>
+        public static T CreateClassInstance<T>(string typeFullName, object[] args = null)
+        {
+            if (!string.IsNullOrEmpty(typeFullName))
+            {
+                Type type = ProjectAssemblies.GetType(typeFullName);
+                return ReflectionUtil.CreateClassInstance<T>(type, args);
+            }
+
+            return default(T);
+        }
+
+        /// <summary>
         /// Invokes the static method.
         /// </summary>
         /// <param name="typeName">Name of the type.</param>

@@ -227,9 +227,9 @@ namespace QuickUnity.Net.Sockets
         /// Dispatches the event of exception caught.
         /// </summary>
         /// <param name="exception">The <see cref="Exception"/> caught.</param>
-        protected override void DispatchSocketExceptionCaughtEvent(Exception exception)
+        protected override void DispatchExceptionCaughtEvent(Exception exception)
         {
-            DispatchEvent(new SocketEvent(SocketEvent.SocketExceptionCaught, this, exception));
+            DispatchEvent(new SocketEvent(SocketEvent.ExceptionCaught, this, exception));
         }
 
         #endregion Protected Methods

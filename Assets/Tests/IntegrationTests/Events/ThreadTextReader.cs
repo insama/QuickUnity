@@ -9,7 +9,7 @@ namespace QuickUnity.Tests.IntegrationTests
     /// Text reader by thread.
     /// </summary>
     /// <seealso cref="QuickUnity.Events.ThreadEventDispatcher"/>
-    public class ThreadTextReader : ThreadEventDispatcher
+    internal class ThreadTextReader : ThreadEventDispatcher
     {
         /// <summary>
         /// The image path.

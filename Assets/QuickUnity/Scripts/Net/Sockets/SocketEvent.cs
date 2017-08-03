@@ -60,7 +60,7 @@ namespace QuickUnity.Net.Sockets
         /// <summary>
         /// Occurs when caught an <see cref="Exception"/>.
         /// </summary>
-        public const string SocketExceptionCaught = "SocketExceptionCaught";
+        public const string ExceptionCaught = "ExceptionCaught";
 
         /// <summary>
         /// Occurs when socket server start.
@@ -127,7 +127,7 @@ namespace QuickUnity.Net.Sockets
         public SocketEvent(string eventType, MonoTcpClient client, Exception exception)
             : base(eventType, client)
         {
-            ExceptionCaught = exception;
+            Exception = exception;
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace QuickUnity.Net.Sockets
         public SocketEvent(string eventType, MonoTcpServer server, Exception exception)
             : base(eventType, server)
         {
-            ExceptionCaught = exception;
+            Exception = exception;
         }
 
         #endregion Constructors
@@ -186,7 +186,7 @@ namespace QuickUnity.Net.Sockets
         /// Gets the <see cref="Exception"/> caught.
         /// </summary>
         /// <value>The <see cref="Exception"/> caught.</value>
-        public Exception ExceptionCaught
+        public Exception Exception
         {
             get;
             private set;

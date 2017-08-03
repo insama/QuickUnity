@@ -3,20 +3,20 @@
 namespace QuickUnity.Tests.IntegrationTests
 {
     /// <summary>
-    /// Integration test of class ThreadEventDispatcher. 
+    /// Integration test of class ThreadEventDispatcher.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
     [IntegrationTest.DynamicTest("EventTests")]
     [IntegrationTest.SucceedWithAssertions]
-    public class ThreadEventDispatcherTest : MonoBehaviour
+    internal class ThreadEventDispatcherTest : MonoBehaviour
     {
         /// <summary>
-        /// The image reader. 
+        /// The image reader.
         /// </summary>
         private ThreadTextReader threadImageReader;
 
         /// <summary>
-        /// Awake is called when the script instance is being loaded. 
+        /// Awake is called when the script instance is being loaded.
         /// </summary>
         private void Awake()
         {
@@ -25,7 +25,7 @@ namespace QuickUnity.Tests.IntegrationTests
         }
 
         /// <summary>
-        /// Start is called just before any of the Update methods is called the first time. 
+        /// Start is called just before any of the Update methods is called the first time.
         /// </summary>
         private void Start()
         {
@@ -34,7 +34,7 @@ namespace QuickUnity.Tests.IntegrationTests
         }
 
         /// <summary>
-        /// This function is called when the MonoBehaviour will be destroyed. 
+        /// This function is called when the MonoBehaviour will be destroyed.
         /// </summary>
         private void OnDestroy()
         {
@@ -46,7 +46,7 @@ namespace QuickUnity.Tests.IntegrationTests
         }
 
         /// <summary>
-        /// Update is called every frame, if the MonoBehaviour is enabled. 
+        /// Update is called every frame, if the MonoBehaviour is enabled.
         /// </summary>
         private void Update()
         {
@@ -55,9 +55,9 @@ namespace QuickUnity.Tests.IntegrationTests
         }
 
         /// <summary>
-        /// Called when [thread image reader complete]. 
+        /// Called when [thread image reader complete].
         /// </summary>
-        /// <param name="eventObject"> The event object. </param>
+        /// <param name="eventObject">The event object.</param>
         private void OnThreadImageReaderComplete(QuickUnity.Events.Event eventObject)
         {
             IntegrationTest.Pass();

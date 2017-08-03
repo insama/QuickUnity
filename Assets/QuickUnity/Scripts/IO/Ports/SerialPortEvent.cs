@@ -15,22 +15,22 @@ namespace QuickUnity.IO.Ports
         /// <summary>
         /// Occurs when serial port open.
         /// </summary>
-        public const string SerialPortOpen = "SerialPortOpen";
+        public const string Opened = "Opened";
 
         /// <summary>
         /// Occurs when serial port received data.
         /// </summary>
-        public const string SerialPortDataReceived = "SerialPortDataReceived";
+        public const string DataReceived = "DataReceived";
 
         /// <summary>
-        /// Occurs when serial port caught <see cref="System.Exception"/>.
+        /// Occurs when serial port caught <see cref="Exception"/>.
         /// </summary>
-        public const string SerialPortExceptionCaught = "SerialPortExceptionCaught";
+        public const string ExceptionCaught = "ExceptionCaught";
 
         /// <summary>
         /// Occurs when serial port closed.
         /// </summary>
-        public const string SerialPortClosed = "SerialPortClosed";
+        public const string Closed = "Closed";
 
         #endregion Event Constants
 
@@ -59,7 +59,7 @@ namespace QuickUnity.IO.Ports
         public SerialPortEvent(string eventType, MonoSerialPort serialPort, Exception exception)
             : base(eventType, serialPort)
         {
-            ExceptionCaught = exception;
+            Exception = exception;
         }
 
         #endregion Constructors
@@ -78,7 +78,7 @@ namespace QuickUnity.IO.Ports
         /// Gets the <see cref="System.Exception"/> caught.
         /// </summary>
         /// <value>The <see cref="System.Exception"/> caught.</value>
-        public Exception ExceptionCaught
+        public Exception Exception
         {
             get;
             private set;

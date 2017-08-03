@@ -4,7 +4,7 @@ namespace QuickUnity.Tests.IntegrationTests
 {
     [IntegrationTest.DynamicTest("PropertyAttributeTests")]
     [IntegrationTest.SucceedWithAssertions]
-    public class PropertyAttributeTest : MonoBehaviour
+    internal class PropertyAttributeTest : MonoBehaviour
     {
         private PropertyAttributeTestCase testCase;
 

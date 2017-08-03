@@ -8,7 +8,7 @@ using System.Text;
 
 namespace QuickUnity.Tests.IntegrationTests
 {
-    [IntegrationTest.DynamicTest("MonoSerialPortTest")]
+    [IntegrationTest.DynamicTest("MonoSerialPortTests")]
     [IntegrationTest.SucceedWithAssertions]
     [IntegrationTest.Timeout(10)]
     internal class MonoSerialPortTest : UnityEngine.MonoBehaviour
@@ -113,10 +113,10 @@ namespace QuickUnity.Tests.IntegrationTests
         {
             serialPort = new MonoSerialPort("COM2");
             serialPort.PacketHandler = new TestSerialPortPacketHandler();
-            serialPort.AddEventListener(SerialPortEvent.SerialPortOpen, OnSerialPortOpen);
-            serialPort.AddEventListener(SerialPortEvent.SerialPortDataReceived, OnSerialDataReceived);
-            serialPort.AddEventListener(SerialPortEvent.SerialPortExceptionCaught, OnSerialPortException);
-            serialPort.AddEventListener(SerialPortEvent.SerialPortClosed, OnSerialPortClosed);
+            serialPort.AddEventListener(SerialPortEvent.Opened, OnSerialPortOpened);
+            serialPort.AddEventListener(SerialPortEvent.DataReceived, OnSerialPortDataReceived);
+            serialPort.AddEventListener(SerialPortEvent.ExceptionCaught, OnSerialPortExceptionCaught);
+            serialPort.AddEventListener(SerialPortEvent.Closed, OnSerialPortClosed);
             serialPort.Open();
         }
 
@@ -134,20 +134,20 @@ namespace QuickUnity.Tests.IntegrationTests
             {
                 serialPort.Close();
                 UnityEngine.Debug.Log("close serial port");
-                serialPort.RemoveEventListener(SerialPortEvent.SerialPortOpen, OnSerialPortOpen);
-                serialPort.RemoveEventListener(SerialPortEvent.SerialPortDataReceived, OnSerialDataReceived);
-                serialPort.RemoveEventListener(SerialPortEvent.SerialPortExceptionCaught, OnSerialPortException);
-                serialPort.RemoveEventListener(SerialPortEvent.SerialPortClosed, OnSerialPortClosed);
+                serialPort.RemoveEventListener(SerialPortEvent.Opened, OnSerialPortOpened);
+                serialPort.RemoveEventListener(SerialPortEvent.DataReceived, OnSerialPortDataReceived);
+                serialPort.RemoveEventListener(SerialPortEvent.ExceptionCaught, OnSerialPortExceptionCaught);
+                serialPort.RemoveEventListener(SerialPortEvent.Closed, OnSerialPortClosed);
                 serialPort = null;
             }
         }
 
-        private void OnSerialPortOpen(Event e)
+        private void OnSerialPortOpened(Event e)
         {
             UnityEngine.Debug.Log("Serial port open.");
         }
 
-        private void OnSerialDataReceived(Event e)
+        private void OnSerialPortDataReceived(Event e)
         {
             SerialPortEvent serialEvent = (SerialPortEvent)e;
             TestSerialPortPacket packet = (TestSerialPortPacket)serialEvent.SerialPortPacket;
@@ -155,10 +155,10 @@ namespace QuickUnity.Tests.IntegrationTests
             serialPort.Send("MonoSerialPort.Send");
         }
 
-        private void OnSerialPortException(Event e)
+        private void OnSerialPortExceptionCaught(Event e)
         {
             SerialPortEvent serialEvent = (SerialPortEvent)e;
-            UnityEngine.Debug.LogException(serialEvent.ExceptionCaught);
+            UnityEngine.Debug.LogException(serialEvent.Exception);
         }
 
         private void OnSerialPortClosed(Event e)

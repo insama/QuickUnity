@@ -6,7 +6,7 @@ namespace QuickUnity.Tests.IntegrationTests
     [IntegrationTest.DynamicTest("AudioSourcePlayerTests")]
     [IntegrationTest.SucceedWithAssertions]
     [IntegrationTest.Timeout(10)]
-    public class AudioSourcePlayerFadeOutTest : MonoBehaviour
+    internal class AudioSourcePlayerFadeOutTest : MonoBehaviour
     {
         private AudioSourcePlayer audioPlayer;
 

@@ -206,35 +206,35 @@ namespace QuickUnity.IO.Ports
         /// <summary>
         /// Dispatches the event of serial port open.
         /// </summary>
-        protected override void DispatchSerialPortOpenEvent()
+        protected override void DispatchOpenedEvent()
         {
-            DispatchEvent(new SerialPortEvent(SerialPortEvent.SerialPortOpen, this));
+            DispatchEvent(new SerialPortEvent(SerialPortEvent.Opened, this));
         }
 
         /// <summary>
         /// Dispatches the event of serial port received data.
         /// </summary>
         /// <param name="packet">The <see cref="ISerialPortPacket"/> unpacked.</param>
-        protected override void DispatchSeriaPortDataReceivedEvent(ISerialPortPacket packet)
+        protected override void DispatchDataReceivedEvent(ISerialPortPacket packet)
         {
-            DispatchEvent(new SerialPortEvent(SerialPortEvent.SerialPortDataReceived, this, packet));
+            DispatchEvent(new SerialPortEvent(SerialPortEvent.DataReceived, this, packet));
         }
 
         /// <summary>
         /// Dispatches the event of the <see cref="Exception"/> caught.
         /// </summary>
         /// <param name="exception">The <see cref="Exception"/> caught.</param>
-        protected override void DispatchSerialPortExceptionCaughtEvent(Exception exception)
+        protected override void DispatchExceptionCaughtEvent(Exception exception)
         {
-            DispatchEvent(new SerialPortEvent(SerialPortEvent.SerialPortExceptionCaught, this, exception));
+            DispatchEvent(new SerialPortEvent(SerialPortEvent.ExceptionCaught, this, exception));
         }
 
         /// <summary>
         /// Dispatches the event of serial port closed.
         /// </summary>
-        protected override void DispatchSerialPortClosedEvent()
+        protected override void DispatchClosedEvent()
         {
-            DispatchEvent(new SerialPortEvent(SerialPortEvent.SerialPortClosed, this));
+            DispatchEvent(new SerialPortEvent(SerialPortEvent.Closed, this));
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace QuickUnity.IO.Ports
                 }
                 catch (Exception ex)
                 {
-                    DispatchSerialPortExceptionCaughtEvent(ex);
+                    DispatchExceptionCaughtEvent(ex);
                 }
             }
 
@@ -350,7 +350,7 @@ namespace QuickUnity.IO.Ports
                 }
                 catch (Exception ex)
                 {
-                    DispatchSerialPortExceptionCaughtEvent(ex);
+                    DispatchExceptionCaughtEvent(ex);
                 }
             }
         }

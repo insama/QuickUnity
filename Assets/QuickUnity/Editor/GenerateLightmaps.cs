@@ -29,14 +29,24 @@ using CSharpExtensions.Collections;
 using QuickUnity.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
+using QuickUnityEditor.Attributes;
 
 namespace QuickUnityEditor
 {
     /// <summary>
     /// The class <see cref="GenerateLightmaps"/> provides menu items to bake lightmaps.
     /// </summary>
+    [InitializeOnEditorStartup]
     internal static class GenerateLightmaps
     {
+        /// <summary>
+        /// Initializes static members of the <see cref="GenerateLightmaps"/> class.
+        /// </summary>
+        static GenerateLightmaps()
+        {
+            Lightmapping.completed += OnLightmappingCompleted;
+        }
+
         /// <summary>
         /// Validates that one of selected items is scene asset.
         /// </summary>
@@ -190,7 +200,14 @@ namespace QuickUnityEditor
 
             // Bake lightmap for scene.
             Lightmapping.Bake();
+        }
 
+        /// <summary>
+        /// Bakes the prefab lightmaps.
+        /// </summary>
+        /// <param name="prefabs">The <see cref="Array"/> of <see cref="PrefabLightmapData"/>.</param>
+        private static void BakePrefabLightmaps(PrefabLightmapData[] prefabs)
+        {
             if (prefabs.Length > 0)
             {
                 for (int i = 0, length = prefabs.Length; i < length; i++)
@@ -279,6 +296,15 @@ namespace QuickUnityEditor
 
                 rendererInfos.Add(info);
             }
+        }
+
+        /// <summary>
+        /// Called when lightmap generating completed.
+        /// </summary>
+        private static void OnLightmappingCompleted()
+        {
+            PrefabLightmapData[] prefabs = Object.FindObjectsOfType<PrefabLightmapData>();
+            BakePrefabLightmaps(prefabs);
         }
     }
 }

@@ -108,21 +108,13 @@ namespace QuickUnity.Rendering
 
         #endregion Properties
 
-        /// <summary>
-        /// Applies the static lightmap for this prefab.
-        /// </summary>
-        /// <param name="infos">The <see cref="Array"/> of <see cref="LightmapRendererInfo"/> stored lightmap renderer informations.</param>
-        /// <param name="lightmapOffsetIndex">Index of the lightmap offset.</param>
-        private static void ApplyStaticLightmap(LightmapRendererInfo[] infos, int lightmapOffsetIndex)
-        {
-            for (int i = 0, length = infos.Length; i < length; i++)
-            {
-                LightmapRendererInfo info = infos[i];
-                info.Renderer.lightmapIndex = info.LightmapIndex + lightmapOffsetIndex;
-                info.Renderer.lightmapScaleOffset = info.LightmapScaleOffset;
-            }
-        }
+        #region Statis Methods
 
+        /// <summary>
+        /// Applies the static lightmap.
+        /// </summary>
+        /// <param name="instance">The instance of <see cref="PrefabLightmapData"/>.</param>
+        /// <exception cref="ArgumentNullException"><c>instance</c> is <c>null</c>.</exception>
         public static void ApplyStaticLightmap(PrefabLightmapData instance)
         {
             if (!instance)
@@ -162,6 +154,23 @@ namespace QuickUnity.Rendering
             LightmapSettings.lightmaps = combinedLightmaps;
         }
 
+        /// <summary>
+        /// Applies the static lightmap for this prefab.
+        /// </summary>
+        /// <param name="infos">The <see cref="Array"/> of <see cref="LightmapRendererInfo"/> stored lightmap renderer informations.</param>
+        /// <param name="lightmapOffsetIndex">Index of the lightmap offset.</param>
+        private static void ApplyStaticLightmap(LightmapRendererInfo[] infos, int lightmapOffsetIndex)
+        {
+            for (int i = 0, length = infos.Length; i < length; i++)
+            {
+                LightmapRendererInfo info = infos[i];
+                info.Renderer.lightmapIndex = info.LightmapIndex + lightmapOffsetIndex;
+                info.Renderer.lightmapScaleOffset = info.LightmapScaleOffset;
+            }
+        }
+
+        #endregion Statis Methods
+
         #region Messages
 
         /// <summary>
@@ -170,30 +179,6 @@ namespace QuickUnity.Rendering
         private void Awake()
         {
             ApplyStaticLightmap(this);
-            //if (rendererInfos == null || rendererInfos.Length == 0)
-            //{
-            //    return;
-            //}
-
-            //LightmapData[] lightmaps = LightmapSettings.lightmaps;
-            //LightmapData[] combinedLightmaps = new LightmapData[lightmaps.Length + lightmapColors.Length];
-            //lightmaps.CopyTo(combinedLightmaps, 0);
-
-            //LightmapData[] storedLightmaps = new LightmapData[lightmapColors.Length];
-
-            //for (int i = 0, length = lightmapColors.Length; i < length; i++)
-            //{
-            //    LightmapData data = new LightmapData();
-            //    data.lightmapColor = lightmapColors[i];
-            //    data.lightmapDir = lightmapDirs[i];
-            //    data.shadowMask = shadowMasks[i];
-            //    storedLightmaps[i] = data;
-            //}
-
-            //storedLightmaps.CopyTo(combinedLightmaps, lightmaps.Length);
-
-            //ApplyStaticLightmap(rendererInfos, lightmaps.Length);
-            //LightmapSettings.lightmaps = combinedLightmaps;
         }
 
         #endregion Messages

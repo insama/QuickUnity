@@ -23,6 +23,8 @@
  */
 
 using CSharpExtensions.Net.Http;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -109,7 +111,7 @@ namespace QuickUnity.Net.Http
 
         #region Properties
 
-        public object Async​State
+        public object StateObject
         {
             get;
             set;
@@ -128,5 +130,24 @@ namespace QuickUnity.Net.Http
         }
 
         #endregion Properties
+
+        #region Public Methods
+
+        public void SetHeaders(Dictionary<string, string> headers)
+        {
+            if (headers == null)
+            {
+                throw new ArgumentNullException("headers");
+            }
+
+            foreach (KeyValuePair<string, string> kvp in headers)
+            {
+                string name = kvp.Key;
+                string value = kvp.Value;
+                AddHeader(name, value);
+            }
+        }
+
+        #endregion Public Methods
     }
 }

@@ -25,13 +25,13 @@ namespace QuickUnity.Tests.IntegrationTests
             }
         }
 
-        private void OnError(string errorMessage)
+        private void OnError(UnityHttpClient httpClient, string errorMessage)
         {
             Debug.LogError(errorMessage);
             IntegrationTest.Fail();
         }
 
-        private void OnResult(UnityHttpResponse response)
+        private void OnResult(UnityHttpClient httpClient, UnityHttpResponse response)
         {
             Debug.LogFormat("HTTP Status Code: {0}", response.StatusCode);
             Debug.LogFormat("HTTP Response Data: {0}", response.Text);

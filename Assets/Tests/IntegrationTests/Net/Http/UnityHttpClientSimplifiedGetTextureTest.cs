@@ -26,7 +26,7 @@ namespace QuickUnity.Tests.IntegrationTests
             }
         }
 
-        private void OnResult(UnityHttpResponse response)
+        private void OnResult(UnityHttpClient httpClient, UnityHttpResponse response)
         {
             UnityHttpResponseTexture respTex = (UnityHttpResponseTexture)response;
             Texture2D tex = respTex.Texture;
@@ -47,7 +47,7 @@ namespace QuickUnity.Tests.IntegrationTests
             IntegrationTest.Fail();
         }
 
-        private void OnError(string errorMessage)
+        private void OnError(UnityHttpClient httpClient, string errorMessage)
         {
             Debug.LogError(errorMessage);
             IntegrationTest.Fail(gameObject, errorMessage);

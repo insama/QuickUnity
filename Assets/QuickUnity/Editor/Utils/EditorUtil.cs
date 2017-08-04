@@ -55,16 +55,14 @@ namespace QuickUnityEditor.Utils
         /// <exception cref="ArgumentNullException"><c>path</c> is <c>null</c>.</exception>
         public static bool IsSceneAsset(string path)
         {
-            if (string.IsNullOrEmpty(path))
+            if (!string.IsNullOrEmpty(path))
             {
-                throw new ArgumentNullException("path");
-            }
+                string ext = Path.GetExtension(path);
 
-            string ext = Path.GetExtension(path);
-
-            if (ext.Equals(sceneAssetExtension))
-            {
-                return true;
+                if (ext.Equals(sceneAssetExtension))
+                {
+                    return true;
+                }
             }
 
             return false;

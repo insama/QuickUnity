@@ -121,6 +121,14 @@ namespace QuickUnity.Net.Http
             return client;
         }
 
+        public static UnityHttpClient GetTexture(string url, bool readable, IUnityHttpResponder responder = null)
+        {
+            UnityHttpRequest req = new UnityHttpRequest(url, readable);
+            UnityHttpClient client = new UnityHttpClient(responder);
+            client.SendRequest(req);
+            return client;
+        }
+
         #endregion Static Methods
 
         /// <summary>

@@ -609,7 +609,7 @@ namespace QuickUnityEditor.Data
 
                 for (int i = preferencesData.DataRowsStartRow - 1; i < rowCount; ++i)
                 {
-                    DataTableRow rowData = (DataTableRow)UnityReflectionUtil.CreateClassInstance(classFullName);
+                    DataTableRow rowData = UnityReflectionUtil.CreateClassInstance<DataTableRow>(classFullName);
 
                     for (int j = 0, propertiesCount = rowInfos.Count; j < propertiesCount; ++j)
                     {

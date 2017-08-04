@@ -36,10 +36,11 @@ namespace QuickUnity.Net.Http
 
         #region Constructors
 
-        internal UnityHttpResponse(UnityWebRequest unityWebRequest)
+        internal UnityHttpResponse(UnityWebRequest unityWebRequest, object asyncState = null)
             : base()
         {
             this.unityWebRequest = unityWebRequest;
+            Async​State = asyncState;
             SetResponseHeaders();
             StatusCode = (HttpStatusCode)unityWebRequest.responseCode;
 
@@ -53,18 +54,18 @@ namespace QuickUnity.Net.Http
 
         #region Properties
 
+        public object Async​State
+        {
+            get;
+            protected set;
+        }
+
         public override string Text
         {
             get
             {
                 return DownloadHandlerBuffer.GetContent(unityWebRequest);
             }
-        }
-
-        public string ScriptText
-        {
-            get;
-            private set;
         }
 
         #endregion Properties
@@ -96,8 +97,8 @@ namespace QuickUnity.Net.Http
 
     public class UnityHttpResponseAssetBundle : UnityHttpResponse
     {
-        public UnityHttpResponseAssetBundle(UnityWebRequest unityWebRequest)
-            : base(unityWebRequest)
+        internal UnityHttpResponseAssetBundle(UnityWebRequest unityWebRequest, object asyncState = null)
+            : base(unityWebRequest, asyncState)
         {
             DownloadHandlerAssetBundle downloadHandler = (DownloadHandlerAssetBundle)unityWebRequest.downloadHandler;
 
@@ -116,8 +117,8 @@ namespace QuickUnity.Net.Http
 
     public class UnityHttpResponseAudioClip : UnityHttpResponse
     {
-        public UnityHttpResponseAudioClip(UnityWebRequest unityWebRequest)
-            : base(unityWebRequest)
+        internal UnityHttpResponseAudioClip(UnityWebRequest unityWebRequest, object asyncState = null)
+            : base(unityWebRequest, asyncState)
         {
             DownloadHandlerAudioClip downloadHandler = (DownloadHandlerAudioClip)unityWebRequest.downloadHandler;
 
@@ -136,8 +137,8 @@ namespace QuickUnity.Net.Http
 
     public class UnityHttpResponseTexture : UnityHttpResponse
     {
-        public UnityHttpResponseTexture(UnityWebRequest unityWebRequest)
-            : base(unityWebRequest)
+        internal UnityHttpResponseTexture(UnityWebRequest unityWebRequest, object asyncState = null)
+            : base(unityWebRequest, asyncState)
         {
             DownloadHandlerTexture downloadHandler = (DownloadHandlerTexture)unityWebRequest.downloadHandler;
 

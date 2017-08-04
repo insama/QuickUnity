@@ -28,6 +28,7 @@ using QuickUnity.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Events;
@@ -282,7 +283,8 @@ namespace QuickUnity.Net.Http
         {
             Type downloadHandlerType = unityWebRequest.downloadHandler.GetType();
             Type responseType = responseTypeMaps[downloadHandlerType];
-            return UnityReflectionUtil.CreateClassInstance<UnityHttpResponse>(responseType.FullName, new object[1] { unityWebRequest });
+            return UnityReflectionUtil.CreateClassInstance<UnityHttpResponse>(responseType.FullName, BindingFlags.Instance | BindingFlags.NonPublic,
+                new object[] { unityWebRequest, request.Async​State });
         }
 
         private void OnResult(UnityHttpResponse response)

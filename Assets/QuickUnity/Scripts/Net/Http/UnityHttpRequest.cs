@@ -109,6 +109,12 @@ namespace QuickUnity.Net.Http
 
         #region Properties
 
+        public object Async​State
+        {
+            get;
+            set;
+        }
+
         public bool CanDownloadData
         {
             get;

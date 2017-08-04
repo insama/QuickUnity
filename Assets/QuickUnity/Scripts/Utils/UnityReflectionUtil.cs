@@ -24,6 +24,7 @@
 
 using CSharpExtensions.Reflection;
 using System;
+using System.Reflection;
 
 namespace QuickUnity.Utils
 {
@@ -32,23 +33,6 @@ namespace QuickUnity.Utils
     /// </summary>
     public sealed class UnityReflectionUtil
     {
-        /// <summary>
-        /// Creates the instance of class.
-        /// </summary>
-        /// <param name="typeFullName">Full name of the type.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>The instance of type.</returns>
-        public static object CreateClassInstance(string typeFullName, object[] args = null)
-        {
-            if (!string.IsNullOrEmpty(typeFullName))
-            {
-                Type type = ProjectAssemblies.GetType(typeFullName);
-                return ReflectionUtil.CreateClassInstance(type, args);
-            }
-
-            return null;
-        }
-
         /// <summary>
         /// Creates the class instance.
         /// </summary>
@@ -62,6 +46,27 @@ namespace QuickUnity.Utils
             {
                 Type type = ProjectAssemblies.GetType(typeFullName);
                 return ReflectionUtil.CreateClassInstance<T>(type, args);
+            }
+
+            return default(T);
+        }
+
+        /// <summary>
+        /// Creates the class instance.
+        /// </summary>
+        /// <typeparam name="T">The type definition of the instance returned.</typeparam>
+        /// <param name="typeFullName">Full name of the type.</param>
+        /// <param name="bindingAttr">
+        /// A bitmask that affects the way in which the search is conducted. The value is a combination of bit flags from <see cref="BindingFlags"/>.
+        /// </param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>The instance of type.</returns>
+        public static T CreateClassInstance<T>(string typeFullName, BindingFlags bindingAttr, object[] args = null)
+        {
+            if (!string.IsNullOrEmpty(typeFullName))
+            {
+                Type type = ProjectAssemblies.GetType(typeFullName);
+                return ReflectionUtil.CreateClassInstance<T>(type, bindingAttr, args);
             }
 
             return default(T);

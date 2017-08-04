@@ -92,7 +92,7 @@ namespace QuickUnityEditor.Data.Parsers
 
             if (type != null)
             {
-                return (ITypeParser)ReflectionUtil.CreateClassInstance(type);
+                return ReflectionUtil.CreateClassInstance<ITypeParser>(type);
             }
 
             return null;

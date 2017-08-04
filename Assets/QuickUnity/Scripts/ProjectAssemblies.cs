@@ -38,6 +38,8 @@ namespace QuickUnity
         /// </summary>
         public static readonly string[] assemblyNames = new string[]
         {
+            "Assembly-CSharp-firstpass",
+            "Assembly-CSharp-Editor-firstpass",
             "Assembly-CSharp",
             "UnityEngine",
 

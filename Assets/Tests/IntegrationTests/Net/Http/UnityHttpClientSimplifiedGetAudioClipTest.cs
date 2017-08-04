@@ -8,7 +8,7 @@ namespace QuickUnity.Tests.IntegrationTests
     [IntegrationTest.DynamicTest("UnityHttpClientTests")]
     [IntegrationTest.SucceedWithAssertions]
     [IntegrationTest.Timeout(10)]
-    public class UnityHttpClientSimplifiedGetAudioClipTest : MonoBehaviour, IUnityHttpResponder
+    public class UnityHttpClientSimplifiedGetAudioClipTest : MonoBehaviour
     {
         private UnityHttpClient client;
 
@@ -17,7 +17,7 @@ namespace QuickUnity.Tests.IntegrationTests
         // Use this for initialization
         private void Start()
         {
-            client = UnityHttpClient.GetAudioClip("http://fjdx.sc.chinaz.com/Files/DownLoad/sound1/201707/9001.wav", AudioType.WAV, this);
+            client = UnityHttpClient.GetAudioClip("http://fjdx.sc.chinaz.com/Files/DownLoad/sound1/201707/9001.wav", AudioType.WAV, OnResult, OnError);
         }
 
         private void OnDisable()
@@ -29,7 +29,7 @@ namespace QuickUnity.Tests.IntegrationTests
             }
         }
 
-        public void OnResult(UnityHttpResponse response)
+        private void OnResult(UnityHttpResponse response)
         {
             UnityHttpResponseAudioClip audioResp = (UnityHttpResponseAudioClip)response;
             AudioClip clip = audioResp.AudioClip;
@@ -48,7 +48,7 @@ namespace QuickUnity.Tests.IntegrationTests
             }
         }
 
-        public void OnError(string errorMessage)
+        private void OnError(string errorMessage)
         {
             Debug.LogError(errorMessage);
             IntegrationTest.Fail(gameObject, errorMessage);

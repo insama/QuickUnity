@@ -77,54 +77,56 @@ namespace QuickUnity.Net.Http
 
         private UnityHttpRequest request;
 
-        private IUnityHttpResponder responder;
+        private Action<UnityHttpResponse> resultCallback;
+
+        private Action<string> errorCallback;
 
         #region Static Methods
 
-        public static UnityHttpClient Get(string url, IUnityHttpResponder responder = null)
+        public static UnityHttpClient Get(string url, Action<UnityHttpResponse> resultCallback = null, Action<string> errorCallback = null)
         {
             UnityHttpRequest req = new UnityHttpRequest(url);
-            UnityHttpClient client = new UnityHttpClient(responder);
+            UnityHttpClient client = new UnityHttpClient(resultCallback, errorCallback);
             client.SendRequest(req);
             return client;
         }
 
-        public static UnityHttpClient GetAssetBundle(string url, uint crc, IUnityHttpResponder responder = null)
+        public static UnityHttpClient GetAssetBundle(string url, uint crc, Action<UnityHttpResponse> resultCallback = null, Action<string> errorCallback = null)
         {
             UnityHttpRequest req = new UnityHttpRequest(url, crc);
-            UnityHttpClient client = new UnityHttpClient(responder);
+            UnityHttpClient client = new UnityHttpClient(resultCallback, errorCallback);
             client.SendRequest(req);
             return client;
         }
 
-        public static UnityHttpClient GetAssetBundle(string url, uint version, uint crc, IUnityHttpResponder responder = null)
+        public static UnityHttpClient GetAssetBundle(string url, uint version, uint crc, Action<UnityHttpResponse> resultCallback = null, Action<string> errorCallback = null)
         {
             UnityHttpRequest req = new UnityHttpRequest(url, version, crc);
-            UnityHttpClient client = new UnityHttpClient(responder);
+            UnityHttpClient client = new UnityHttpClient(resultCallback, errorCallback);
             client.SendRequest(req);
             return client;
         }
 
-        public static UnityHttpClient GetAssetBundle(string url, Hash128 hash, uint crc, IUnityHttpResponder responder = null)
+        public static UnityHttpClient GetAssetBundle(string url, Hash128 hash, uint crc, Action<UnityHttpResponse> resultCallback = null, Action<string> errorCallback = null)
         {
             UnityHttpRequest req = new UnityHttpRequest(url, hash, crc);
-            UnityHttpClient client = new UnityHttpClient(responder);
+            UnityHttpClient client = new UnityHttpClient(resultCallback, errorCallback);
             client.SendRequest(req);
             return client;
         }
 
-        public static UnityHttpClient GetAudioClip(string url, AudioType audioType, IUnityHttpResponder responder = null)
+        public static UnityHttpClient GetAudioClip(string url, AudioType audioType, Action<UnityHttpResponse> resultCallback = null, Action<string> errorCallback = null)
         {
             UnityHttpRequest req = new UnityHttpRequest(url, audioType);
-            UnityHttpClient client = new UnityHttpClient(responder);
+            UnityHttpClient client = new UnityHttpClient(resultCallback, errorCallback);
             client.SendRequest(req);
             return client;
         }
 
-        public static UnityHttpClient GetTexture(string url, bool readable, IUnityHttpResponder responder = null)
+        public static UnityHttpClient GetTexture(string url, bool readable, Action<UnityHttpResponse> resultCallback = null, Action<string> errorCallback = null)
         {
             UnityHttpRequest req = new UnityHttpRequest(url, readable);
-            UnityHttpClient client = new UnityHttpClient(responder);
+            UnityHttpClient client = new UnityHttpClient(resultCallback, errorCallback);
             client.SendRequest(req);
             return client;
         }
@@ -144,10 +146,11 @@ namespace QuickUnity.Net.Http
             unityWebRequest = new UnityWebRequest();
         }
 
-        private UnityHttpClient(IUnityHttpResponder responder)
+        private UnityHttpClient(Action<UnityHttpResponse> resultCallback, Action<string> errorCallback)
             : this()
         {
-            this.responder = responder;
+            this.resultCallback = resultCallback;
+            this.errorCallback = errorCallback;
         }
 
         /// <summary>
@@ -275,17 +278,17 @@ namespace QuickUnity.Net.Http
 
         private void OnResult(UnityHttpResponse response)
         {
-            if (responder != null)
+            if (resultCallback != null)
             {
-                responder.OnResult(response);
+                resultCallback.Invoke(response);
             }
         }
 
         private void OnError(string errorMessage)
         {
-            if (responder != null)
+            if (errorCallback != null)
             {
-                responder.OnError(errorMessage);
+                errorCallback.Invoke(errorMessage);
             }
         }
 

@@ -1,67 +1,112 @@
-﻿using CSharpExtensions.Net.Http;
-using QuickUnity.Utils;
-using System;
-using System.Collections.Generic;
+﻿/*
+ *	The MIT License (MIT)
+ *
+ *	Copyright (c) 2017 Jerry Lee
+ *
+ *	Permission is hereby granted, free of charge, to any person obtaining a copy
+ *	of this software and associated documentation files (the "Software"), to deal
+ *	in the Software without restriction, including without limitation the rights
+ *	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *	copies of the Software, and to permit persons to whom the Software is
+ *	furnished to do so, subject to the following conditions:
+ *
+ *	The above copyright notice and this permission notice shall be included in all
+ *	copies or substantial portions of the Software.
+ *
+ *	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *	SOFTWARE.
+ */
+
+using CSharpExtensions.Net.Http;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace QuickUnity.Net.Http
 {
-    public enum UnityHttpRequestDataType
-    {
-        Buffer,
-        AssetBundle,
-        AudioClip,
-        Script,
-        Texture
-    }
-
     public class UnityHttpRequest : HttpRequestBase
     {
-        private static readonly Dictionary<UnityHttpRequestDataType, Type> downloadHandlersMap = new Dictionary<UnityHttpRequestDataType, Type>()
-        {
-            { UnityHttpRequestDataType.Buffer, typeof(DownloadHandlerBuffer) },
-            { UnityHttpRequestDataType.AssetBundle, typeof(DownloadHandlerAssetBundle) },
-            { UnityHttpRequestDataType.AudioClip, typeof(DownloadHandlerAudioClip) },
-            { UnityHttpRequestDataType.Script, typeof(DownloadHandlerScript) },
-            { UnityHttpRequestDataType.Texture, typeof(DownloadHandlerTexture) }
-        };
-
-        private UnityHttpRequestDataType dataType;
-
         #region Constructors
 
-        internal UnityHttpRequest(Uri requestUri, HttpRequestMethod method = HttpRequestMethod.Get, UnityHttpRequestDataType dataType = UnityHttpRequestDataType.Buffer)
-            : base(requestUri, method)
+        internal UnityHttpRequest(string requestUriString)
+            : base(requestUriString)
         {
-            this.dataType = dataType;
+            DownloadHandler = new DownloadHandlerBuffer();
         }
 
-        internal UnityHttpRequest(string requestUriString, HttpRequestMethod method = HttpRequestMethod.Get, UnityHttpRequestDataType dataType = UnityHttpRequestDataType.Buffer)
-            : base(requestUriString, method)
+        #region AssetBundle
+
+        internal UnityHttpRequest(string requestUriString, uint crc)
+            : base(requestUriString)
         {
-            this.dataType = dataType;
+            DownloadHandler = new DownloadHandlerAssetBundle(requestUriString, crc);
         }
+
+        internal UnityHttpRequest(string requestUriString, uint version, uint crc)
+            : base(requestUriString)
+        {
+            DownloadHandler = new DownloadHandlerAssetBundle(requestUriString, version, crc);
+        }
+
+        internal UnityHttpRequest(string requestUriString, Hash128 hash, uint crc)
+            : base(requestUriString)
+        {
+            DownloadHandler = new DownloadHandlerAssetBundle(requestUriString, hash, crc);
+        }
+
+        #endregion AssetBundle
+
+        #region AudioClip
+
+        internal UnityHttpRequest(string requestUriString, AudioType audioType)
+            : base(requestUriString)
+        {
+            DownloadHandler = new DownloadHandlerAudioClip(requestUriString, audioType);
+        }
+
+        #endregion AudioClip
+
+        #region Texture
+
+        internal UnityHttpRequest(string requestUriString, bool readable)
+            : base(requestUriString)
+        {
+            DownloadHandler = new DownloadHandlerTexture(readable);
+        }
+
+        #region Script
+
+        internal UnityHttpRequest(string requestUriString, byte[] preallocatedBuffer)
+            : base(requestUriString)
+        {
+            if (preallocatedBuffer == null || preallocatedBuffer.Length == 0)
+            {
+                DownloadHandler = new DownloadHandlerScript();
+            }
+            else
+            {
+                DownloadHandler = new DownloadHandlerScript(preallocatedBuffer);
+            }
+        }
+
+        #endregion Script
+
+        #endregion Texture
 
         #endregion Constructors
 
-        public UnityHttpRequestDataType DataType
+        #region Properties
+
+        public DownloadHandler DownloadHandler
         {
-            get { return dataType; }
-            set { dataType = value; }
+            get;
+            private set;
         }
 
-        #region Public Methods
-
-        /// <summary>
-        /// Gets the instance of <see cref="DownloadHandler"/>.
-        /// </summary>
-        /// <returns>The instance of <see cref="DownloadHandler"/></returns>
-        public DownloadHandler GetDownloadHandler()
-        {
-            Type classType = downloadHandlersMap[dataType];
-            return UnityReflectionUtil.CreateClassInstance<DownloadHandler>(classType.FullName);
-        }
-
-        #endregion Public Methods
+        #endregion Properties
     }
 }

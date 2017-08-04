@@ -84,12 +84,13 @@ namespace QuickUnity.Extensions
             {
                 if (immediate)
                 {
+#if UNITY_EDITOR
                     UnityEngine.Object.DestroyImmediate(component);
+                    return;
+#endif
                 }
-                else
-                {
-                    UnityEngine.Object.Destroy(component);
-                }
+
+                UnityEngine.Object.Destroy(component);
             }
         }
 

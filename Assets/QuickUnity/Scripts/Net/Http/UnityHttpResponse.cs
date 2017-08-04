@@ -42,7 +42,11 @@ namespace QuickUnity.Net.Http
             this.unityWebRequest = unityWebRequest;
             SetResponseHeaders();
             StatusCode = (HttpStatusCode)unityWebRequest.responseCode;
-            Data = unityWebRequest.downloadHandler.data;
+
+            if (unityWebRequest.downloadHandler != null)
+            {
+                Data = unityWebRequest.downloadHandler.data;
+            }
         }
 
         #endregion Constructors

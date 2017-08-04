@@ -123,7 +123,7 @@ namespace QuickUnity.Net.Http
             return client;
         }
 
-        public static UnityHttpClient GetTexture(string url, bool readable, Action<UnityHttpResponse> resultCallback = null, Action<string> errorCallback = null)
+        public static UnityHttpClient GetTexture(string url, bool readable = false, Action<UnityHttpResponse> resultCallback = null, Action<string> errorCallback = null)
         {
             UnityHttpRequest req = new UnityHttpRequest(url, readable);
             UnityHttpClient client = new UnityHttpClient(resultCallback, errorCallback);
@@ -174,7 +174,16 @@ namespace QuickUnity.Net.Http
             SetRequestHeaders();
             unityWebRequest.url = request.RequestUriText;
             unityWebRequest.method = request.MethodText;
-            unityWebRequest.downloadHandler = request.DownloadHandler;
+
+            if (request.CanDownloadData)
+            {
+                unityWebRequest.downloadHandler = request.DownloadHandler;
+            }
+            else
+            {
+                unityWebRequest.downloadHandler = null;
+            }
+
             Observable.FromCoroutine(SendRequest).Subscribe();
         }
 

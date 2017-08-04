@@ -32,55 +32,61 @@ namespace QuickUnity.Net.Http
     {
         #region Constructors
 
-        internal UnityHttpRequest(string requestUriString)
+        public UnityHttpRequest(string requestUriString)
             : base(requestUriString)
         {
             DownloadHandler = new DownloadHandlerBuffer();
+            CanDownloadData = true;
         }
 
         #region AssetBundle
 
-        internal UnityHttpRequest(string requestUriString, uint crc)
+        public UnityHttpRequest(string requestUriString, uint crc)
             : base(requestUriString)
         {
             DownloadHandler = new DownloadHandlerAssetBundle(requestUriString, crc);
+            CanDownloadData = true;
         }
 
-        internal UnityHttpRequest(string requestUriString, uint version, uint crc)
+        public UnityHttpRequest(string requestUriString, uint version, uint crc)
             : base(requestUriString)
         {
             DownloadHandler = new DownloadHandlerAssetBundle(requestUriString, version, crc);
+            CanDownloadData = true;
         }
 
-        internal UnityHttpRequest(string requestUriString, Hash128 hash, uint crc)
+        public UnityHttpRequest(string requestUriString, Hash128 hash, uint crc)
             : base(requestUriString)
         {
             DownloadHandler = new DownloadHandlerAssetBundle(requestUriString, hash, crc);
+            CanDownloadData = true;
         }
 
         #endregion AssetBundle
 
         #region AudioClip
 
-        internal UnityHttpRequest(string requestUriString, AudioType audioType)
+        public UnityHttpRequest(string requestUriString, AudioType audioType)
             : base(requestUriString)
         {
             DownloadHandler = new DownloadHandlerAudioClip(requestUriString, audioType);
+            CanDownloadData = true;
         }
 
         #endregion AudioClip
 
         #region Texture
 
-        internal UnityHttpRequest(string requestUriString, bool readable)
+        public UnityHttpRequest(string requestUriString, bool readable)
             : base(requestUriString)
         {
             DownloadHandler = new DownloadHandlerTexture(readable);
+            CanDownloadData = true;
         }
 
         #region Script
 
-        internal UnityHttpRequest(string requestUriString, byte[] preallocatedBuffer)
+        public UnityHttpRequest(string requestUriString, byte[] preallocatedBuffer)
             : base(requestUriString)
         {
             if (preallocatedBuffer == null || preallocatedBuffer.Length == 0)
@@ -91,6 +97,8 @@ namespace QuickUnity.Net.Http
             {
                 DownloadHandler = new DownloadHandlerScript(preallocatedBuffer);
             }
+
+            CanDownloadData = true;
         }
 
         #endregion Script
@@ -100,6 +108,12 @@ namespace QuickUnity.Net.Http
         #endregion Constructors
 
         #region Properties
+
+        public bool CanDownloadData
+        {
+            get;
+            set;
+        }
 
         public DownloadHandler DownloadHandler
         {

@@ -309,7 +309,11 @@ namespace QuickUnity.IO.Ports
                         {
                             byte[] bytes = new byte[bytesToRead];
                             Buffer.BlockCopy(readBuffer, 0, bytes, 0, bytesToRead);
-                            receivedDataQueue.Enqueue(bytes);
+
+                            lock (receivedDataQueue)
+                            {
+                                receivedDataQueue.Enqueue(bytes);
+                            }
                         }
                     }
 
@@ -344,7 +348,13 @@ namespace QuickUnity.IO.Ports
 
                     if (IsOpen && receivedDataQueue.Count > 0)
                     {
-                        byte[] bytesReceived = receivedDataQueue.Dequeue();
+                        byte[] bytesReceived;
+
+                        lock (receivedDataQueue)
+                        {
+                            bytesReceived = receivedDataQueue.Dequeue();
+                        }
+
                         Unpack(bytesReceived);
                     }
                 }

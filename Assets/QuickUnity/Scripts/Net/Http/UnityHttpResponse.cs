@@ -76,9 +76,12 @@ namespace QuickUnity.Net.Http
         {
             Dictionary<string, string> headers = unityWebRequest.GetResponseHeaders();
 
-            foreach (KeyValuePair<string, string> kvp in headers)
+            if (headers != null)
             {
-                AddHeader(kvp.Key, kvp.Value);
+                foreach (KeyValuePair<string, string> kvp in headers)
+                {
+                    AddHeader(kvp.Key, kvp.Value);
+                }
             }
         }
 

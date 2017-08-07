@@ -241,6 +241,7 @@ namespace QuickUnity.Net.Http
 
         private IEnumerator SendRequest()
         {
+            yield return new WaitForEndOfFrame();
             yield return unityWebRequest.Send();
 
             if (unityWebRequest.isError)

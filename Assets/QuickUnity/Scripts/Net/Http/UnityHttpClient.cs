@@ -145,6 +145,7 @@ namespace QuickUnity.Net.Http
             ExceptionCaught = new ExceptionCaughtEvent();
 
             unityWebRequest = new UnityWebRequest();
+            AutoDispose = true;
         }
 
         private UnityHttpClient(Action<UnityHttpClient, UnityHttpResponse> resultCallback, Action<UnityHttpClient, string> errorCallback)
@@ -161,6 +162,21 @@ namespace QuickUnity.Net.Http
         {
             Dispose(false);
         }
+
+        #region Properties
+
+        public UnityHttpRequest Request
+        {
+            get { return request; }
+        }
+
+        public bool AutoDispose
+        {
+            get;
+            set;
+        }
+
+        #endregion Properties
 
         #region Public Methods
 
@@ -190,12 +206,10 @@ namespace QuickUnity.Net.Http
 
         public void Abort()
         {
-            if (disposed)
+            if (unityWebRequest != null)
             {
-                throw new ObjectDisposedException("unityWebRequest");
+                unityWebRequest.Abort();
             }
-
-            unityWebRequest.Abort();
         }
 
         public void Dispose()
@@ -218,6 +232,7 @@ namespace QuickUnity.Net.Http
             if (disposing)
             {
                 unityWebRequest.Dispose();
+                unityWebRequest = null;
 
                 ErrorReceived.RemoveAllListeners();
                 ErrorReceived = null;
@@ -242,7 +257,23 @@ namespace QuickUnity.Net.Http
         private IEnumerator SendRequest()
         {
             yield return new WaitForEndOfFrame();
-            yield return unityWebRequest.Send();
+            AsyncOperation op = unityWebRequest.Send();
+
+            int displayProgress = 0;
+            int toProgress = 0;
+
+            while (!op.isDone)
+            {
+                toProgress = (int)op.progress * 100;
+
+                while (displayProgress < toProgress)
+                {
+                    ++displayProgress;
+                    long totalLength = (long)unityWebRequest.downloadedBytes * (long)unityWebRequest.downloadProgress;
+                    DispatchDownloadInProgressEvent((long)unityWebRequest.downloadedBytes, totalLength, (float)displayProgress / 100);
+                    yield return new WaitForEndOfFrame();
+                }
+            }
 
             if (unityWebRequest.isError)
             {
@@ -252,18 +283,14 @@ namespace QuickUnity.Net.Http
             }
             else
             {
-                if (!unityWebRequest.isDone)
-                {
-                    // In progress
-                    long totalLength = (long)unityWebRequest.downloadedBytes * (long)unityWebRequest.downloadProgress;
-                    DispatchDownloadInProgressEvent((long)unityWebRequest.downloadedBytes, totalLength);
-                }
-                else
-                {
-                    UnityHttpResponse response = CreateHttpResponse();
-                    DispatchDownloadCompletedEvent(response);
-                    OnResult(response);
-                }
+                UnityHttpResponse response = CreateHttpResponse();
+                DispatchDownloadCompletedEvent(response);
+                OnResult(response);
+            }
+
+            if (AutoDispose)
+            {
+                Dispose();
             }
         }
 
@@ -312,11 +339,11 @@ namespace QuickUnity.Net.Http
             }
         }
 
-        private void DispatchDownloadInProgressEvent(long bytesRead, long totalLength)
+        private void DispatchDownloadInProgressEvent(long bytesRead, long totalLength, float progress = 0)
         {
             if (DownloadInProgress != null)
             {
-                DownloadInProgress.Invoke(this, new DownloadInProgressEventArgs(bytesRead, totalLength));
+                DownloadInProgress.Invoke(this, new DownloadInProgressEventArgs(bytesRead, totalLength, progress));
             }
         }
 

@@ -22,6 +22,7 @@
  *	SOFTWARE.
  */
 
+using CSharpExtensions.IO;
 using System;
 using System.IO;
 using System.Text;
@@ -56,7 +57,7 @@ namespace QuickUnity.Diagnostics
         /// <summary>
         /// The log files root path
         /// </summary>
-        private static readonly string rootPath = Directory.GetCurrentDirectory();
+        private static readonly string rootPath = DirectoryUtil.GetRealCurrentDirectory();
 
 #endif
 

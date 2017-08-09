@@ -256,25 +256,35 @@ namespace QuickUnity.Net.Http
 
         private IEnumerator SendRequest()
         {
-            yield return new WaitForEndOfFrame();
-            AsyncOperation op = unityWebRequest.Send();
-
-            int displayProgress = 0;
-            int toProgress = 0;
-
-            while (!op.isDone)
+            if (DownloadInProgress.GetPersistentEventCount() > 0)
             {
-                toProgress = (int)op.progress * 100;
+                // Need to show progress of response.
+                yield return new WaitForEndOfFrame();
+                AsyncOperation op = unityWebRequest.Send();
 
-                while (displayProgress < toProgress)
+                int displayProgress = 0;
+                int toProgress = 0;
+
+                while (!op.isDone)
                 {
-                    ++displayProgress;
-                    long totalLength = (long)unityWebRequest.downloadedBytes * (long)unityWebRequest.downloadProgress;
-                    DispatchDownloadInProgressEvent((long)unityWebRequest.downloadedBytes, totalLength, (float)displayProgress / 100);
-                    yield return new WaitForEndOfFrame();
+                    toProgress = (int)op.progress * 100;
+
+                    while (displayProgress < toProgress)
+                    {
+                        ++displayProgress;
+                        long totalLength = (long)unityWebRequest.downloadedBytes * (long)unityWebRequest.downloadProgress;
+                        DispatchDownloadInProgressEvent((long)unityWebRequest.downloadedBytes, totalLength, (float)displayProgress / 100);
+                        yield return new WaitForEndOfFrame();
+                    }
                 }
             }
+            else
+            {
+                yield return new WaitForEndOfFrame();
+                yield return unityWebRequest.Send();
+            }
 
+            // Handle response.
             if (unityWebRequest.isError)
             {
                 string errorMessage = unityWebRequest.error;

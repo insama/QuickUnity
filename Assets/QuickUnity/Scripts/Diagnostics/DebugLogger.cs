@@ -52,6 +52,13 @@ namespace QuickUnity.Diagnostics
         /// </summary>
         private static readonly string rootPath = Application.persistentDataPath;
 
+#elif UNITY_EDITOR
+
+        /// <summary>
+        /// The log files root path
+        /// </summary>
+        private static readonly string rootPath = Directory.GetCurrentDirectory();
+
 #else
 
         /// <summary>

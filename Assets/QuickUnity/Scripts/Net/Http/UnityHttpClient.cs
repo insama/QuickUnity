@@ -321,7 +321,7 @@ namespace QuickUnity.Net.Http
         {
             Type downloadHandlerType = unityWebRequest.downloadHandler.GetType();
             Type responseType = responseTypeMaps[downloadHandlerType];
-            return UnityReflectionUtil.CreateClassInstance<UnityHttpResponse>(responseType.FullName, BindingFlags.Instance | BindingFlags.NonPublic,
+            return (UnityHttpResponse)UnityReflectionUtil.CreateInstance(responseType.FullName, BindingFlags.Instance | BindingFlags.NonPublic,
                 new object[] { unityWebRequest, request.StateObject });
         }
 

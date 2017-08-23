@@ -73,6 +73,8 @@ namespace QuickUnity.Diagnostics
         /// </summary>
         private static readonly string logFilesPath = Path.Combine(rootPath, logFilesFolderName);
 
+        private static object syncRoot = new object();
+
         /// <summary>
         /// The flag whether allow to write log messages into file.
         /// </summary>
@@ -292,9 +294,15 @@ namespace QuickUnity.Diagnostics
 
             string messageToShow = builder.ToString();
 
-            if (showInConsole)
+            try
             {
-                Debug.logger.Log(logType, messageToShow, context);
+                if (ShowInConsole)
+                {
+                    Debug.logger.Log(logType, messageToShow, context);
+                }
+            }
+            catch (Exception)
+            {
             }
 
             if (logFileEnabled)
@@ -311,14 +319,26 @@ namespace QuickUnity.Diagnostics
         {
             try
             {
-                string dirPath = CheckPaths();
-                string timestamp = DateTime.Now.ToString("yyyyMMddHH");
-                string filePath = Path.Combine(dirPath, timestamp + logFileExtension);
-                File.AppendAllText(filePath, message);
+                lock (syncRoot)
+                {
+                    string dirPath = CheckPaths();
+                    string timestamp = DateTime.Now.ToString("yyyyMMddHH");
+                    string filePath = Path.Combine(dirPath, timestamp + logFileExtension);
+                    File.AppendAllText(filePath, message);
+                }
             }
             catch (Exception exception)
             {
-                Debug.LogException(exception);
+                try
+                {
+                    if (ShowInConsole)
+                    {
+                        Debug.LogError(exception);
+                    }
+                }
+                catch (Exception)
+                {
+                }
             }
         }
 

@@ -35,7 +35,7 @@ namespace QuickUnity.Tests.IntegrationTests
                 IntegrationTest.Fail();
             });
 
-            httpClient.ExceptionCaught.AddListener((UnityHttpClient client, ExceptionCaughtEventArgs e) =>
+            httpClient.ExceptionCaught.AddListener((UnityHttpClient client, HandledExceptionEventArgs e) =>
             {
                 Debug.LogException(e.Exception);
                 IntegrationTest.Fail();

@@ -47,7 +47,7 @@ namespace QuickUnity.Net.Http
 
     public class DownloadCompletedEvent : UnityEvent<UnityHttpClient, DownloadCompletedEventArgs> { }
 
-    public class ExceptionCaughtEvent : UnityEvent<UnityHttpClient, ExceptionCaughtEventArgs> { }
+    public class ExceptionCaughtEvent : UnityEvent<UnityHttpClient, HandledExceptionEventArgs> { }
 
     public class UnityHttpClient : IDisposable
     {
@@ -369,7 +369,7 @@ namespace QuickUnity.Net.Http
         {
             if (ExceptionCaught != null)
             {
-                ExceptionCaught.Invoke(this, new ExceptionCaughtEventArgs(exception));
+                ExceptionCaught.Invoke(this, new HandledExceptionEventArgs(exception));
             }
         }
 

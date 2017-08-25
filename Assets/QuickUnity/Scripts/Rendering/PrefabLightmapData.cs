@@ -23,11 +23,20 @@
  */
 
 using System;
-using System.Diagnostics;
 using UnityEngine;
 
 namespace QuickUnity.Rendering
 {
+    /// <summary>
+    /// The <see cref="ExcludedMeshRenderer"/> to define the excluded GameObject that no need to
+    /// store lightmap data.
+    /// </summary>
+    /// <seealso cref="MonoBehaviour"/>
+    [RequireComponent(typeof(MeshRenderer))]
+    public class PrefabLightmapExcludedRenderer : MonoBehaviour
+    {
+    }
+
     /// <summary>
     /// The <see cref="LightmapRendererInfo"/> store data information about lightmap.
     /// </summary>
@@ -158,7 +167,9 @@ namespace QuickUnity.Rendering
         /// <summary>
         /// Applies the static lightmap for this prefab.
         /// </summary>
-        /// <param name="infos">The <see cref="Array"/> of <see cref="LightmapRendererInfo"/> stored lightmap renderer informations.</param>
+        /// <param name="infos">
+        /// The <see cref="Array"/> of <see cref="LightmapRendererInfo"/> stored lightmap renderer informations.
+        /// </param>
         /// <param name="lightmapOffsetIndex">Index of the lightmap offset.</param>
         private static void ApplyStaticLightmap(LightmapRendererInfo[] infos, int lightmapOffsetIndex)
         {

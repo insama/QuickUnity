@@ -159,7 +159,10 @@ namespace QuickUnityEditor
         /// <summary>
         /// Validates the prefab lightmaps baking.
         /// </summary>
-        /// <returns><c>true</c> if got <see cref="PrefabLightmapData"/> component in open scenes, <c>false</c> otherwise.</returns>
+        /// <returns>
+        /// <c>true</c> if got <see cref="PrefabLightmapData"/> component in open scenes,
+        /// <c>false</c> otherwise.
+        /// </returns>
         [MenuItem("GameObject/Bake Prefab Lightmaps", true)]
         public static bool ValidatePrefabLightmapsBaking()
         {
@@ -183,8 +186,9 @@ namespace QuickUnityEditor
 
         /// <summary>
         /// Bakes the prefab lightmaps.
-        /// Note: Before building, you need to setup Shader stripping under the menu "Edit -&gt; Project Settings -&gt; Graphics", Set "Lightmap Modes"
-        ///       to "Manual' and uncheck "Realtime Non-Directional" and "Realtime Directional".
+        /// Note: Before building, you need to setup Shader stripping under the menu "Edit -&gt;
+        ///       Project Settings -&gt; Graphics", Set "Lightmap Modes" to "Manual' and uncheck
+        ///       "Realtime Non-Directional" and "Realtime Directional".
         /// </summary>
         [MenuItem("GameObject/Bake Prefab Lightmaps", false, 100)]
         public static void BakePrefabLightmaps()
@@ -250,10 +254,14 @@ namespace QuickUnityEditor
                     foreach (MeshRenderer renderer in renderers)
                     {
                         GameObject gameObject = renderer.gameObject;
+                        PrefabLightmapExcludedRenderer excludedRenderer = gameObject.GetComponent<PrefabLightmapExcludedRenderer>();
 
-                        if (!GameObjectUtility.AreStaticEditorFlagsSet(gameObject, StaticEditorFlags.LightmapStatic))
+                        if (excludedRenderer == null)
                         {
-                            GameObjectUtility.SetStaticEditorFlags(gameObject, StaticEditorFlags.LightmapStatic);
+                            if (!GameObjectUtility.AreStaticEditorFlagsSet(gameObject, StaticEditorFlags.LightmapStatic))
+                            {
+                                GameObjectUtility.SetStaticEditorFlags(gameObject, StaticEditorFlags.LightmapStatic);
+                            }
                         }
                     }
                 }
@@ -264,7 +272,9 @@ namespace QuickUnityEditor
         /// Generates the lightmap information.
         /// </summary>
         /// <param name="gameObject">The <see cref="GameObject"/>.</param>
-        /// <param name="rendererInfos">The <see cref="List{LightmapRendererInfo}"/> to store renderer information.</param>
+        /// <param name="rendererInfos">
+        /// The <see cref="List{LightmapRendererInfo}"/> to store renderer information.
+        /// </param>
         /// <param name="lightmapColors">The <see cref="List{Texture2D}"/> to store <see cref="LightmapData.lightmapColor"/>.</param>
         /// <param name="lightmapDirs">The <see cref="List{Texture2D}"/> to store <see cref="LightmapData.lightmapDir"/>.</param>
         /// <param name="shadowMasks">The <see cref="List{Texture2D}"/> to store <see cref="LightmapData.shadowMask"/>.</param>
@@ -275,6 +285,13 @@ namespace QuickUnityEditor
 
             foreach (MeshRenderer renderer in renderers)
             {
+                PrefabLightmapExcludedRenderer excludedRenderer = renderer.gameObject.GetComponent<PrefabLightmapExcludedRenderer>();
+
+                if (excludedRenderer != null)
+                {
+                    continue;
+                }
+
                 LightmapRendererInfo info = new LightmapRendererInfo();
                 info.Renderer = renderer;
                 info.LightmapScaleOffset = renderer.lightmapScaleOffset;

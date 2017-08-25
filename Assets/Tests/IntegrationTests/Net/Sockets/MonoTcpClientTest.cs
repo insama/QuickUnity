@@ -103,7 +103,6 @@ namespace QuickUnity.Tests.IntegrationTests
         private void OnSocketConnected(Events.Event eventObj)
         {
             Debug.Log("socket is connected");
-            IntegrationTest.Pass(gameObject);
         }
 
         private void OnSocketDisconnected(Events.Event eventObj)
@@ -113,6 +112,10 @@ namespace QuickUnity.Tests.IntegrationTests
 
         private void OnSocketData(Events.Event eventObj)
         {
+            SocketEvent socketEvent = (SocketEvent)eventObj;
+            TestPacket packet = (TestPacket)socketEvent.SocketPacket;
+            Debug.Log(packet.Text);
+            IntegrationTest.Pass(gameObject);
         }
 
         private void OnSocketClosed(Events.Event eventObj)

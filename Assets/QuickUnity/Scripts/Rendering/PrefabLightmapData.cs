@@ -28,16 +28,6 @@ using UnityEngine;
 namespace QuickUnity.Rendering
 {
     /// <summary>
-    /// The <see cref="ExcludedMeshRenderer"/> to define the excluded GameObject that no need to
-    /// store lightmap data.
-    /// </summary>
-    /// <seealso cref="MonoBehaviour"/>
-    [RequireComponent(typeof(MeshRenderer))]
-    public class PrefabLightmapExcludedRenderer : MonoBehaviour
-    {
-    }
-
-    /// <summary>
     /// The <see cref="LightmapRendererInfo"/> store data information about lightmap.
     /// </summary>
     [Serializable]

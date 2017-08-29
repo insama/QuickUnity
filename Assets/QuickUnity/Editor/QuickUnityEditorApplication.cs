@@ -43,6 +43,8 @@ namespace QuickUnityEditor
     /// </summary>
     public sealed class QuickUnityEditorApplication
     {
+        private static readonly string editorAppSettingsConfigFilePath = Path.Combine(new FileInfo(EditorApplication.applicationPath).DirectoryName, "EditorApp.config");
+
         /// <summary>
         /// The label of Ok button.
         /// </summary>
@@ -74,32 +76,16 @@ namespace QuickUnityEditor
         public const string MetaFileExtension = ".meta";
 
         /// <summary>
-        /// The editor configuration file path.
-        /// </summary>
-        public static readonly string EditorConfigFilePath = Path.Combine(new FileInfo(EditorApplication.applicationPath).DirectoryName, "Config/Editor.ini");
-
-        /// <summary>
-        /// The editor configuration file path of the project.
-        /// </summary>
-        public static readonly string ProjectEditorConfigFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Config/Editor.ini");
-
-        /// <summary>
         /// Gets the editor configuration value.
         /// </summary>
         /// <typeparam name="T">The Type definition.</typeparam>
         /// <param name="sectionName">Name of the section.</param>
         /// <param name="key">The key.</param>
         /// <param name="defaultValue">The default value.</param>
-        /// <param name="configFileDomain">The configuration file domain.</param>
         /// <returns>The value to get.</returns>
-        public static T GetEditorConfigValue<T>(string sectionName, string key, T defaultValue = default(T), ConfigFileDomain configFileDomain = ConfigFileDomain.Editor)
+        public static T GetEditorConfigValue<T>(string sectionName, string key, T defaultValue = default(T))
         {
-            string configFilePath = EditorConfigFilePath;
-
-            if (configFileDomain == ConfigFileDomain.Project)
-            {
-                configFilePath = ProjectEditorConfigFilePath;
-            }
+            string configFilePath = GetConfigFilePath();
 
             IniFileInfo fileInfo = new IniFileInfo(configFilePath);
 
@@ -124,21 +110,9 @@ namespace QuickUnityEditor
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
         /// <param name="configFileDomain">The configuration file domain.</param>
-        public static void SetEditorConfigValue<T>(string sectionName, string key, T value, ConfigFileDomain configFileDomain = ConfigFileDomain.Editor)
+        public static void SetEditorConfigValue<T>(string sectionName, string key, T value)
         {
-            string configFilePath = EditorConfigFilePath;
-
-            if (configFileDomain == ConfigFileDomain.Project)
-            {
-                configFilePath = ProjectEditorConfigFilePath;
-            }
-
-            if (!File.Exists(configFilePath))
-            {
-                using (FileStream fs = File.Create(configFilePath))
-                {
-                }
-            }
+            string configFilePath = GetConfigFilePath();
 
             IniFileInfo fileInfo = new IniFileInfo(configFilePath);
 
@@ -172,6 +146,22 @@ namespace QuickUnityEditor
                     okButtonClickedDelegate.Invoke();
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the configuration file path.
+        /// </summary>
+        /// <returns>The configuration file path.</returns>
+        private static string GetConfigFilePath()
+        {
+            if (!File.Exists(editorAppSettingsConfigFilePath))
+            {
+                using (FileStream fs = File.Create(editorAppSettingsConfigFilePath))
+                {
+                }
+            }
+
+            return editorAppSettingsConfigFilePath;
         }
     }
 }

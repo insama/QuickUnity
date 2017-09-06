@@ -24,6 +24,8 @@
 
 using CSharpExtensions.IO;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -73,8 +75,6 @@ namespace QuickUnity.Diagnostics
         /// </summary>
         private static readonly string logFilesPath = Path.Combine(rootPath, logFilesFolderName);
 
-        private static object syncRoot = new object();
-
         /// <summary>
         /// The flag whether allow to write log messages into file.
         /// </summary>
@@ -84,6 +84,19 @@ namespace QuickUnity.Diagnostics
         /// Whether allow to show log messages in Console window of Unity.
         /// </summary>
         private static bool showInConsole = true;
+
+        private static Queue<string> logMessageToWriteQueue;
+
+        private static bool isWritingFile;
+
+        /// <summary>
+        /// Initializes static members of the <see cref="DebugLogger"/> class.
+        /// </summary>
+        static DebugLogger()
+        {
+            logMessageToWriteQueue = new Queue<string>();
+            isWritingFile = false;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether allow to write log messages into file.
@@ -98,7 +111,9 @@ namespace QuickUnity.Diagnostics
         /// <summary>
         /// Gets or sets a value indicating Whether allow to show log messages in Console window of Unity.
         /// </summary>
-        /// <value><c>true</c> if allow to show log messages in Console window of Unity; otherwise, <c>false</c>.</value>
+        /// <value>
+        /// <c>true</c> if allow to show log messages in Console window of Unity; otherwise, <c>false</c>.
+        /// </value>
         public static bool ShowInConsole
         {
             get { return showInConsole; }
@@ -110,7 +125,9 @@ namespace QuickUnity.Diagnostics
         /// <summary>
         /// Logs information message to the log system.
         /// </summary>
-        /// <param name="message">String or object to be converted to string representation for display.</param>
+        /// <param name="message">
+        /// String or object to be converted to string representation for display.
+        /// </param>
         /// <param name="context">Object to which the message applies.</param>
         public static void Log(object message, object context = null)
         {
@@ -138,7 +155,9 @@ namespace QuickUnity.Diagnostics
         /// <summary>
         /// Logs warning message to the log system.
         /// </summary>
-        /// <param name="message">String or object to be converted to string representation for display.</param>
+        /// <param name="message">
+        /// String or object to be converted to string representation for display.
+        /// </param>
         /// <param name="context">Object to which the message applies.</param>
         public static void LogWarning(object message, object context = null)
         {
@@ -166,7 +185,9 @@ namespace QuickUnity.Diagnostics
         /// <summary>
         /// Logs error message to the log system.
         /// </summary>
-        /// <param name="message">String or object to be converted to string representation for display.</param>
+        /// <param name="message">
+        /// String or object to be converted to string representation for display.
+        /// </param>
         /// <param name="context">Object to which the message applies.</param>
         public static void LogError(object message, object context = null)
         {
@@ -195,7 +216,9 @@ namespace QuickUnity.Diagnostics
         /// Assert a condition and logs an error message to the log system.
         /// </summary>
         /// <param name="condition">Condition you expect to be true.</param>
-        /// <param name="message">String or object to be converted to string representation for display.</param>
+        /// <param name="message">
+        /// String or object to be converted to string representation for display.
+        /// </param>
         /// <param name="context">Object to which the message applies.</param>
         public static void LogAssert(bool condition, object message, object context = null)
         {
@@ -269,7 +292,9 @@ namespace QuickUnity.Diagnostics
         /// <summary>
         /// Logs the message to log system.
         /// </summary>
-        /// <param name="message">String or object to be converted to string representation for display.</param>
+        /// <param name="message">
+        /// String or object to be converted to string representation for display.
+        /// </param>
         /// <param name="logType">The type of the log message.</param>
         /// <param name="context">Object to which the message applies.</param>
         private static void LogMessage(object message, LogType logType, object context = null)
@@ -317,28 +342,73 @@ namespace QuickUnity.Diagnostics
         /// <param name="message">The message content.</param>
         private static void WriteIntoLogFile(string message)
         {
+            lock (logMessageToWriteQueue)
+            {
+                logMessageToWriteQueue.Enqueue(message);
+            }
+
+            if (!isWritingFile)
+            {
+                BeginWriteLogFile();
+            }
+        }
+
+        private static void BeginWriteLogFile(FileStream fs = null)
+        {
             try
             {
-                lock (syncRoot)
+                if (logMessageToWriteQueue.Count > 0)
                 {
-                    string dirPath = CheckPaths();
-                    string timestamp = DateTime.Now.ToString("yyyyMMddHH");
-                    string filePath = Path.Combine(dirPath, timestamp + logFileExtension);
-                    File.AppendAllText(filePath, message);
-                }
-            }
-            catch (Exception exception)
-            {
-                try
-                {
-                    if (ShowInConsole)
+                    isWritingFile = true;
+                    string logMessage = null;
+
+                    lock (logMessageToWriteQueue)
                     {
-                        Debug.LogError(exception);
+                        logMessage = logMessageToWriteQueue.Dequeue();
+                    }
+
+                    if (!string.IsNullOrEmpty(logMessage))
+                    {
+                        string dirPath = CheckPaths();
+                        string timestamp = DateTime.Now.ToString("yyyyMMddHH");
+                        string filePath = Path.Combine(dirPath, timestamp + logFileExtension);
+
+                        if (fs == null)
+                        {
+                            fs = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite, 1024);
+                        }
+
+                        byte[] data = Encoding.UTF8.GetBytes(logMessage);
+                        fs.BeginWrite(data, 0, data.Length, new AsyncCallback(WriteLogFileCallback), fs);
                     }
                 }
-                catch (Exception)
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private static void WriteLogFileCallback(IAsyncResult ar)
+        {
+            FileStream fs = (FileStream)ar.AsyncState;
+
+            try
+            {
+                fs.EndWrite(ar);
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                if (logMessageToWriteQueue.Count == 0)
                 {
+                    fs.Close();
+                    fs = null;
+                    isWritingFile = false;
                 }
+
+                BeginWriteLogFile(fs);
             }
         }
 

@@ -247,14 +247,6 @@ namespace QuickUnity.Net.Sockets
             DispatchEvent(new SocketEvent(SocketEvent.ExceptionCaught, this, exception));
         }
 
-        /// <summary>
-        /// Dispatches the socket disconnection lost event.
-        /// </summary>
-        protected override void DispatchSocketDisconnectionLostEvent()
-        {
-            DispatchEvent(new SocketEvent(SocketEvent.SocketConnectionLost, this));
-        }
-
         #endregion Protected Methods
     }
 }

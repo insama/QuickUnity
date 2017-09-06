@@ -29,7 +29,8 @@ using System.Collections.Generic;
 namespace QuickUnity.Events
 {
     /// <summary>
-    /// The ThreadEventDispatcher class is the class for all classes that are working in child thread and dispatch events to Unity main thread. 
+    /// The ThreadEventDispatcher class is the class for all classes that are working in child thread
+    /// and dispatch events to Unity main thread.
     /// </summary>
     /// <seealso cref="QuickUnity.Events.IThreadEventDispatcher"/>
     public class ThreadEventDispatcher : IThreadEventDispatcher
@@ -44,7 +45,7 @@ namespace QuickUnity.Events
         private bool pendingFlag = false;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ThreadEventDispatcher"/> class. 
+        /// Initializes a new instance of the <see cref="ThreadEventDispatcher"/> class.
         /// </summary>
         public ThreadEventDispatcher()
         {
@@ -57,7 +58,7 @@ namespace QuickUnity.Events
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="ThreadEventDispatcher"/> class. 
+        /// Finalizes an instance of the <see cref="ThreadEventDispatcher"/> class.
         /// </summary>
         ~ThreadEventDispatcher()
         {
@@ -80,7 +81,7 @@ namespace QuickUnity.Events
         #region IThreadEventDispatcher Interface
 
         /// <summary>
-        /// Update is called every frame. 
+        /// Update is called every frame.
         /// </summary>
         public virtual void Update()
         {
@@ -121,10 +122,11 @@ namespace QuickUnity.Events
         }
 
         /// <summary>
-        /// Registers an event listener object with an EventDispatcher object so that the listener receives notification of an event. 
+        /// Registers an event listener object with an EventDispatcher object so that the listener
+        /// receives notification of an event.
         /// </summary>
-        /// <param name="eventType"> The type of event. </param>
-        /// <param name="listener"> The listener function that processes the event. </param>
+        /// <param name="eventType">The type of event.</param>
+        /// <param name="listener">The listener function that processes the event.</param>
         public void AddEventListener(string eventType, Action<Event> listener)
         {
             lock (this)
@@ -132,28 +134,21 @@ namespace QuickUnity.Events
                 // Add to pending listeners dictionary.
                 if (pendingFlag)
                 {
-                    if (!pendingListeners.ContainsKey(eventType))
-                        pendingListeners.Add(eventType, new List<Action<Event>>());
-
-                    if (!pendingListeners[eventType].Contains(listener))
-                        pendingListeners[eventType].Add(listener);
-
+                    pendingListeners.AddUnique(eventType, new List<Action<Event>>());
+                    pendingListeners[eventType].AddUnique(listener);
                     return;
                 }
 
                 // Add to listeners dictionary.
-                if (!listeners.ContainsKey(eventType))
-                    listeners.Add(eventType, new List<Action<Event>>());
-
-                if (!listeners[eventType].Contains(listener))
-                    listeners[eventType].Add(listener);
+                listeners.AddUnique(eventType, new List<Action<Event>>());
+                listeners[eventType].AddUnique(listener);
             }
         }
 
         /// <summary>
-        /// Dispatches the event. 
+        /// Dispatches the event.
         /// </summary>
-        /// <param name="eventObject"> The event object. </param>
+        /// <param name="eventObject">The event object.</param>
         public void DispatchEvent(Event eventObject)
         {
             lock (this)
@@ -164,34 +159,35 @@ namespace QuickUnity.Events
                 // Add to pending events list.
                 if (pendingFlag)
                 {
-                    if (!pendingEvents.Contains(eventObject))
-                        pendingEvents.Add(eventObject);
-
+                    pendingEvents.AddUnique(eventObject);
                     return;
                 }
 
-                events = new List<Event>(pendingEvents.ToArray());
+                events.AddRange(pendingEvents.ToArray());
                 events.Add(eventObject);
                 pendingEvents.Clear();
             }
         }
 
         /// <summary>
-        /// Checks whether the EventDispatcher object has any listeners registered for a specific type of event. 
+        /// Checks whether the EventDispatcher object has any listeners registered for a specific
+        /// type of event.
         /// </summary>
-        /// <param name="eventType"> The type of event. </param>
-        /// <param name="listener"> The listener function that processes the event. </param>
-        /// <returns> A value of <c> true </c> if a listener of the specified type is registered; <c> false </c> otherwise. </returns>
+        /// <param name="eventType">The type of event.</param>
+        /// <param name="listener">The listener function that processes the event.</param>
+        /// <returns>
+        /// A value of <c>true</c> if a listener of the specified type is registered; <c>false</c> otherwise.
+        /// </returns>
         public bool HasEventListener(string eventType, Action<Event> listener)
         {
             return listeners.ContainsKey(eventType) && listeners[eventType].Contains(listener);
         }
 
         /// <summary>
-        /// Removes a listener from the EventDispatcher object. 
+        /// Removes a listener from the EventDispatcher object.
         /// </summary>
-        /// <param name="eventType"> The type of event. </param>
-        /// <param name="listener"> The listener object to remove. </param>
+        /// <param name="eventType">The type of event.</param>
+        /// <param name="listener">The listener object to remove.</param>
         public void RemoveEventListener(string eventType, Action<Event> listener)
         {
             lock (this)
@@ -199,30 +195,23 @@ namespace QuickUnity.Events
                 // Can not remove event listener when this is pending.
                 if (pendingFlag)
                 {
-                    if (!pendingRemovedListeners.ContainsKey(eventType))
-                        pendingRemovedListeners.Add(eventType, new List<Action<Event>>());
-
-                    if (!pendingRemovedListeners[eventType].Contains(listener))
-                        pendingRemovedListeners[eventType].Add(listener);
-
+                    pendingRemovedListeners.AddUnique(eventType, new List<Action<Event>>());
+                    pendingRemovedListeners[eventType].AddUnique(listener);
                     return;
                 }
 
                 // Remove listener from listeners dictionary.
-                if (!listeners.ContainsKey(eventType))
-                    listeners.Add(eventType, new List<Action<Event>>());
-
-                if (listeners[eventType].Contains(listener))
-                    listeners[eventType].Remove(listener);
+                listeners.AddUnique(eventType, new List<Action<Event>>());
+                listeners[eventType].Remove(listener);
             }
         }
 
         #endregion IThreadEventDispatcher Interface
 
         /// <summary>
-        /// Adds the pending listeners. 
+        /// Adds the pending listeners.
         /// </summary>
-        /// <returns> <c> true </c> if add pending listeners successfully, <c> false </c> otherwise. </returns>
+        /// <returns><c>true</c> if add pending listeners successfully, <c>false</c> otherwise.</returns>
         private bool AddPendingListeners()
         {
             if (events != null && events.Count == 0)
@@ -242,7 +231,7 @@ namespace QuickUnity.Events
 
                 pendingListeners.Clear();
 
-                events.AddRangeUnique(pendingEvents);
+                events.AddRange(pendingEvents);
                 pendingEvents.Clear();
                 return true;
             }
@@ -251,7 +240,7 @@ namespace QuickUnity.Events
         }
 
         /// <summary>
-        /// Removes the pending listeners. 
+        /// Removes the pending listeners.
         /// </summary>
         private void RemovePendingListeners()
         {

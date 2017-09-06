@@ -48,11 +48,6 @@ namespace QuickUnity.Net.Sockets
         public const string SocketDisconnected = "SocketDisconnected";
 
         /// <summary>
-        /// Occurs when socket connection lost.
-        /// </summary>
-        public const string SocketConnectionLost = "SocketConnectionLost";
-
-        /// <summary>
         /// Occurs when socket received data.
         /// </summary>
         public const string SocketDataReceived = "SocketDataReceived";

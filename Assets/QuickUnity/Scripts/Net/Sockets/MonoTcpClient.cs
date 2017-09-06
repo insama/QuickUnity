@@ -242,6 +242,8 @@ namespace QuickUnity.Net.Sockets
         /// <param name="exception">The <see cref="Exception"/> caught.</param>
         protected override void DispatchExceptionCaughtEvent(Exception exception)
         {
+            base.DispatchExceptionCaughtEvent(exception);
+
             DispatchEvent(new SocketEvent(SocketEvent.ExceptionCaught, this, exception));
         }
 

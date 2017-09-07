@@ -159,7 +159,7 @@ namespace QuickUnity.Events
                 // Add to pending events list.
                 if (pendingFlag)
                 {
-                    pendingEvents.AddUnique(eventObject);
+                    pendingEvents.Add(eventObject);
                     return;
                 }
 

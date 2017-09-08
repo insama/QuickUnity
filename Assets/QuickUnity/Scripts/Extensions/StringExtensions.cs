@@ -22,10 +22,9 @@
  *	SOFTWARE.
  */
 
-using System;
 using UnityEngine;
 
-namespace QuickUnity.Extensions
+namespace System
 {
     /// <summary>
     /// Extension methods to the <see cref="string"/>.

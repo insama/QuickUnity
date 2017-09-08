@@ -25,7 +25,6 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
-using CSharpExtensions.Collections;
 using QuickUnity.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;

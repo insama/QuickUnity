@@ -1,13 +1,13 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
-using QuickUnity.Extensions;
 using Tests.UnitTests.Editor.Data;
+using System;
 
 namespace QuickUnity.Data
 {
     /// <summary>
-    /// Unit test cases for class <see cref="QuickUnity.Data.DataTableManager"/>.
+    /// Unit test cases for class <see cref="DataTableManager"/>.
     /// </summary>
     [TestFixture]
     internal class DataTableManagerTests

@@ -22,10 +22,9 @@
  *	SOFTWARE.
  */
 
-using UnityEngine;
 using System;
 
-namespace QuickUnity.Extensions
+namespace UnityEngine
 {
     /// <summary>
     /// Extension methods to the <see cref="UnityEngine.GameObject"/>.
@@ -36,7 +35,9 @@ namespace QuickUnity.Extensions
         /// Gets or adds the <see cref="UnityEngine.Component"/>.
         /// </summary>
         /// <typeparam name="T">The type of the <see cref="UnityEngine.Component"/>.</typeparam>
-        /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> need to get or add component.</param>
+        /// <param name="gameObject">
+        /// The <see cref="UnityEngine.GameObject"/> need to get or add component.
+        /// </param>
         /// <returns>The <see cref="UnityEngine.Component"/> get or added.</returns>
         public static T GetOrAddComponent<T>(this GameObject gameObject) where T : Component
         {
@@ -55,7 +56,9 @@ namespace QuickUnity.Extensions
         /// <summary>
         /// Gets or adds the <see cref="UnityEngine.Component"/>.
         /// </summary>
-        /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> need to get or add component.</param>
+        /// <param name="gameObject">
+        /// The <see cref="UnityEngine.GameObject"/> need to get or add component.
+        /// </param>
         /// <param name="type">The <see cref="System.Type"/> of the <see cref="UnityEngine.GameObject"/>.</param>
         /// <returns>The <see cref="UnityEngine.Component"/> get or added.</returns>
         public static Component GetOrAddComponent(this GameObject gameObject, Type type)
@@ -75,7 +78,9 @@ namespace QuickUnity.Extensions
         /// </summary>
         /// <typeparam name="T">The type of the <see cref="UnityEngine.Component"/>.</typeparam>
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> need to remove component.</param>
-        /// <param name="immediate">if set to <c>true</c> remove the <see cref="UnityEngine.Component"/> immediately.</param>
+        /// <param name="immediate">
+        /// if set to <c>true</c> remove the <see cref="UnityEngine.Component"/> immediately.
+        /// </param>
         public static void RemoveComponent<T>(this GameObject gameObject, bool immediate = false) where T : Component
         {
             T component = gameObject.GetComponent<T>();

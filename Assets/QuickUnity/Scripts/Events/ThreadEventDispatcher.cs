@@ -22,7 +22,6 @@
  *	SOFTWARE.
  */
 
-using CSharpExtensions.Collections.Generic;
 using System;
 using System.Collections.Generic;
 

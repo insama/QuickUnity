@@ -24,9 +24,8 @@
 
 using System;
 using System.Reflection;
-using UnityEngine;
 
-namespace QuickUnity.Extensions
+namespace UnityEngine
 {
     /// <summary>
     /// Extension methods to the <see cref="UnityEngine.Component"/>.
@@ -34,7 +33,8 @@ namespace QuickUnity.Extensions
     public static class ComponentExtensions
     {
         /// <summary>
-        /// Copies values from the <see cref="UnityEngine.Component"/> to another <see cref="UnityEngine.Component"/> of the <see cref="UnityEngine.GameObject"/>.
+        /// Copies values from the <see cref="UnityEngine.Component"/> to another <see
+        /// cref="UnityEngine.Component"/> of the <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         /// <param name="component">The <see cref="UnityEngine.Component"/>.</param>
         /// <param name="targetGameObject">The target <see cref="UnityEngine.GameObject"/>.</param>

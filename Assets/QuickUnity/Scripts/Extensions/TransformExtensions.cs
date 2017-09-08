@@ -22,9 +22,7 @@
  *	SOFTWARE.
  */
 
-using UnityEngine;
-
-namespace QuickUnity.Extensions
+namespace UnityEngine
 {
     /// <summary>
     /// Extension methods to the <see cref="Transform"/>.

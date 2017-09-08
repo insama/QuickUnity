@@ -22,7 +22,6 @@
  *	SOFTWARE.
  */
 
-using CSharpExtensions.Collections.Generic;
 using QuickUnity.Utils;
 using System;
 using System.Collections.Generic;
@@ -243,7 +242,9 @@ namespace QuickUnityEditor.Utils
         /// Get the references.
         /// </summary>
         /// <param name="targetAssetPathList">The target asset path list.</param>
-        /// <returns>Dictionary&lt;System.String, System.String[]&gt; The dictionary of asset references.</returns>
+        /// <returns>
+        /// Dictionary&lt;System.String, System.String[]&gt; The dictionary of asset references.
+        /// </returns>
         public static Dictionary<string, List<string>> GetReferences(List<string> targetAssetPathList)
         {
             string[] allAssetGuids = AssetDatabase.FindAssets("");

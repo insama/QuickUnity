@@ -169,7 +169,7 @@ namespace QuickUnityEditor.Data
                 this.preferencesData = CreateDefaultPreferencesData();
             }
 
-            lastDataTablesStorageLocation = ObjectUtil.DeepClone(this.preferencesData.DataTablesStorageLocation);
+            lastDataTablesStorageLocation = (DataTableStorageLocation)this.preferencesData.DataTablesStorageLocation.DeepClone();
         }
 
         /// <summary>

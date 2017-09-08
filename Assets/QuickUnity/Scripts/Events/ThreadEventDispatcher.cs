@@ -61,19 +61,11 @@ namespace QuickUnity.Events
         /// </summary>
         ~ThreadEventDispatcher()
         {
-            listeners.Clear();
             listeners = null;
-
-            pendingListeners.Clear();
             pendingListeners = null;
-
-            pendingRemovedListeners.Clear();
             pendingRemovedListeners = null;
 
-            events.Clear();
             events = null;
-
-            pendingEvents.Clear();
             pendingEvents = null;
         }
 

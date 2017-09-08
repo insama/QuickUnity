@@ -23,14 +23,14 @@
  */
 
 using System;
-using System.Net;
 using CSharpExtensions.Net.Http;
 using QuickUnity.Events;
 
 namespace QuickUnity.Net.Http
 {
     /// <summary>
-    /// Provides a class for sending HTTP requests and receiving HTTP responses from a resource identified by a URI for Mono environment in Unity engine.
+    /// Provides a class for sending HTTP requests and receiving HTTP responses from a resource
+    /// identified by a URI for Mono environment in Unity engine.
     /// </summary>
     /// <seealso cref="HttpClientBase"/>
     /// <seealso cref="IThreadEventDispatcher"/>
@@ -38,10 +38,21 @@ namespace QuickUnity.Net.Http
     {
         private IThreadEventDispatcher eventDispatcher;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MonoHttpClient"/> class.
+        /// </summary>
         public MonoHttpClient()
             : base()
         {
             eventDispatcher = new ThreadEventDispatcher();
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="MonoHttpClient"/> class.
+        /// </summary>
+        ~MonoHttpClient()
+        {
+            eventDispatcher = null;
         }
 
         #region Public Methods

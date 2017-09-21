@@ -75,6 +75,11 @@ namespace QuickUnity.Rendering
             }
         }
 
+        public string TextureTilingName
+        {
+            get { return textureTilingName; }
+        }
+
         #region Messages
 
         /// <summary>
@@ -103,7 +108,7 @@ namespace QuickUnity.Rendering
             tilingData = parser.ParseData(name, data);
         }
 
-        public void UpdateMeshUV()
+        public void UpdateMeshUV(string textureTilingName = null)
         {
             if (Mesh)
             {
@@ -112,12 +117,22 @@ namespace QuickUnity.Rendering
                     meshOriginalUV = Mesh.uv;
                 }
 
-                if (tilingData != null && !string.IsNullOrEmpty(textureTilingName))
+                if (!string.IsNullOrEmpty(textureTilingName))
                 {
-                    if (tilingData.ContainsKey(textureTilingName))
+                    if (this.textureTilingName == textureTilingName)
+                    {
+                        return;
+                    }
+
+                    this.textureTilingName = textureTilingName;
+                }
+
+                if (tilingData != null && !string.IsNullOrEmpty(this.textureTilingName))
+                {
+                    if (tilingData.ContainsKey(this.textureTilingName))
                     {
                         // Change UV
-                        Rect rect = tilingData[textureTilingName];
+                        Rect rect = tilingData[this.textureTilingName];
                         Vector2[] uvs = new Vector2[Mesh.uv.Length];
 
                         for (int i = 0, length = uvs.Length; i < length; i++)

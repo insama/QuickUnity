@@ -206,6 +206,11 @@ namespace QuickUnity.Net.Http
 
         public void Abort()
         {
+            if (disposed)
+            {
+                throw new ObjectDisposedException("unityWebRequest");
+            }
+
             if (unityWebRequest != null)
             {
                 unityWebRequest.Abort();
@@ -285,7 +290,7 @@ namespace QuickUnity.Net.Http
             }
 
             // Handle response.
-            if (unityWebRequest.isError)
+            if (unityWebRequest != null && unityWebRequest.isError)
             {
                 string errorMessage = unityWebRequest.error;
                 DispatchErrorReceivedEvent(errorMessage);
@@ -306,6 +311,11 @@ namespace QuickUnity.Net.Http
 
         private void SetRequestHeaders()
         {
+            if (disposed)
+            {
+                return;
+            }
+
             if (request != null)
             {
                 for (int i = 0, length = request.Headers.Count; i < length; i++)
@@ -319,6 +329,11 @@ namespace QuickUnity.Net.Http
 
         private UnityHttpResponse CreateHttpResponse()
         {
+            if (disposed)
+            {
+                return null;
+            }
+
             Type downloadHandlerType = unityWebRequest.downloadHandler.GetType();
             Type responseType = responseTypeMaps[downloadHandlerType];
             return (UnityHttpResponse)UnityReflectionUtil.CreateInstance(responseType.FullName, BindingFlags.Instance | BindingFlags.NonPublic,
@@ -327,6 +342,11 @@ namespace QuickUnity.Net.Http
 
         private void OnResult(UnityHttpResponse response)
         {
+            if (disposed)
+            {
+                return;
+            }
+
             if (resultCallback != null)
             {
                 resultCallback.Invoke(this, response);
@@ -335,6 +355,11 @@ namespace QuickUnity.Net.Http
 
         private void OnError(string errorMessage)
         {
+            if (disposed)
+            {
+                return;
+            }
+
             if (errorCallback != null)
             {
                 errorCallback.Invoke(this, errorMessage);
@@ -343,6 +368,11 @@ namespace QuickUnity.Net.Http
 
         private void DispatchErrorReceivedEvent(string errorMessage)
         {
+            if (disposed)
+            {
+                return;
+            }
+
             if (ErrorReceived != null)
             {
                 ErrorReceived.Invoke(this, new HttpErrorReceivedEventArgs(errorMessage));
@@ -351,6 +381,11 @@ namespace QuickUnity.Net.Http
 
         private void DispatchDownloadInProgressEvent(long bytesRead, long totalLength, float progress = 0)
         {
+            if (disposed)
+            {
+                return;
+            }
+
             if (DownloadInProgress != null)
             {
                 DownloadInProgress.Invoke(this, new DownloadInProgressEventArgs(bytesRead, totalLength, progress));
@@ -359,6 +394,11 @@ namespace QuickUnity.Net.Http
 
         private void DispatchDownloadCompletedEvent(UnityHttpResponse response)
         {
+            if (disposed)
+            {
+                return;
+            }
+
             if (DownloadCompleted != null)
             {
                 DownloadCompleted.Invoke(this, new DownloadCompletedEventArgs(response));
@@ -367,6 +407,11 @@ namespace QuickUnity.Net.Http
 
         private void DispatchExceptionCaughtEvent(Exception exception)
         {
+            if (disposed)
+            {
+                return;
+            }
+
             if (ExceptionCaught != null)
             {
                 ExceptionCaught.Invoke(this, new HandledExceptionEventArgs(exception));

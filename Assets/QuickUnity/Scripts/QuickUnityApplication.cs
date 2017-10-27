@@ -22,6 +22,8 @@
  *	SOFTWARE.
  */
 
+using UnityEngine;
+
 namespace QuickUnity
 {
     /// <summary>
@@ -39,5 +41,36 @@ namespace QuickUnity
         /// The asset resource file extension.
         /// </summary>
         public const string AssetResourceFileExtension = ".asset";
+
+        /// <summary>
+        /// Gets the path to the StreamingAssets folder
+        /// </summary>
+        /// <value>The path to the StreamingAssets folder.</value>
+        public static string StreamingAssetsPath
+        {
+            get
+            {
+                string path = null;
+
+                switch (Application.platform)
+                {
+                    case RuntimePlatform.Android:
+                        path = string.Format("jar:file:///{0}!/assets/", Application.dataPath);
+                        break;
+
+                    case RuntimePlatform.IPhonePlayer:
+                        path = string.Format("file://{0}/Raw/", Application.dataPath);
+                        break;
+
+                    case RuntimePlatform.WindowsEditor:
+                    case RuntimePlatform.WindowsPlayer:
+                    default:
+                        path = Application.streamingAssetsPath;
+                        break;
+                }
+
+                return path;
+            }
+        }
     }
 }

@@ -55,7 +55,7 @@ namespace QuickUnity
                 switch (Application.platform)
                 {
                     case RuntimePlatform.Android:
-                        path = string.Format("jar:file://{0}!/assets/", Application.dataPath);
+                        path = string.Format("jar:file:///{0}!/assets/", Application.dataPath);
                         break;
 
                     case RuntimePlatform.IPhonePlayer:

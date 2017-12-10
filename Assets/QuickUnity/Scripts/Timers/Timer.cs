@@ -305,6 +305,8 @@ namespace QuickUnity.Timers
                         Reset();
                         DispatchTimerCompletedEvent();
                     }
+
+                    time = time - Delay;
                 }
             }
         }

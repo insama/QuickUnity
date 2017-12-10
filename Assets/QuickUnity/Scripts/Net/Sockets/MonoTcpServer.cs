@@ -31,7 +31,8 @@ using System.Collections.Generic;
 namespace QuickUnity.Net.Sockets
 {
     /// <summary>
-    /// <see cref="MonoTcpServer"/> class to listen, send and receive for connections from TCP network clients for Unity engine.
+    /// <see cref="MonoTcpServer"/> class to listen, send and receive for connections from TCP
+    /// network clients for Unity engine.
     /// </summary>
     /// <seealso cref="TcpServerBase"/>
     /// <seealso cref="IThreadEventDispatcher"/>
@@ -42,9 +43,13 @@ namespace QuickUnity.Net.Sockets
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MonoTcpServer"/> class with the specified local endpoint.
+        /// Initializes a new instance of the <see cref="MonoTcpServer"/> class with the specified
+        /// local endpoint.
         /// </summary>
-        /// <param name="localEP">An <see cref="IPEndPoint"/> that represents the local endpoint to which to bind the listener <see cref="Socket"/>.</param>
+        /// <param name="localEP">
+        /// An <see cref="IPEndPoint"/> that represents the local endpoint to which to bind the
+        /// listener <see cref="Socket"/>.
+        /// </param>
         /// <exception cref="ArgumentNullException"><c>localEP</c> is <c>null</c>.</exception>
         public MonoTcpServer(IPEndPoint localEP)
             : base(localEP)
@@ -52,26 +57,30 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MonoTcpServer"/> class that listens for incoming connection attempts on the specified local IP
-        /// address and port number.
+        /// Initializes a new instance of the <see cref="MonoTcpServer"/> class that listens for
+        /// incoming connection attempts on the specified local IP address and port number.
         /// </summary>
         /// <param name="localaddr">An <see cref="IPAddress"/> that represents the local IP address.</param>
         /// <param name="port">The port on which to listen for incoming connection attempts.</param>
         /// <exception cref="ArgumentNullException"><c>localaddr</c> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><c>port</c> is not between <see cref="IPEndPoint.MinPort"/> and <see cref="IPEndPoint.MaxPort"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <c>port</c> is not between <see cref="IPEndPoint.MinPort"/> and <see cref="IPEndPoint.MaxPort"/>.
+        /// </exception>
         public MonoTcpServer(IPAddress localaddr, int port)
             : base(localaddr, port)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MonoTcpServer"/> class that listens for incoming connection attempts on the specified local IP
-        /// address string and port number.
+        /// Initializes a new instance of the <see cref="MonoTcpServer"/> class that listens for
+        /// incoming connection attempts on the specified local IP address string and port number.
         /// </summary>
         /// <param name="localhost">An <see cref="string"/> that represents the local IP address.</param>
         /// <param name="port">The port on which to listen for incoming connection attempts.</param>
         /// <exception cref="ArgumentNullException"><c>localaddr</c> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><c>port</c> is not between <see cref="IPEndPoint.MinPort"/> and <see cref="IPEndPoint.MaxPort"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <c>port</c> is not between <see cref="IPEndPoint.MinPort"/> and <see cref="IPEndPoint.MaxPort"/>.
+        /// </exception>
         public MonoTcpServer(string localhost, int port)
             : base(localhost, port)
         {
@@ -95,7 +104,9 @@ namespace QuickUnity.Net.Sockets
         /// <param name="modeOn">if set to <c>true</c> [keepalive of TCP mode on].</param>
         /// <param name="keepaliveTime">The keepalive time in milliseconds.</param>
         /// <param name="keepaliveInterval">The keepalive interval in milliseconds.</param>
-        /// <exception cref="NotImplementedException">The <see cref="Socket.IOControl"/> didn't implement in Mono environment.</exception>
+        /// <exception cref="NotImplementedException">
+        /// The <see cref="Socket.IOControl"/> didn't implement in Mono environment.
+        /// </exception>
         public override void SetKeepalive(bool modeOn = true, int keepaliveTime = 5000, int keepaliveInterval = 75)
         {
             throw new NotImplementedException();
@@ -115,18 +126,22 @@ namespace QuickUnity.Net.Sockets
                 eventDispatcher.Update();
             }
 
-            foreach (KeyValuePair<IPEndPoint, TcpClientBase> kvp in Clients)
+            lock (Clients)
             {
-                if (kvp.Value != null)
+                foreach (KeyValuePair<IPEndPoint, TcpClientBase> kvp in Clients)
                 {
-                    MonoTcpClient tcpClient = (MonoTcpClient)kvp.Value;
-                    tcpClient.Update();
+                    if (kvp.Value != null)
+                    {
+                        MonoTcpClient tcpClient = (MonoTcpClient)kvp.Value;
+                        tcpClient.Update();
+                    }
                 }
             }
         }
 
         /// <summary>
-        /// Registers an event listener object with an EventDispatcher object so that the listener receives notification of an event.
+        /// Registers an event listener object with an EventDispatcher object so that the listener
+        /// receives notification of an event.
         /// </summary>
         /// <param name="eventType">The type of event.</param>
         /// <param name="listener">The listener function that processes the event.</param>
@@ -151,11 +166,14 @@ namespace QuickUnity.Net.Sockets
         }
 
         /// <summary>
-        /// Checks whether the EventDispatcher object has any listeners registered for a specific type of event.
+        /// Checks whether the EventDispatcher object has any listeners registered for a specific
+        /// type of event.
         /// </summary>
         /// <param name="eventType">The type of event.</param>
         /// <param name="listener">The listener function that processes the event.</param>
-        /// <returns>A value of <c>true</c> if a listener of the specified type is registered; <c>false</c> otherwise.</returns>
+        /// <returns>
+        /// A value of <c>true</c> if a listener of the specified type is registered; <c>false</c> otherwise.
+        /// </returns>
         public bool HasEventListener(string eventType, Action<Event> listener)
         {
             if (eventDispatcher != null)
@@ -239,7 +257,9 @@ namespace QuickUnity.Net.Sockets
         /// Initializes the <see cref="System.Net.Sockets.TcpClient"/>.
         /// </summary>
         /// <param name="client">The <see cref="System.Net.Sockets.TcpClient"/>.</param>
-        /// <param name="packetHandler">The <see cref="ISocketPacketHandler"/> for handling socket packets.</param>
+        /// <param name="packetHandler">
+        /// The <see cref="ISocketPacketHandler"/> for handling socket packets.
+        /// </param>
         /// <returns>The <see cref="TcpClientBase"/> that was converted.</returns>
         protected override TcpClientBase InitializeTcpClient(System.Net.Sockets.TcpClient client, ISocketPacketHandler packetHandler)
         {

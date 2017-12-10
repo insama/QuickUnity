@@ -219,7 +219,7 @@ namespace QuickUnity.Data
             }
             catch (Exception exception)
             {
-                Debug.LogException(exception);
+                DebugLogger.LogException(exception, this);
             }
 
             return null;
@@ -238,7 +238,7 @@ namespace QuickUnity.Data
                 }
                 catch (Exception exception)
                 {
-                    Debug.LogException(exception);
+                    DebugLogger.LogException(exception, this);
                 }
             }
         }
@@ -275,7 +275,7 @@ namespace QuickUnity.Data
             }
             catch (Exception exception)
             {
-                Debug.LogException(exception);
+                DebugLogger.LogException(exception, this);
             }
 
             return 0;
@@ -306,7 +306,7 @@ namespace QuickUnity.Data
             }
             catch (Exception exception)
             {
-                Debug.LogException(exception);
+                DebugLogger.LogException(exception, this);
             }
 
             return 0;
@@ -330,7 +330,7 @@ namespace QuickUnity.Data
             }
             catch (Exception exception)
             {
-                Debug.LogException(exception);
+                DebugLogger.LogException(exception, this);
             }
 
             return default(T);
@@ -363,7 +363,7 @@ namespace QuickUnity.Data
             }
             catch (Exception exception)
             {
-                Debug.LogException(exception);
+                DebugLogger.LogException(exception, this);
             }
 
             return null;
@@ -393,7 +393,7 @@ namespace QuickUnity.Data
             }
             catch (Exception exception)
             {
-                Debug.LogException(exception);
+                DebugLogger.LogException(exception, this);
             }
 
             return null;
@@ -428,14 +428,14 @@ namespace QuickUnity.Data
                         }
                         else
                         {
-                            Debug.LogError(result.GetErrorMsg(box));
+                            DebugLogger.LogError(result.GetErrorMsg(box), this);
                         }
                     }
                 }
             }
             catch (Exception exception)
             {
-                Debug.LogException(exception);
+                DebugLogger.LogException(exception, this);
             }
 
             return false;
@@ -470,14 +470,14 @@ namespace QuickUnity.Data
                         }
                         else
                         {
-                            Debug.LogError(result.GetErrorMsg(box));
+                            DebugLogger.LogError(result.GetErrorMsg(box), this);
                         }
                     }
                 }
             }
             catch (Exception exception)
             {
-                Debug.LogException(exception);
+                DebugLogger.LogException(exception, this);
             }
 
             return false;
@@ -511,14 +511,14 @@ namespace QuickUnity.Data
                         }
                         else
                         {
-                            Debug.LogError(result.GetErrorMsg(box));
+                            DebugLogger.LogError(result.GetErrorMsg(box), this);
                         }
                     }
                 }
             }
             catch (Exception exception)
             {
-                Debug.LogException(exception);
+                DebugLogger.LogException(exception, this);
             }
 
             return false;
@@ -540,7 +540,7 @@ namespace QuickUnity.Data
                 }
                 catch (Exception exception)
                 {
-                    Debug.LogException(exception);
+                    DebugLogger.LogException(exception, this);
                 }
             }
         }
@@ -608,7 +608,10 @@ namespace QuickUnity.Data
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        /// unmanaged resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

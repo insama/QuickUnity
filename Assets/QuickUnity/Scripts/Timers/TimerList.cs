@@ -69,6 +69,8 @@ namespace QuickUnity.Timers
         /// </summary>
         private Collection<ITimer> timerCollection;
 
+        private bool removingItem = false;
+
         #region Constructors
 
         /// <summary>
@@ -185,10 +187,14 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Clear()
         {
+            removingItem = true;
+
             if (timerCollection != null)
             {
                 timerCollection.Clear();
             }
+
+            removingItem = false;
         }
 
         /// <summary>
@@ -215,17 +221,21 @@ namespace QuickUnity.Timers
         /// <param name="item">The object to remove from the <see cref="TimerList"/>.</param>
         /// <returns>
         /// <c>true</c> if item was successfully removed from the <see cref="TimerList"/>; otherwise,
-        /// <c>false</c>. This method also returns <c> false</c> if item is not found in the original
+        /// <c>false</c>. This method also returns <c>false</c> if item is not found in the original
         /// <see cref="TimerList"/>.
         /// </returns>
         public bool Remove(ITimer item)
         {
+            bool success = false;
+
             if (timerCollection != null && item != null)
             {
-                return timerCollection.Remove(item);
+                removingItem = true;
+                success = timerCollection.Remove(item);
+                removingItem = false;
             }
 
-            return false;
+            return success;
         }
 
         /// <summary>
@@ -237,6 +247,11 @@ namespace QuickUnity.Timers
         /// </param>
         public void ForEach(Action<ITimer> action)
         {
+            if (removingItem)
+            {
+                return;
+            }
+
             for (int i = 0, length = timerCollection.Count; i < length; ++i)
             {
                 ITimer timer = timerCollection[i];

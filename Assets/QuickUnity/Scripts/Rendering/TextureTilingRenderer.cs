@@ -25,6 +25,7 @@
 using System.Collections.Generic;
 using QuickUnity.Rendering.DataParsers;
 using UnityEngine;
+using System;
 
 namespace QuickUnity.Rendering
 {
@@ -42,20 +43,41 @@ namespace QuickUnity.Rendering
     /// <seealso cref="MonoBehaviour"/>
     public class TextureTilingRenderer : MonoBehaviour
     {
+        #region Fields
+
+        [SerializeField]
+        private bool AutoUpdateMeshUV = false;
+
+        [SerializeField]
+        private TextAsset dataFileAsset = null;
+
         [SerializeField]
         private TilingSheetDataFormat dataFormat;
 
-        [SerializeField]
-        private TextAsset dataFileAsset;
+        private Mesh mesh;
+
+        private Vector2[] meshOriginalUV;
 
         [SerializeField]
         private string textureTilingName;
 
         private Dictionary<string, Rect> tilingData;
 
-        private Vector2[] meshOriginalUV;
+        #endregion Fields
 
-        private Mesh mesh;
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the name of the texture tiling.
+        /// </summary>
+        /// <value>The name of the texture tiling.</value>
+        public string TextureTilingName
+        {
+            get
+            {
+                return textureTilingName;
+            }
+        }
 
         private Mesh Mesh
         {
@@ -75,32 +97,9 @@ namespace QuickUnity.Rendering
             }
         }
 
-        public string TextureTilingName
-        {
-            get { return textureTilingName; }
-        }
+        #endregion Properties
 
-        #region Messages
-
-        /// <summary>
-        /// Called when the script instance is being loaded.
-        /// </summary>
-        private void Awake()
-        {
-            if (dataFileAsset)
-            {
-                LoadData(dataFileAsset.name, dataFileAsset.text);
-            }
-        }
-
-        private void Start()
-        {
-            UpdateMeshUV();
-        }
-
-        #endregion Messages
-
-        #region Public Methods
+        #region Methods
 
         public void LoadData(string name, string data)
         {
@@ -108,31 +107,28 @@ namespace QuickUnity.Rendering
             tilingData = parser.ParseData(name, data);
         }
 
-        public void UpdateMeshUV(string textureTilingName = null)
+        public void UpdateMeshUV(string textureTilingName)
+        {
+            this.textureTilingName = textureTilingName;
+            UpdateMeshUV();
+        }
+
+        public void UpdateMeshUV()
         {
             if (Mesh)
             {
-                if (meshOriginalUV == null)
+                if (Mesh.uv != null)
                 {
-                    meshOriginalUV = Mesh.uv;
+                    meshOriginalUV = new Vector2[Mesh.uv.Length];
+                    Array.Copy(Mesh.uv, meshOriginalUV, Mesh.uv.Length);
                 }
 
-                if (!string.IsNullOrEmpty(textureTilingName))
+                if (tilingData != null && !string.IsNullOrEmpty(textureTilingName))
                 {
-                    if (this.textureTilingName == textureTilingName)
-                    {
-                        return;
-                    }
-
-                    this.textureTilingName = textureTilingName;
-                }
-
-                if (tilingData != null && !string.IsNullOrEmpty(this.textureTilingName))
-                {
-                    if (tilingData.ContainsKey(this.textureTilingName))
+                    if (tilingData.ContainsKey(textureTilingName))
                     {
                         // Change UV
-                        Rect rect = tilingData[this.textureTilingName];
+                        Rect rect = tilingData[textureTilingName];
                         Vector2[] uvs = new Vector2[Mesh.uv.Length];
 
                         for (int i = 0, length = uvs.Length; i < length; i++)
@@ -147,6 +143,38 @@ namespace QuickUnity.Rendering
             }
         }
 
-        #endregion Public Methods
+        /// <summary>
+        /// Called when the script instance is being loaded.
+        /// </summary>
+        private void Awake()
+        {
+            if (dataFileAsset)
+            {
+                LoadData(dataFileAsset.name, dataFileAsset.text);
+            }
+        }
+
+        /// <summary>
+        /// Executes .
+        /// </summary>
+        [ContextMenu("Execute")]
+        private void Execute()
+        {
+            if (dataFileAsset && !string.IsNullOrEmpty(textureTilingName))
+            {
+                LoadData(dataFileAsset.name, dataFileAsset.text);
+                UpdateMeshUV();
+            }
+        }
+
+        private void Start()
+        {
+            if (AutoUpdateMeshUV)
+            {
+                UpdateMeshUV();
+            }
+        }
+
+        #endregion Methods
     }
 }

@@ -117,7 +117,7 @@ namespace QuickUnity.Rendering
         {
             if (Mesh)
             {
-                if (Mesh.uv != null)
+                if (Mesh.uv != null && (meshOriginalUV == null || meshOriginalUV.Length == 0))
                 {
                     meshOriginalUV = new Vector2[Mesh.uv.Length];
                     Array.Copy(Mesh.uv, meshOriginalUV, Mesh.uv.Length);

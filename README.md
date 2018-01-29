@@ -1,14 +1,5 @@
 # **QuickUnity**
 
-QuickUnity is a code library and toolkit for Unity engine. You can find something useful like this:
+QuickUnity is a code library and toolkit for Unity engine. 
 
-- **Attributes**
-- **Audio Events**
-- **DataTable Like Unreal Engine**
-- **Thread Event System**
-- **C# Framework Class Extensions and Unity Class Extensions**
-- **Serial Port Communication**
-- **Timer System**
-- **Utility Classes**
-
-
+Note: this project is no more updated! Please check out the project https://github.com/cosmos53076/UniSharper

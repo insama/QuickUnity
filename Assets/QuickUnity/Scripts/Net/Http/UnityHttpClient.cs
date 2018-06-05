@@ -298,7 +298,7 @@ namespace QuickUnity.Net.Http
             }
 
             // Handle response.
-            if (unityWebRequest != null && unityWebRequest.isError)
+            if (unityWebRequest != null && unityWebRequest.isNetworkError)
             {
                 string errorMessage = unityWebRequest.error;
                 DispatchErrorReceivedEvent(errorMessage);

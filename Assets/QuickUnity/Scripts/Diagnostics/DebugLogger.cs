@@ -323,7 +323,7 @@ namespace QuickUnity.Diagnostics
             {
                 if (ShowInConsole)
                 {
-                    Debug.logger.Log(logType, messageToShow, context);
+                    Debug.unityLogger.Log(logType, messageToShow, context);
                 }
             }
             catch (Exception)

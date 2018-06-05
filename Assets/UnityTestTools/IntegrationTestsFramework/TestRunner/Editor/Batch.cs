@@ -12,15 +12,20 @@ namespace UnityTest
 {
     public static partial class Batch
     {
-        private const string k_ResultFilePathParam = "-resultFilePath=";
-        private const string k_TestScenesParam = "-testscenes=";
-        private const string k_OtherBuildScenesParam = "-includeBuildScenes=";
-        private const string k_TargetPlatformParam = "-targetPlatform=";
-        private const string k_ResultFileDirParam = "-resultsFileDirectory=";
+        #region Fields
 
-        public static int returnCodeTestsOk = 0;
-        public static int returnCodeTestsFailed = 2;
         public static int returnCodeRunError = 3;
+        public static int returnCodeTestsFailed = 2;
+        public static int returnCodeTestsOk = 0;
+        private const string k_OtherBuildScenesParam = "-includeBuildScenes=";
+        private const string k_ResultFileDirParam = "-resultsFileDirectory=";
+        private const string k_ResultFilePathParam = "-resultFilePath=";
+        private const string k_TargetPlatformParam = "-targetPlatform=";
+        private const string k_TestScenesParam = "-testscenes=";
+
+        #endregion Fields
+
+        #region Methods
 
         public static void RunIntegrationTests()
         {
@@ -67,19 +72,84 @@ namespace UnityTest
                 port = port
             };
 
-            if (Application.isWebPlayer)
-            {
-                config.sendResultsOverNetwork = false;
-                Debug.Log("You can't use WebPlayer as active platform for running integration tests. Switching to Standalone");
-
-#if UNITY_5_6_OR_NEWER
-                EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows);
-#else
-                EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.StandaloneWindows);
-#endif
-            }
-
             PlatformRunner.BuildAndRunInPlayer(config);
+        }
+
+        private static void CheckActiveBuildTarget()
+        {
+            var notSupportedPlatforms = new[] { "MetroPlayer", "WebPlayer", "WebPlayerStreamed" };
+            if (notSupportedPlatforms.Contains(EditorUserBuildSettings.activeBuildTarget.ToString()))
+            {
+                Debug.Log("activeBuildTarget can not be  "
+                    + EditorUserBuildSettings.activeBuildTarget +
+                    " use buildTarget parameter to open Unity.");
+            }
+        }
+
+        private static List<string> FindTestScenesInProject()
+        {
+            var integrationTestScenePattern = "*Test?.unity";
+            return Directory.GetFiles("Assets", integrationTestScenePattern, SearchOption.AllDirectories).ToList();
+        }
+
+        private static string GetParameterArgument(string parameterName)
+        {
+            foreach (var arg in Environment.GetCommandLineArgs())
+            {
+                if (arg.ToLower().StartsWith(parameterName.ToLower()))
+                {
+                    return arg.Substring(parameterName.Length);
+                }
+            }
+            return null;
+        }
+
+        private static List<string> GetSceneListFromParam(string param)
+        {
+            var sceneList = new List<string>();
+            foreach (var arg in Environment.GetCommandLineArgs())
+            {
+                if (arg.ToLower().StartsWith(param.ToLower()))
+                {
+                    var scenesFromParam = arg.Substring(param.Length).Split(',');
+                    foreach (var scene in scenesFromParam)
+                    {
+                        var sceneName = scene;
+                        if (!sceneName.EndsWith(".unity"))
+                            sceneName += ".unity";
+                        var foundScenes = Directory.GetFiles(Directory.GetCurrentDirectory(), sceneName, SearchOption.AllDirectories);
+                        if (foundScenes.Length == 1)
+                            sceneList.Add(foundScenes[0].Substring(Directory.GetCurrentDirectory().Length + 1));
+                        else
+                            Debug.Log(sceneName + " not found or multiple entries found");
+                    }
+                }
+            }
+            return sceneList.Where(s => !string.IsNullOrEmpty(s)).Distinct().ToList();
+        }
+
+        private static BuildTarget? GetTargetPlatform()
+        {
+            string platformString = null;
+            BuildTarget buildTarget;
+            foreach (var arg in Environment.GetCommandLineArgs())
+            {
+                if (arg.ToLower().StartsWith(k_TargetPlatformParam.ToLower()))
+                {
+                    platformString = arg.Substring(k_ResultFilePathParam.Length);
+                    break;
+                }
+            }
+            try
+            {
+                if (platformString == null) return null;
+                buildTarget = (BuildTarget)Enum.Parse(typeof(BuildTarget), platformString);
+            }
+            catch
+            {
+                return null;
+            }
+            return buildTarget;
         }
 
         private static void RunInEditor(List<string> testScenes, List<string> otherBuildScenes)
@@ -124,81 +194,6 @@ namespace UnityTest
             EditorApplication.isPlaying = true;
         }
 
-        private static string GetParameterArgument(string parameterName)
-        {
-            foreach (var arg in Environment.GetCommandLineArgs())
-            {
-                if (arg.ToLower().StartsWith(parameterName.ToLower()))
-                {
-                    return arg.Substring(parameterName.Length);
-                }
-            }
-            return null;
-        }
-
-        private static void CheckActiveBuildTarget()
-        {
-            var notSupportedPlatforms = new[] { "MetroPlayer", "WebPlayer", "WebPlayerStreamed" };
-            if (notSupportedPlatforms.Contains(EditorUserBuildSettings.activeBuildTarget.ToString()))
-            {
-                Debug.Log("activeBuildTarget can not be  "
-                    + EditorUserBuildSettings.activeBuildTarget +
-                    " use buildTarget parameter to open Unity.");
-            }
-        }
-
-        private static BuildTarget? GetTargetPlatform()
-        {
-            string platformString = null;
-            BuildTarget buildTarget;
-            foreach (var arg in Environment.GetCommandLineArgs())
-            {
-                if (arg.ToLower().StartsWith(k_TargetPlatformParam.ToLower()))
-                {
-                    platformString = arg.Substring(k_ResultFilePathParam.Length);
-                    break;
-                }
-            }
-            try
-            {
-                if (platformString == null) return null;
-                buildTarget = (BuildTarget)Enum.Parse(typeof(BuildTarget), platformString);
-            }
-            catch
-            {
-                return null;
-            }
-            return buildTarget;
-        }
-
-        private static List<string> FindTestScenesInProject()
-        {
-            var integrationTestScenePattern = "*Test?.unity";
-            return Directory.GetFiles("Assets", integrationTestScenePattern, SearchOption.AllDirectories).ToList();
-        }
-
-        private static List<string> GetSceneListFromParam(string param)
-        {
-            var sceneList = new List<string>();
-            foreach (var arg in Environment.GetCommandLineArgs())
-            {
-                if (arg.ToLower().StartsWith(param.ToLower()))
-                {
-                    var scenesFromParam = arg.Substring(param.Length).Split(',');
-                    foreach (var scene in scenesFromParam)
-                    {
-                        var sceneName = scene;
-                        if (!sceneName.EndsWith(".unity"))
-                            sceneName += ".unity";
-                        var foundScenes = Directory.GetFiles(Directory.GetCurrentDirectory(), sceneName, SearchOption.AllDirectories);
-                        if (foundScenes.Length == 1)
-                            sceneList.Add(foundScenes[0].Substring(Directory.GetCurrentDirectory().Length + 1));
-                        else
-                            Debug.Log(sceneName + " not found or multiple entries found");
-                    }
-                }
-            }
-            return sceneList.Where(s => !string.IsNullOrEmpty(s)).Distinct().ToList();
-        }
+        #endregion Methods
     }
 }
